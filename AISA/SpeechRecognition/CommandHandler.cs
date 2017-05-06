@@ -15,6 +15,11 @@ namespace AISA
         /// <param name="input">The command input</param>
         public static string Handle(string input)
         {
+            //Deprecate the current context
+            Context.Previous = Context.Current;
+            //Update the current context
+            Context.Current = input;
+
             var s = GetCommands();
 
             Console.WriteLine("Command Started");
@@ -57,7 +62,7 @@ namespace AISA
             else if (input.Contains("Hello") || input == "Hi")
             {
                 //If the user has done something else or the user has just started the application
-                if (Context.Current == "")
+                if (Context.Previous == "")
                 {
                     return new string[]
                     {
@@ -71,9 +76,55 @@ namespace AISA
                     }[new Random().Next(0, 3)];
                 }
             }
+            else if (input.Contains("What's up") || input.Contains("What's going on"))
+            {
+                //Inform the user with some news about the current situation
+                return "Well, Sri Lankan Rupee worth " + (1 / 150).ToString() + " United States Dollars, How does that sound?"; //:V
+            }
+            else if (input.Contains("What's the time"))
+            {
+                #region MANUAL FORMAT TIME
+                var ampm = "";
+                var hour = "";
 
-            //Asking something else
-            return "I don't know what to say, Please ask me something else";
+                if (DateTime.Now.Hour > 12)
+                {
+                    ampm = "PM";
+                    hour = (DateTime.Now.Hour - 12).ToString();
+                }
+                else
+                {
+                    ampm = "AM";
+                    hour = DateTime.Now.Hour.ToString();
+
+                    if (DateTime.Now.Hour == 0)
+                    {
+                        hour = "12";
+                    }
+                }
+                #endregion
+
+                return new string[] {
+                    "It's " + hour + ":" + DateTime.Now.Minute + " " + ampm, "The time is " + hour + ":" + DateTime.Now.Minute + " " + ampm
+                }[new Random().Next()];
+            }
+
+
+            if (Context.Previous == "")
+            {
+                //Not know how to use?
+                return new string[]
+                {
+                    "Ask me about Classes, I'm pretty good at it", "Ask me about weather", "Ask me for General Knowledge Facts", "Ask me to find a book, I'm sure you'll not be disappointed"
+                }[new Random().Next(0, 4)];
+            }
+            else
+            {
+                //Asking something else
+                return new string[] {
+                    "I don't know what to say, Please ask me something else", "Oops, please tell me what you need?"
+                }[new Random().Next(0, 2)];
+            }
         }
 
         /// <summary>
@@ -84,7 +135,15 @@ namespace AISA
         {
             return new string[]
             {
-                "Good Morning", "Good Afternoon", "Good Evening", "Good Night", "Hello", "Hi", "What's up", "What's going on"
+                "Good Morning",
+                "Good Afternoon",
+                "Good Evening",
+                "Good Night",
+                "Hello",
+                "Hi",
+                "What's up",
+                "What's going on",
+                "What's the time"
             };
         }
     }
