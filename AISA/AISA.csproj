@@ -35,8 +35,11 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Microsoft.Expression.Drawing, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Speech" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -55,6 +58,43 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Custom Controls\Messages\Message.xaml.cs">
+      <DependentUpon>Message.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Custom Controls\Messages\Thread.xaml.cs">
+      <DependentUpon>Thread.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="SpeechRecognition\AudioHandler.cs" />
+    <Compile Include="SpeechRecognition\CommandHandler.cs" />
+    <Compile Include="Custom Controls\RectangularButton.xaml.cs">
+      <DependentUpon>RectangularButton.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Custom Controls\Speech.xaml.cs">
+      <DependentUpon>Speech.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="SpeechRecognition\AISAHandler.cs" />
+    <Compile Include="SpeechRecognition\Ask.cs" />
+    <Compile Include="SpeechRecognition\Recognizer.cs" />
+    <Page Include="Custom Controls\Messages\Message.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Custom Controls\Messages\Thread.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Custom Controls\RectangularButton.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Custom Controls\Speech.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Custom Controls\Spinner.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -62,6 +102,9 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Custom Controls\Spinner.xaml.cs">
+      <DependentUpon>Spinner.xaml</DependentUpon>
     </Compile>
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
@@ -94,6 +137,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Custom Controls\res\microphone.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\expand.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

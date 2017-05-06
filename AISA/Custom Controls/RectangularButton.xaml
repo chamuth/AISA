@@ -1,0 +1,12 @@
+﻿<UserControl x:Class="AISA.Custom_Controls.RectangularButton"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:AISA.Custom_Controls"
+             mc:Ignorable="d" 
+             d:DesignHeight="25" d:DesignWidth="25" MouseDown="UserControl_MouseDown" MouseUp="UserControl_MouseUp"> 
+    <Grid Background="Transparent">
+        <Image x:Name="ImagePlaceholder" Stretch="Fill" Source="res/microphone.png" Margin="5px"></Image>
+    </Grid>
+</UserControl>
