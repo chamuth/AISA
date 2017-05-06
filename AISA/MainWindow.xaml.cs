@@ -15,6 +15,7 @@ using System.Windows.Shapes;
 using System.Windows.Threading;
 using AISA.SpeechRecognition;
 using System.Windows.Media.Animation;
+using AISA.Core;
 
 namespace AISA
 {
@@ -35,45 +36,62 @@ namespace AISA
 
             //Animate from Bottom
             var da = new DoubleAnimation(SystemParameters.FullPrimaryScreenHeight, SystemParameters.FullPrimaryScreenHeight - Height, TimeSpan.FromSeconds(1));
-            da.EasingFunction = new QuadraticEase();
+            da.EasingFunction = new QuinticEase();
+            da.BeginTime = TimeSpan.FromSeconds(2);
             BeginAnimation(TopProperty, da);
+
+            //Set the greeting text
+            HelloUser.Content = Greetings.Greet();
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            try
+            //Start AISA Command Recognition
+            AISAHandler.Initialize(() =>
             {
-                //Start AISA Command Recognition
-                AISAHandler.Initialize(() =>
-                {
-                    Speech.Activate();
-                },
-                () =>
-                {
-                    Speech.Deactivate();
-                });
-
-
-                AISAHandler.Start();
-            }
-            catch (AISAHandler.MicrophoneNotWorkingException)
+                Speech.Activate();
+                AskSheet.Visibility = Visibility.Hidden;
+                Spinner.Visibility = Visibility.Visible;
+            },
+            () =>
             {
-                //Microphone not working
-            }
+                Speech.Deactivate();
+            }, HandleResult);
 
-            MessageThread.AddMessage("HEllo World", false);
-            MessageThread.AddMessage("HEllo World", false);
-            MessageThread.AddMessage("HEllo World", false);
+            AISAHandler.Start();
+        }
+
+        /// <summary>
+        /// Occurs when the result has come back to MainWindow
+        /// </summary>
+        /// <param name="Q">The Question / Query asked by the user</param>
+        /// <param name="A">The result for it</param>
+        private void HandleResult(string Q, string A)
+        {
+            Spinner.Hide();
+
+            ResultSheet.Visibility = Visibility.Visible;
+            var sa = this.FindResource("ResultsAnimation") as Storyboard;
+            sa.Begin();
+
+            q_label.Content = "\"" + Q + "\"";
+            a_label.Text = A;
         }
 
         private void StartRecognition()
         {
             AudioHandler.Start();
             Speech.Activate();
-            var rec = new Recognizer(() => { Speech.Deactivate(); });
+            
+            var rec = new Recognizer(() => { Speech.Deactivate(); }, HandleResult);
         }
 
         private void Speech_MouseUp(object sender, MouseButtonEventArgs e)
+        {
+
+        } 
+
+        private void SpeechClicked()
         {
 
         }

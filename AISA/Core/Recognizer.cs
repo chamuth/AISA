@@ -15,20 +15,17 @@ namespace AISA.SpeechRecognition
         private SpeechRecognitionEngine _recognizer = new SpeechRecognitionEngine();
         private SpeechSynthesizer synthesizer = new SpeechSynthesizer();
         private Action _End = null;
+        private Action<string, string> ResultCallback;
 
         /// <summary>
         /// Creates a new Speech Recognizer Object
         /// </summary>
-        public Recognizer(Action end)
+        public Recognizer(Action end, Action<string, string> result)
         {
-            _recognizer.LoadGrammar(new Grammar(
-                new GrammarBuilder(
-                    new Choices(CommandHandler.GetCommands())
-                    )
-                )
-            );
+            _recognizer.LoadGrammar(new Grammar(new GrammarBuilder(new Choices(CommandHandler.GetCommands()))));
 
             _recognizer.SpeechRecognized += speech_Recognized;
+            _recognizer.SpeechDetected += _recognizer_SpeechDetected;
             _recognizer.SpeechRecognitionRejected += _recognizer_SpeechRecognitionRejected;
 
             _recognizer.SetInputToDefaultAudioDevice();
@@ -41,7 +38,12 @@ namespace AISA.SpeechRecognition
 
             _End = end;
 
-            Console.WriteLine("Recognizer Started");
+            ResultCallback = result;
+        }
+
+        private void _recognizer_SpeechDetected(object sender, SpeechDetectedEventArgs e)
+        {
+
         }
 
         private void _recognizer_SpeechRecognitionRejected(object sender, SpeechRecognitionRejectedEventArgs e)
@@ -66,7 +68,9 @@ namespace AISA.SpeechRecognition
             AudioHandler.Results();
 
             //Speak the answer from the CommandHandler
-            synthesizer.SpeakAsync(CommandHandler.Handle(e.Result.Text));
+            var result_string = CommandHandler.Handle(e.Result.Text);
+            synthesizer.SpeakAsync(result_string);
+            ResultCallback(e.Result.Text, result_string);
 
             //Null the recognizer
             _recognizer = null;

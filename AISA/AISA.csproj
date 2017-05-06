@@ -58,12 +58,8 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Custom Controls\Messages\Message.xaml.cs">
-      <DependentUpon>Message.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Custom Controls\Messages\Thread.xaml.cs">
-      <DependentUpon>Thread.xaml</DependentUpon>
-    </Compile>
+    <Compile Include="Core\Context.cs" />
+    <Compile Include="Core\Greetings.cs" />
     <Compile Include="SpeechRecognition\AudioHandler.cs" />
     <Compile Include="SpeechRecognition\CommandHandler.cs" />
     <Compile Include="Custom Controls\RectangularButton.xaml.cs">
@@ -74,15 +70,7 @@
     </Compile>
     <Compile Include="SpeechRecognition\AISAHandler.cs" />
     <Compile Include="SpeechRecognition\Ask.cs" />
-    <Compile Include="SpeechRecognition\Recognizer.cs" />
-    <Page Include="Custom Controls\Messages\Message.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Custom Controls\Messages\Thread.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
+    <Compile Include="Core\Recognizer.cs" />
     <Page Include="Custom Controls\RectangularButton.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -143,6 +131,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\expand.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="SpeechRecognition\Dictionary.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

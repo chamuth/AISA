@@ -26,13 +26,14 @@ namespace AISA.SpeechRecognition
         private static SpeechRecognitionEngine _recognizer = new SpeechRecognitionEngine();
         private static Action AISACallback;
         private static Action AISAEndCallback;
+        private static Action<string, string> AISAResultCallback;
 
         /// <summary>
         /// Initialize the AISA Handler
         /// </summary>
         /// <param name="start">Lambda Expression that executes when AISA is recognized</param>
         /// <param name="end">Lambda Expression when the program command is executed</param>
-        public static void Initialize(Action start, Action end)
+        public static void Initialize(Action start, Action end, Action<string, string> result)
         {
             _recognizer.LoadGrammar(new Grammar(new GrammarBuilder(new Choices(new string[] { "AISA" }))));
             _recognizer.SpeechRecognized += _recognizer_SpeechRecognized;
@@ -49,16 +50,21 @@ namespace AISA.SpeechRecognition
             //Save the functions
             AISACallback = start;
             AISAEndCallback = end;
+            AISAResultCallback = result;
         }
 
         public static void Start()
         {
-            _recognizer.RecognizeAsync(RecognizeMode.Single);
+            try
+            {
+                _recognizer.RecognizeAsync(RecognizeMode.Multiple);
+            }
+            catch (Exception) { }
         }
 
         public static void Pause()
         {
-            _recognizer.RecognizeAsyncCancel();
+            _recognizer.RecognizeAsyncStop();
         }
 
         private static void _recognizer_SpeechRecognized(object sender, SpeechRecognizedEventArgs e)
@@ -67,41 +73,9 @@ namespace AISA.SpeechRecognition
             {
                 AudioHandler.Start();
                 AISACallback();
-
-                var rec = new Recognizer(AISAEndCallback);
+                Pause();
+                var rec = new Recognizer(AISAEndCallback, AISAResultCallback);
             }
         }
-        //private static void InstantiateAISA()
-        //{
-        //    _recognizer = new SpeechRecognitionEngine();
-        //    _recognizer.LoadGrammar(new Grammar(new GrammarBuilder(new Choices(new string[] { "AISA" }))));
-        //    _recognizer.SpeechRecognized += speech_Recognized;
-
-        //    _recognizer.SetInputToDefaultAudioDevice();
-        //    _recognizer.RecognizeAsync(RecognizeMode.Single);
-        //}
-
-        //public static void Start(Action aisaCallback, Action aisaRevCallback)
-        //{
-        //    InstantiateAISA();
-        //    AISACallback = aisaCallback;
-        //}
-
-        //public static void Start()
-        //{
-        //    InstantiateAISA();
-        //}
-
-        //private static void speech_Recognized(object sender, SpeechRecognizedEventArgs e)
-        //{
-        //    if (e.Result.Text.Contains("AISA")) 
-        //    {
-        //        //Play start audio
-        //        AudioHandler.Start();
-        //        AISACallback();
-
-        //        Console.WriteLine("AISA Module Started");
-        //    }
-        //}
     }
 }
