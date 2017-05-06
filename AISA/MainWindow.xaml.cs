@@ -59,6 +59,7 @@ namespace AISA
             }, HandleResult);
 
             AISAHandler.Start();
+            
         }
 
         /// <summary>
@@ -85,15 +86,11 @@ namespace AISA
             
             var rec = new Recognizer(() => { Speech.Deactivate(); }, HandleResult);
         }
-
-        private void Speech_MouseUp(object sender, MouseButtonEventArgs e)
-        {
-
-        } 
+        
 
         private void SpeechClicked()
         {
-
+            StartRecognition();
         }
     }
 }

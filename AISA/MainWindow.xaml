@@ -54,7 +54,7 @@
     <Grid>
         <Custom_Controls:Spinner x:Name="Spinner" Visibility="Hidden" Width="50" Height="50"/>
 
-        <Grid Visibility="Visible" x:Name="AskSheet" Margin="25,15,25,100">
+        <Grid Visibility="Visible" x:Name="AskSheet" Margin="35,15,35,100">
             <Grid x:Name="BasicInternalsAskSheet" VerticalAlignment="Center">
                 <Label x:Name="HelloUser" FontFamily="Roboto Light" HorizontalAlignment="Center" VerticalAlignment="Top" Foreground="#BBB" FontSize="15">
                     What's going on?
@@ -65,7 +65,7 @@
             </Grid>
         </Grid>
         
-        <Grid Visibility="Hidden" x:Name="ResultSheet" Margin="25,15,25,100">
+        <Grid Visibility="Hidden" x:Name="ResultSheet" Margin="35,15,35,100">
             <Grid x:Name="BasicContent" VerticalAlignment="Center">
                 <Label x:Name="q_label" FontFamily="Roboto Light" HorizontalAlignment="Center" VerticalAlignment="Top" Foreground="#BBB" FontSize="15">
                     "What's the weather like?"

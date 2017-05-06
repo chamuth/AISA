@@ -24,7 +24,7 @@ namespace AISA
 
             Console.WriteLine("Command Started");
 
-            //Handle commands by index
+            //Handle Questions / Queries
             if (input.Contains("Good Morning"))
             {
                 if (DateTime.Now.Hour < 12)
@@ -81,7 +81,7 @@ namespace AISA
                 //Inform the user with some news about the current situation
                 return "Well, Sri Lankan Rupee worth " + (1 / 150).ToString() + " United States Dollars, How does that sound?"; //:V
             }
-            else if (input.Contains("What's the time"))
+            else if (input.Contains("What's the time") || input.Contains("What time is it?"))
             {
                 #region MANUAL FORMAT TIME
                 var ampm = "";
@@ -108,8 +108,14 @@ namespace AISA
                     "It's " + hour + ":" + DateTime.Now.Minute + " " + ampm, "The time is " + hour + ":" + DateTime.Now.Minute + " " + ampm
                 }[new Random().Next()];
             }
+            //Handle General Functions
+            else if (input.ToLower().Contains("take a selfie") || input.ToLower().Contains("take a picture") || input.Contains("Open Camera"))
+            {
+                System.Diagnostics.Process.Start("microsoft.windows.camera:");
+            }
 
 
+            //Something not recognized
             if (Context.Previous == "")
             {
                 //Not know how to use?
@@ -135,6 +141,7 @@ namespace AISA
         {
             return new string[]
             {
+                //GENERAL QUESTIONS / QUERIES
                 "Good Morning",
                 "Good Afternoon",
                 "Good Evening",
@@ -143,7 +150,15 @@ namespace AISA
                 "Hi",
                 "What's up",
                 "What's going on",
-                "What's the time"
+                "What's the time",
+                "What time is it",
+
+                //GENERAL FUNCTIONS
+                "Let's take a selfie",
+                "Let's take a picture",
+                "Take a picture",
+                "Take a selfie",
+                "Open Camera"
             };
         }
     }
