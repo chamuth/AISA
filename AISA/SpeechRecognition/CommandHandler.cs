@@ -79,6 +79,7 @@ namespace AISA
             else if (input.Contains("What's up") || input.Contains("What's going on"))
             {
                 //Inform the user with some news about the current situation
+                //TODO: Update this from a news feed
                 return "Well, Sri Lankan Rupee worth " + (1 / 150).ToString() + " United States Dollars, How does that sound?"; //:V
             }
             else if (input.Contains("What's the time") || input.Contains("What time is it?"))
@@ -112,6 +113,40 @@ namespace AISA
             else if (input.ToLower().Contains("take a selfie") || input.ToLower().Contains("take a picture") || input.Contains("Open Camera"))
             {
                 System.Diagnostics.Process.Start("microsoft.windows.camera:");
+            }
+            else if (input.ToLower().Contains("my picture") || input.ToLower().Contains("my photo"))
+            {
+                System.Diagnostics.Process.Start("microsoft.windows.photos:");
+            }
+            else if (input.ToLower().Contains("weather"))
+            {
+                //Get weather information
+                //TODO: Add functionality from AccuWeather or any Weather API
+                return "It's 28 degrees and cloudy in Hiriwadunna";
+            }
+            else if (input.Contains("Play some music") || input.Contains("Play music"))
+            {
+                System.Diagnostics.Process.Start("microsoft.windows.music:");
+            }
+            else if (input.Contains("Show me my inbox") || input.Contains("Open Mail"))
+            {
+                System.Diagnostics.Process.Start("microsoft.windows.mail:");
+            }
+
+            //HANDLE CHECK IN SOCIAL MEDIA COMMANDS
+            else if (input.Contains("Facebook"))
+            {
+                System.Diagnostics.Process.Start("http://www.facebook.com/");
+            }else if (input.Contains("Twitter"))
+            {
+                System.Diagnostics.Process.Start("http://www.twitter.com");
+            }else if (input.Contains("YouTube"))
+            {
+                System.Diagnostics.Process.Start("http://www.youtube.com");
+            }
+            else if (input.Contains("Wikipedia"))
+            {
+                System.Diagnostics.Process.Start("http://www.wikipedia.com");
             }
 
 
@@ -152,13 +187,34 @@ namespace AISA
                 "What's going on",
                 "What's the time",
                 "What time is it",
+                "What's the weather like",
+                "Weather",
+                "How's the weather like",
+                "How's the weather",
 
                 //GENERAL FUNCTIONS
                 "Let's take a selfie",
                 "Let's take a picture",
                 "Take a picture",
                 "Take a selfie",
-                "Open Camera"
+                "Show my pictures",
+                "Show my photos",
+                "Play some music",
+                "Play music",
+                "Show me my inbox",
+                
+                //OPENING APPS RELATED
+                "Open Camera",
+                "Open Calendar",
+                "Open Mail",
+                
+                //CHECKING SOCIAL MEDIA
+                "Check in Facebook",
+                "Go to Facebook",
+                "Check in Twitter",
+                "Go to Twitter",
+                "Go to YouTube",
+                "Go to Wikipedia"
             };
         }
     }
