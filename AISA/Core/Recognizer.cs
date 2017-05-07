@@ -109,7 +109,7 @@ namespace AISA.SpeechRecognition
             _recognizer = null;
 
             //Start AISA Handler again
-            AISAHandler.Start();
+            AISAHandler.Start(true);
             timer.Stop();
         }
 

@@ -86,13 +86,13 @@ namespace AISA
                     });
                 }
             }
-            else if (input.Contains("What's up") || input.Contains("What's going on"))
+            else if (input.Contains("What's up") || input.Contains("What's going on") || input.Contains("What is going on") || input.Contains("What is up"))
             {
                 //Inform the user with some news about the current situation
                 //TODO: Update this from a news feed
                 return "Well, Sri Lankan Rupee worth " + (1f / 150f).ToString() + " United States Dollars, How does that sound?"; //:V
             }
-            else if (input.Contains("What's the time") || input.Contains("What time is it"))
+            else if (input.Contains("What's the time") || input.Contains("What time is it") || input.Contains("What is the time"))
             {
                 #region MANUAL FORMAT TIME
                 var ampm = "";
@@ -133,6 +133,10 @@ namespace AISA
                     });
                 }
             }
+            else if (input.Contains("I appreciate it") || input.Contains("Appreciate it"))
+            {
+                return random(new string[] { "Thank you", "It's my pleasure" });
+            }
             else if (input.Contains("What can I say"))
             {
                 return "Say " + random(GetCommands());
@@ -159,7 +163,7 @@ namespace AISA
                     "I was developed by Team Ninponix. Say \"Follow Link\" to visit my repository", "Team Ninponix, Say \"Go to Link\" to visit my repository"
                 });
             }
-            else if (input.Contains("What's your name"))
+            else if (input.Contains("What's your name") || input.Contains("What is your name"))
             {
                 return random(new string[] {
                     "It's AISA", "AISA, Artificial Intelligent Smart Assistant"
@@ -198,7 +202,7 @@ namespace AISA
                     "Sure, Let's check them out", "Let's see your photos"
                 });
             }
-            else if (input.Contains("What is my name"))
+            else if (input.Contains("What is my name") || input.Contains("What's my name") || input.Contains("Say my name"))
             {
                 return Environment.UserName; //return the user name of the computer
             }
@@ -282,14 +286,21 @@ namespace AISA
                 "Hello",
                 "Hi",
                 "What's up",
+                "What is up",
                 "What's going on",
+                "What is going on",
                 "What's the time",
+                "What is the time",
                 "What time is it",
                 "What's the weather like",
                 "Weather",
+                "What's my name",
+                "Say my name",
                 "What is my name",
                 "How's the weather like",
                 "How's the weather",
+                "I appreciate it",
+                "Appreciate it",
                 "Thank you",
                 "Thanks",
                 "What can I say",
@@ -298,6 +309,7 @@ namespace AISA
                 "Who are you",
                 "Who made you",
                 "What's your name",
+                "What is your name",
 
                 //GENERAL FUNCTIONS
                 "Follow link",

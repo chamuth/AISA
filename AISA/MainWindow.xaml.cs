@@ -36,13 +36,26 @@ namespace AISA
             Top = SystemParameters.FullPrimaryScreenHeight;
 
             //Animate from Bottom
-            var da = new DoubleAnimation(SystemParameters.FullPrimaryScreenHeight, SystemParameters.FullPrimaryScreenHeight - Height, TimeSpan.FromSeconds(1));
+            var da = new DoubleAnimation(SystemParameters.FullPrimaryScreenHeight, SystemParameters.WorkArea.Height - Height, TimeSpan.FromSeconds(1));
             da.EasingFunction = new QuinticEase();
             da.BeginTime = TimeSpan.FromSeconds(2);
             BeginAnimation(TopProperty, da);
 
             //Set the greeting text
             HelloUser.Content = Greetings.Greet();
+        }
+
+        private void Maximize()
+        {
+            var da = new DoubleAnimation(0, TimeSpan.FromSeconds(1));
+            BeginAnimation(TopProperty, da); BeginAnimation(LeftProperty, da);
+            var wi = new DoubleAnimation(SystemParameters.FullPrimaryScreenWidth, TimeSpan.FromSeconds(1));
+            var hi = new DoubleAnimation(SystemParameters.MaximizedPrimaryScreenHeight, TimeSpan.FromSeconds(1));
+            da.EasingFunction = new QuinticEase();
+            wi.EasingFunction = new QuinticEase();
+            hi.EasingFunction = new QuinticEase();
+
+            BeginAnimation(WidthProperty, wi); BeginAnimation(HeightProperty, hi);
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)

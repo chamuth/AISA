@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using System.Speech.Recognition;
 using System.Windows;
 using System.Windows.Media;
+using System.Windows.Threading;
 
 namespace AISA.SpeechRecognition
 {
@@ -53,11 +54,26 @@ namespace AISA.SpeechRecognition
             AISAResultCallback = result;
         }
 
-        public static void Start()
+        public static void Start(bool first = false)
         {
             try
             {
-                _recognizer.RecognizeAsync(RecognizeMode.Multiple);
+                if (first == true)
+                {
+                    var da = new DispatcherTimer();
+                    da.Interval = TimeSpan.FromSeconds(4);
+                    da.Tick += (a, b) =>
+                    {
+                        da.Stop();
+                        _recognizer.RecognizeAsync(RecognizeMode.Multiple);
+                    };
+
+                    da.Start();
+                }
+                else
+                {
+                    _recognizer.RecognizeAsync(RecognizeMode.Multiple);
+                }
             }
             catch (Exception) { }
         }

@@ -78,7 +78,7 @@
                 </TextBlock>
             </Grid>
 
-            <Grid Opacity="0" x:Name="linkContainer" Height="50" VerticalAlignment="Bottom" Margin="0,0,0,25" Background="#0AFFFFFF" MouseDown="linkContainer_MouseDown">
+            <Grid Opacity="0" x:Name="linkContainer" Height="50"  Width="250" VerticalAlignment="Bottom" Margin="0,0,0,25" Background="#0AFFFFFF" MouseDown="linkContainer_MouseDown">
                 <Label x:Name="LinkName" Foreground="White" FontSize="13" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="5,3,5,5" >AISA - Chamuth</Label>
                 <Label x:Name="LinkURL" Foreground="Gray" FontSize="12" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="5,22,5,0" >http://www.github.com/cc/AISA</Label>
             </Grid>
@@ -86,7 +86,7 @@
 
          <!--#region Footer Buttons-->
         <Custom_Controls:Speech ToolTip="Activated AISA" x:Name="Speech" Width="50" Height="50" VerticalAlignment="Bottom" Margin="25px"/>
-        <Custom_Controls:RectangularButton ToolTip="Toggle Fullscreen" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="25px" Width="25" Height="25" Source="Resources/expand.png"/>
+        <Custom_Controls:RectangularButton ToolTip="Toggle Fullscreen" Clicked="Maximize" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="25px" Width="25" Height="25" Source="Resources/expand.png"/>
         <!--#endregion-->
     </Grid>
 
