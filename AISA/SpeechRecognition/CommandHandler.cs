@@ -92,7 +92,7 @@ namespace AISA
                 //TODO: Update this from a news feed
                 return "Well, Sri Lankan Rupee worth " + (1f / 150f).ToString() + " United States Dollars, How does that sound?"; //:V
             }
-            else if (input.Contains("What's the time") || input.Contains("What time is it?"))
+            else if (input.Contains("What's the time") || input.Contains("What time is it"))
             {
                 #region MANUAL FORMAT TIME
                 var ampm = "";
@@ -115,9 +115,27 @@ namespace AISA
                 }
                 #endregion
 
-                return new string[] {
+                return random(new string[] {
                     "It's " + hour + ":" + DateTime.Now.Minute + " " + ampm, "The time is " + hour + ":" + DateTime.Now.Minute + " " + ampm
-                }[new Random().Next()];
+                });
+            }
+            else if (input.Contains("Thank you") || input.Contains("Thanks"))
+            {
+                if (Context.Previous == null)
+                {
+                    return "For doing what? Anyway welcome!";
+                }
+                else
+                {
+                    return random(new string[]
+                    {
+                        "Welcome!", "It's my pleasure!"
+                    });
+                }
+            }
+            else if (input.Contains("What can I say"))
+            {
+                return "Say " + random(GetCommands());
             }
 
             //HANDLE QUESTIONS ABOUT AISA
@@ -147,7 +165,9 @@ namespace AISA
                     "It's AISA", "AISA, Artificial Intelligent Smart Assistant"
                 });
             }
-            else if (input.Contains("Follow link") || input.Contains("Go to link") || input.Contains("Follow last link") || input.Contains("Go to last link"))
+
+
+            else if (input.Contains("Follow link") || input.Contains("Go to link") || input.Contains("Visit link") || input.Contains("Visit last link") || input.Contains("Follow last link") || input.Contains("Go to last link"))
             {
                 if (Context.LastURL.Trim() != "")
                 {
@@ -270,6 +290,9 @@ namespace AISA
                 "What is my name",
                 "How's the weather like",
                 "How's the weather",
+                "Thank you",
+                "Thanks",
+                "What can I say",
 
                 //ABOUT AISA
                 "Who are you",
@@ -278,6 +301,8 @@ namespace AISA
 
                 //GENERAL FUNCTIONS
                 "Follow link",
+                "Visit link",
+                "Visit last link",
                 "Follow last link",
                 "Go to link",
                 "Go to last link",

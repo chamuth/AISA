@@ -10,7 +10,7 @@ namespace AISA.Core
     {
         private static string[] greetings =
         {
-            "Hello %USERNAME%!", "How are you?", "How's it going %USERNAME%", "What's cracking", "Good to see you %USERNAME%", "What's up %USERNAME%", "Good %TIME% %USERNAME!"
+            "Hello %USERNAME%!", "How are you?", "How's it going %USERNAME%", "What's cracking?", "Good to see you %USERNAME%", "What's up %USERNAME%", "Good %TIME% %USERNAME%!"
         };
 
         /// <summary>
@@ -22,9 +22,9 @@ namespace AISA.Core
             var number = new Random().Next(0, 7);
             var new_greet = "";
 
-            if (number > 7)
+            if (number > 5)
             {
-                new_greet = greetings[1];
+                new_greet = greetings[6];
 
                 new_greet = new_greet.Replace("%USERNAME%", Environment.UserName);
 

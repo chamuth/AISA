@@ -85,7 +85,7 @@
         </Grid>
 
          <!--#region Footer Buttons-->
-        <Custom_Controls:Speech Clicked="SpeechClicked" ToolTip="Activated AISA" x:Name="Speech" Width="50" Height="50" VerticalAlignment="Bottom" Margin="25px"/>
+        <Custom_Controls:Speech ToolTip="Activated AISA" x:Name="Speech" Width="50" Height="50" VerticalAlignment="Bottom" Margin="25px"/>
         <Custom_Controls:RectangularButton ToolTip="Toggle Fullscreen" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="25px" Width="25" Height="25" Source="Resources/expand.png"/>
         <!--#endregion-->
     </Grid>

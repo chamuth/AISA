@@ -8,6 +8,7 @@ using System.Speech.Recognition;
 using System.Windows;
 using System.Speech.Synthesis;
 using AISA.Core;
+using System.Windows.Threading;
 
 namespace AISA.SpeechRecognition
 {
@@ -17,6 +18,7 @@ namespace AISA.SpeechRecognition
         private SpeechSynthesizer synthesizer = new SpeechSynthesizer();
         private Action _End = null;
         private Action<string, string> ResultCallback;
+        private DispatcherTimer timer = new DispatcherTimer();
 
         /// <summary>
         /// Creates a new Speech Recognizer Object
@@ -41,6 +43,18 @@ namespace AISA.SpeechRecognition
             _End = end;
 
             ResultCallback = result;
+
+            timer.Interval = TimeSpan.FromSeconds(5);
+            timer.Tick += Timer_Tick;
+            timer.Start();
+        }
+
+        private void Timer_Tick(object sender, EventArgs e)
+        {
+            timer.Stop();
+
+            //Stop recognition
+            StopRecognition();
         }
 
         private void _recognizer_SpeechHypothesized(object sender, SpeechHypothesizedEventArgs e)
@@ -54,7 +68,7 @@ namespace AISA.SpeechRecognition
             ViewControllerConnector.None();
         }
 
-        private void _recognizer_SpeechRecognitionRejected(object sender, SpeechRecognitionRejectedEventArgs e)
+        private void StopRecognition()
         {
             _End();
 
@@ -70,6 +84,12 @@ namespace AISA.SpeechRecognition
             _recognizer = null;
             //Start AISA Handler again
             AISAHandler.Start();
+        }
+
+        private void _recognizer_SpeechRecognitionRejected(object sender, SpeechRecognitionRejectedEventArgs e)
+        {
+            StopRecognition();
+            timer.Stop();
         }
 
         private void speech_Recognized(object sender, SpeechRecognizedEventArgs e)
@@ -90,6 +110,7 @@ namespace AISA.SpeechRecognition
 
             //Start AISA Handler again
             AISAHandler.Start();
+            timer.Stop();
         }
 
     }
