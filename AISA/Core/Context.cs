@@ -10,5 +10,6 @@ namespace AISA.Core
     {
         public static string Current { get; set; }
         public static string Previous { get; set; }
+        public static string LastURL { get; set; }
     }
 }

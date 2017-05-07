@@ -26,5 +26,10 @@ namespace AISA
         {
             PlayAudio("Results.mp3");
         }
+
+        public static void Wrong()
+        {
+            PlayAudio("Wrong.mp3");
+        }
     }
 }

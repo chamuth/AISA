@@ -16,6 +16,7 @@ using System.Windows.Threading;
 using AISA.SpeechRecognition;
 using System.Windows.Media.Animation;
 using AISA.Core;
+using System.Diagnostics;
 
 namespace AISA
 {
@@ -52,6 +53,7 @@ namespace AISA
                 Speech.Activate();
                 AskSheet.Visibility = Visibility.Hidden;
                 Spinner.Visibility = Visibility.Visible;
+                Hypothesis.Visibility = Visibility.Visible;
             },
             () =>
             {
@@ -59,7 +61,39 @@ namespace AISA
             }, HandleResult);
 
             AISAHandler.Start();
-            
+
+            //Set advanced result controllers
+            ViewControllerConnector.Connect += ConnectionHandler;
+            ViewControllerConnector.None += NoneHandler;
+            ViewControllerConnector.ChangeHypothesis += ChangeHypothesisHandler;
+        }
+
+        private void ChangeHypothesisHandler(string obj)
+        {
+            Hypothesis.Content = obj; // Change the hypothesis
+        }
+
+        private void NoneHandler()
+        {
+            //Disappear the linkContainer
+            var da = new DoubleAnimation(0, TimeSpan.FromSeconds(1));
+            da.EasingFunction = new QuinticEase();
+            linkContainer.BeginAnimation(OpacityProperty, da);
+        }
+
+        private void ConnectionHandler(ViewControllerConnector.ConnectionMethod method, string Title, string URL)
+        {
+            switch (method)
+            {
+                case ViewControllerConnector.ConnectionMethod.URL:
+                    LinkName.Content = Title; // Set the name of the link
+                    LinkURL.Content = URL; // Set the URL of the link
+
+                    var da = new DoubleAnimation(1, TimeSpan.FromSeconds(1));
+                    da.EasingFunction = new QuinticEase();
+                    linkContainer.BeginAnimation(OpacityProperty, da);
+                    break;
+            }
         }
 
         /// <summary>
@@ -69,7 +103,12 @@ namespace AISA
         /// <param name="A">The result for it</param>
         private void HandleResult(string Q, string A)
         {
+            //Hide the spinner
             Spinner.Hide();
+
+            //Hide the hypothesis
+            var da = new DoubleAnimation(0, TimeSpan.FromMilliseconds(500));
+            Hypothesis.BeginAnimation(OpacityProperty, da);
 
             ResultSheet.Visibility = Visibility.Visible;
             var sa = this.FindResource("ResultsAnimation") as Storyboard;
@@ -83,14 +122,18 @@ namespace AISA
         {
             AudioHandler.Start();
             Speech.Activate();
-            
+
             var rec = new Recognizer(() => { Speech.Deactivate(); }, HandleResult);
         }
-        
 
         private void SpeechClicked()
         {
             StartRecognition();
+        }
+
+        private void linkContainer_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            Process.Start(LinkURL.Content.ToString());
         }
     }
 }

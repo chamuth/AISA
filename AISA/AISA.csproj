@@ -60,6 +60,7 @@
     </ApplicationDefinition>
     <Compile Include="Core\Context.cs" />
     <Compile Include="Core\Greetings.cs" />
+    <Compile Include="Core\ViewControllerConnector.cs" />
     <Compile Include="SpeechRecognition\AudioHandler.cs" />
     <Compile Include="SpeechRecognition\CommandHandler.cs" />
     <Compile Include="Custom Controls\RectangularButton.xaml.cs">

@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using System.Speech.Recognition;
 using System.Windows;
 using System.Speech.Synthesis;
+using AISA.Core;
 
 namespace AISA.SpeechRecognition
 {
@@ -27,6 +28,7 @@ namespace AISA.SpeechRecognition
             _recognizer.SpeechRecognized += speech_Recognized;
             _recognizer.SpeechDetected += _recognizer_SpeechDetected;
             _recognizer.SpeechRecognitionRejected += _recognizer_SpeechRecognitionRejected;
+            _recognizer.SpeechHypothesized += _recognizer_SpeechHypothesized;
 
             _recognizer.SetInputToDefaultAudioDevice();
             _recognizer.RecognizeAsync(RecognizeMode.Single);
@@ -41,17 +43,28 @@ namespace AISA.SpeechRecognition
             ResultCallback = result;
         }
 
+        private void _recognizer_SpeechHypothesized(object sender, SpeechHypothesizedEventArgs e)
+        {
+            ViewControllerConnector.ChangeHypothesis(e.Result.Text);
+        }
+
         private void _recognizer_SpeechDetected(object sender, SpeechDetectedEventArgs e)
         {
-
+            //Reset the preview panel
+            ViewControllerConnector.None();
         }
 
         private void _recognizer_SpeechRecognitionRejected(object sender, SpeechRecognitionRejectedEventArgs e)
         {
             _End();
 
+            //Play wrong audio
+            AudioHandler.Wrong();
+
             //Say that it's wrong
-            synthesizer.SpeakAsync(CommandHandler.Handle("ERR:WRONG"));
+            var result_string = CommandHandler.Handle("ERR:WRONG");
+            synthesizer.SpeakAsync(result_string);
+            ResultCallback("Couldn't recognize", result_string);
 
             //Null the recognizer
             _recognizer = null;

@@ -6,7 +6,8 @@
         xmlns:local="clr-namespace:AISA"
         xmlns:ed="http://schemas.microsoft.com/expression/2010/drawing" xmlns:Custom_Controls="clr-namespace:AISA.Custom_Controls" x:Class="AISA.MainWindow"
         mc:Ignorable="d"
-        Title="MainWindow" WindowStyle="None" Height="622.848" Width="324.024" AllowsTransparency="True" Background="#EE000000" Loaded="Window_Loaded" ResizeMode="NoResize">
+        Title="AISA - The Smart Assistant" WindowStyle="None" Height="622.848" Width="324.024" AllowsTransparency="True" Background="#EE000000" Loaded="Window_Loaded" ResizeMode="NoResize">
+    
     <Window.Resources>
         <Storyboard x:Key="ResultsAnimation">
             <ThicknessAnimationUsingKeyFrames Storyboard.TargetProperty="(FrameworkElement.Margin)" Storyboard.TargetName="ResultSheet">
@@ -45,6 +46,7 @@
             </DoubleAnimationUsingKeyFrames>
         </Storyboard>
     </Window.Resources>
+    
     <Window.Triggers>
         <EventTrigger RoutedEvent="FrameworkElement.Loaded">
             <BeginStoryboard Storyboard="{StaticResource ResultsAnimation}"/>
@@ -53,6 +55,7 @@
 
     <Grid>
         <Custom_Controls:Spinner x:Name="Spinner" Visibility="Hidden" Width="50" Height="50"/>
+        <Label x:Name="Hypothesis" Visibility="Hidden" Foreground="Gray" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,100,0,0">...</Label>
 
         <Grid Visibility="Visible" x:Name="AskSheet" Margin="35,15,35,100">
             <Grid x:Name="BasicInternalsAskSheet" VerticalAlignment="Center">
@@ -73,6 +76,11 @@
                 <TextBlock x:Name="a_label" TextAlignment="Center" TextWrapping="WrapWithOverflow" Margin="0 35 0 0" FontFamily="Roboto Light" HorizontalAlignment="Center" VerticalAlignment="Top" Foreground= "White" FontSize="35">
                     It's 28 degrees and Cloudy in Hiriwadunna
                 </TextBlock>
+            </Grid>
+
+            <Grid Opacity="0" x:Name="linkContainer" Height="50" VerticalAlignment="Bottom" Margin="0,0,0,25" Background="#0AFFFFFF" MouseDown="linkContainer_MouseDown">
+                <Label x:Name="LinkName" Foreground="White" FontSize="13" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="5,3,5,5" >AISA - Chamuth</Label>
+                <Label x:Name="LinkURL" Foreground="Gray" FontSize="12" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="5,22,5,0" >http://www.github.com/cc/AISA</Label>
             </Grid>
         </Grid>
 
