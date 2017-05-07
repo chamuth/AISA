@@ -80,7 +80,7 @@ namespace AISA
             {
                 //Inform the user with some news about the current situation
                 //TODO: Update this from a news feed
-                return "Well, Sri Lankan Rupee worth " + (1 / 150).ToString() + " United States Dollars, How does that sound?"; //:V
+                return "Well, Sri Lankan Rupee worth " + (1f / 150f).ToString() + " United States Dollars, How does that sound?"; //:V
             }
             else if (input.Contains("What's the time") || input.Contains("What time is it?"))
             {
@@ -132,15 +132,21 @@ namespace AISA
             {
                 System.Diagnostics.Process.Start("microsoft.windows.mail:");
             }
+            else if (input.Contains("Open App store"))
+            {
+                System.Diagnostics.Process.Start("microsoft.windows.store:");
+            }
 
             //HANDLE CHECK IN SOCIAL MEDIA COMMANDS
             else if (input.Contains("Facebook"))
             {
                 System.Diagnostics.Process.Start("http://www.facebook.com/");
-            }else if (input.Contains("Twitter"))
+            }
+            else if (input.Contains("Twitter"))
             {
                 System.Diagnostics.Process.Start("http://www.twitter.com");
-            }else if (input.Contains("YouTube"))
+            }
+            else if (input.Contains("YouTube"))
             {
                 System.Diagnostics.Process.Start("http://www.youtube.com");
             }
@@ -207,6 +213,8 @@ namespace AISA
                 "Open Camera",
                 "Open Calendar",
                 "Open Mail",
+                "Open App store",
+
                 
                 //CHECKING SOCIAL MEDIA
                 "Check in Facebook",
