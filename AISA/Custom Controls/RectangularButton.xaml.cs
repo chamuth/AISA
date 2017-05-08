@@ -78,9 +78,16 @@ namespace AISA.Custom_Controls
 
             clicked = false;
 
-            //Start the Opacity Animation
+            // Start the Opacity Animation
             var da = new DoubleAnimation(0.5, 1, TimeSpan.FromMilliseconds(250));
             this.BeginAnimation(OpacityProperty, da);
+        }
+
+        private void UserControl_MouseLeave(object sender, MouseEventArgs e)
+        {
+            // Get the opaqueness back
+            var da = new DoubleAnimation(1, TimeSpan.FromMilliseconds(250));
+            BeginAnimation(OpacityProperty, da);
         }
     }
 }

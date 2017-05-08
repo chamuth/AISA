@@ -56,7 +56,7 @@
     <Grid>
         <Custom_Controls:Spinner x:Name="Spinner" Visibility="Hidden" Width="50" Height="50"/>
         <Label x:Name="Hypothesis" Visibility="Hidden" Foreground="Gray" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,100,0,0">...</Label>
-
+        
         <Grid Visibility="Visible" x:Name="AskSheet" Margin="35,15,35,100">
             <Grid x:Name="BasicInternalsAskSheet" VerticalAlignment="Center">
                 <Label x:Name="HelloUser" FontFamily="Roboto Light" HorizontalAlignment="Center" VerticalAlignment="Top" Foreground="#BBB" FontSize="15">
@@ -86,7 +86,13 @@
 
          <!--#region Footer Buttons-->
         <Custom_Controls:Speech ToolTip="Activated AISA" x:Name="Speech" Width="50" Height="50" VerticalAlignment="Bottom" Margin="25px"/>
-        <Custom_Controls:RectangularButton ToolTip="Toggle Fullscreen" Clicked="Maximize" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="25px" Width="25" Height="25" Source="Resources/expand.png"/>
+        
+        
+        <Custom_Controls:RectangularButton ToolTip="Exit AISA" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="25px" Width="25" Height="25" Source="Resources/close.png"/>
+        <Custom_Controls:RectangularButton ToolTip="Toggle Fullscreen" Clicked="Maximize" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="25px 25px 60px 25px" Width="25" Height="25" Source="Resources/expand.png"/>
+        
+        <Custom_Controls:RectangularButton ToolTip="Get Help"  HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="25px" Width="25" Height="25" Source="Resources/help.png"/>
+        <Custom_Controls:RectangularButton ToolTip="Reminders and Alarms" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="60px 25px 25px 25px" Width="25" Height="25" Source="Resources/reminders.png"/>
         <!--#endregion-->
     </Grid>
 
