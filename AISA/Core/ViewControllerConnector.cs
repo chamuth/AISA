@@ -17,5 +17,7 @@ namespace AISA.Core
         public static Action None;
         public static Action<ConnectionMethod, string, string> Connect;
         public static Action<string> ChangeHypothesis;
+
+        public static Action Exit;
     }
 }

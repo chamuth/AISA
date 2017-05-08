@@ -88,7 +88,7 @@
         <Custom_Controls:Speech ToolTip="Activated AISA" x:Name="Speech" Width="50" Height="50" VerticalAlignment="Bottom" Margin="25px"/>
         
         
-        <Custom_Controls:RectangularButton ToolTip="Exit AISA" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="25px" Width="25" Height="25" Source="Resources/close.png"/>
+        <Custom_Controls:RectangularButton Clicked="ExitAISA" ToolTip="Exit AISA" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="25px" Width="25" Height="25" Source="Resources/close.png"/>
         <Custom_Controls:RectangularButton ToolTip="Toggle Fullscreen" Clicked="Maximize" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="25px 25px 60px 25px" Width="25" Height="25" Source="Resources/expand.png"/>
         
         <Custom_Controls:RectangularButton ToolTip="Get Help"  HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="25px" Width="25" Height="25" Source="Resources/help.png"/>

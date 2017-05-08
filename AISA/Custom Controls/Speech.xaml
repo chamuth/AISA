@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:AISA.Custom_Controls"
              mc:Ignorable="d" 
-             d:DesignHeight="50" d:DesignWidth="50" MouseDown="UserControl_MouseDown" MouseUp="UserControl_MouseUp">
+             Loaded="UserControl_Loaded" d:DesignHeight="50" d:DesignWidth="50" MouseDown="UserControl_MouseDown" MouseUp="UserControl_MouseUp">
     <UserControl.Resources>
         <Storyboard x:Key="VisualDropAnimation" AutoReverse="False" RepeatBehavior="Forever">
             <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(FrameworkElement.Width)" Storyboard.TargetName="ellipse">
@@ -23,9 +23,13 @@
     <UserControl.Triggers>
         <EventTrigger RoutedEvent="FrameworkElement.Loaded"/>
     </UserControl.Triggers>
+    
+    
     <Grid>
         <Ellipse x:Name="ellipse" Fill="#FF0096FF" Width="50" Height="50"/>
         <Ellipse Opacity="0" x:Name="topDrawer" Fill="#FF0069B2"></Ellipse>
         <Image x:Name="image" HorizontalAlignment="Center" VerticalAlignment="Center" Width="25" Height="25" Source="res/microphone.png"/>
     </Grid>
+    
+    
 </UserControl>

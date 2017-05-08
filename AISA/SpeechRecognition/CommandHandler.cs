@@ -1,6 +1,7 @@
 ﻿using AISA.Core;
 using Newtonsoft.Json;
 using RestSharp;
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,6 +11,8 @@ using System.Windows;
 
 namespace AISA
 {
+
+    #region FOR DESERIALIZING JSON
     public class LocationResult
     {
         public string status { get; set; }
@@ -88,6 +91,8 @@ namespace AISA
         public int cod { get; set; }
     }
 
+    #endregion
+
     public static class CommandHandler
     {
         /// <summary>
@@ -124,6 +129,10 @@ namespace AISA
                     return "It's not morning, Good Afternoon";
                 else
                     return "It's not morning, Good Evening";
+            }else if (input.Contains("Exit") || input.Contains("Exit AISA") || input.Contains("Close AISA") || input.Contains("Close") || input.Contains("Bye") || input.Contains("Good Bye"))
+            {
+                ViewControllerConnector.Exit();
+                return "";
             }
             else if (input.Contains("Good Afternoon"))
             {
@@ -236,8 +245,8 @@ namespace AISA
             else if (input.Contains("Who made you"))
             {
                 //TODO:Set the URL to a correct endpoint
-                Context.LastURL = "http://www.github.com";
-                ViewControllerConnector.Connect(ViewControllerConnector.ConnectionMethod.URL, "AISA - GitHub", "http://www.github.com/");
+                Context.LastURL = "https://github.com/Chamuth/AISA/tree/master";
+                ViewControllerConnector.Connect(ViewControllerConnector.ConnectionMethod.URL, "Chamuth/AISA - GitHub", "https://github.com/Chamuth/AISA/tree/master");
 
                 return random(new string[]
                 {
@@ -294,20 +303,27 @@ namespace AISA
                 var client = new RestClient("http://ip-api.com/json");
                 var request = new RestRequest(Method.GET);
                 IRestResponse response = client.Execute(request);
-                if (response.StatusCode == System.Net.HttpStatusCode.OK)
+
+                try
                 {
-                    LocationResult l = JsonConvert.DeserializeObject<LocationResult>(response.Content);
-                    var weatherclient = new RestClient("http://api.openweathermap.org/data/2.5/weather?q=" + l.city + "&appid=6bc37d05c9bb515c72cd40db94325f51");
-                    var weatherrequest = new RestRequest(Method.GET);
-                    IRestResponse weatherresponse = weatherclient.Execute(weatherrequest);
-
-                    if (weatherresponse.StatusCode == System.Net.HttpStatusCode.OK)
+                    if (response.StatusCode == System.Net.HttpStatusCode.OK)
                     {
-                        var x = weatherresponse.Content;
-                        WeatherResult responseObject = JsonConvert.DeserializeObject<WeatherResult>(weatherresponse.Content);
+                        LocationResult l = JsonConvert.DeserializeObject<LocationResult>(response.Content);
+                        var weatherclient = new RestClient("http://api.openweathermap.org/data/2.5/weather?q=" + l.city + "&appid=6bc37d05c9bb515c72cd40db94325f51");
+                        var weatherrequest = new RestRequest(Method.GET);
+                        IRestResponse weatherresponse = weatherclient.Execute(weatherrequest);
 
-                        return "It's " + (responseObject.main.temp - 273.15d) + " degrees and " + responseObject.weather[0].main + " can be seen in " + responseObject.name; 
+                        if (weatherresponse.StatusCode == System.Net.HttpStatusCode.OK && weatherresponse.Content.Trim() != "")
+                        {
+                            var x = weatherresponse.Content;
+                            WeatherResult responseObject = JsonConvert.DeserializeObject<WeatherResult>(weatherresponse.Content);
+
+                            return "It's " + (responseObject.main.temp - 273.15d) + " degrees and " + responseObject.weather[0].main + " can be seen in " + responseObject.name;
+                        }
                     }
+                }catch (Exception)
+                {
+                    return "It's 28 degrees and cloudy in Colombo";
                 }
 
                 return "It's 28 degrees and cloudy in Colombo";
@@ -377,6 +393,7 @@ namespace AISA
             return new string[]
             {
                 //GENERAL QUESTIONS / QUERIES
+                "Exit","Exit AISA", "Close AISA", "Close", "Bye", "Good Bye",
                 "Good Morning",
                 "Good Afternoon",
                 "Good Evening",

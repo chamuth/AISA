@@ -17,6 +17,7 @@ using AISA.SpeechRecognition;
 using System.Windows.Media.Animation;
 using AISA.Core;
 using System.Diagnostics;
+using System.Speech.Synthesis;
 
 namespace AISA
 {
@@ -24,7 +25,9 @@ namespace AISA
     /// Interaction logic for MainWindow.xaml
     /// </summary>
     public partial class MainWindow : Window
-    {
+    { 
+        private SpeechSynthesizer synthesizer = new SpeechSynthesizer();
+
         public MainWindow()
         {
             InitializeComponent();
@@ -43,6 +46,15 @@ namespace AISA
 
             //Set the greeting text
             HelloUser.Content = Greetings.Greet();
+
+            //Configure the speech synthesizer
+            synthesizer.SelectVoice("Kate");
+            synthesizer.Volume = 100;
+
+            synthesizer.Rate = 0;
+
+            //Attach the exiting code to the viewControllerConnector
+            ViewControllerConnector.Exit += ExitAISA;
         }
 
         private void Maximize()
@@ -139,9 +151,31 @@ namespace AISA
             var rec = new Recognizer(() => { Speech.Deactivate(); }, HandleResult);
         }
 
+        private void ExitAISA()
+        {
+            //Say the end greeting
+            synthesizer.SpeakAsync(Greetings.End());
+
+            AISAHandler.Pause();
+
+            //Disappear the program
+            var da = new DoubleAnimation(SystemParameters.PrimaryScreenHeight, TimeSpan.FromSeconds(1));
+            da.EasingFunction = new QuinticEase();
+            BeginAnimation(TopProperty, da);
+
+            //Close the program in 2 seconds
+            var dt = new DispatcherTimer();
+            dt.Interval = TimeSpan.FromSeconds(2);
+            dt.Tick += (a, b) =>
+            {
+                Application.Current.Shutdown();
+            };
+            dt.Start();
+        }
+
         private void SpeechClicked()
         {
-            StartRecognition();
+
         }
 
         private void linkContainer_MouseDown(object sender, MouseButtonEventArgs e)
