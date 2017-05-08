@@ -1,12 +1,93 @@
 ﻿using AISA.Core;
+using Newtonsoft.Json;
+using RestSharp;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace AISA
 {
+    public class LocationResult
+    {
+        public string status { get; set; }
+        public string country { get; set; }
+        public string countryCode { get; set; }
+        public string region { get; set; }
+        public string regionName { get; set; }
+        public string city { get; set; }
+        public string zip { get; set; }
+        public string lat { get; set; }
+        public string lon { get; set; }
+        public string timezone { get; set; }
+        public string isp { get; set; }
+        public string org { get; set; }
+        public string _as { get; set; }
+        public string query { get; set; }
+    }
+
+    public class Coord
+    {
+        public double lon { get; set; }
+        public double lat { get; set; }
+    }
+
+    public class Weather
+    {
+        public int id { get; set; }
+        public string main { get; set; }
+        public string description { get; set; }
+        public string icon { get; set; }
+    }
+
+    public class Main
+    {
+        public double temp { get; set; }
+        public int pressure { get; set; }
+        public int humidity { get; set; }
+        public double temp_min { get; set; }
+        public double temp_max { get; set; }
+    }
+
+    public class Wind
+    {
+        public double speed { get; set; }
+        public int deg { get; set; }
+    }
+
+    public class Clouds
+    {
+        public int all { get; set; }
+    }
+
+    public class Sys
+    {
+        public int type { get; set; }
+        public int id { get; set; }
+        public double message { get; set; }
+        public string country { get; set; }
+        public int sunrise { get; set; }
+        public int sunset { get; set; }
+    }
+
+    public class WeatherResult
+    {
+        public Coord coord { get; set; }
+        public List<Weather> weather { get; set; }
+        public string @base { get; set; }
+        public Main main { get; set; }
+        public int visibility { get; set; }
+        public Wind wind { get; set; }
+        public Clouds clouds { get; set; }
+        public int dt { get; set; }
+        public Sys sys { get; set; }
+        public int id { get; set; }
+        public string name { get; set; }
+        public int cod { get; set; }
+    }
+
     public static class CommandHandler
     {
         /// <summary>
@@ -209,10 +290,27 @@ namespace AISA
             else if (input.ToLower().Contains("weather"))
             {
                 //Get weather information
-                //TODO: Add functionality from AccuWeather or any Weather API
-                //TODO: Update the connection information of the AccuWeather link
-                ViewControllerConnector.Connect(ViewControllerConnector.ConnectionMethod.URL, "AccuWeather Report", "http://accuweather.co");
-                return "It's 28 degrees and cloudy in Hiriwadunna";
+
+                var client = new RestClient("http://ip-api.com/json");
+                var request = new RestRequest(Method.GET);
+                IRestResponse response = client.Execute(request);
+                if (response.StatusCode == System.Net.HttpStatusCode.OK)
+                {
+                    LocationResult l = JsonConvert.DeserializeObject<LocationResult>(response.Content);
+                    var weatherclient = new RestClient("http://api.openweathermap.org/data/2.5/weather?q=" + l.city + "&appid=6bc37d05c9bb515c72cd40db94325f51");
+                    var weatherrequest = new RestRequest(Method.GET);
+                    IRestResponse weatherresponse = weatherclient.Execute(weatherrequest);
+
+                    if (weatherresponse.StatusCode == System.Net.HttpStatusCode.OK)
+                    {
+                        var x = weatherresponse.Content;
+                        WeatherResult responseObject = JsonConvert.DeserializeObject<WeatherResult>(weatherresponse.Content);
+
+                        return "It's " + (responseObject.main.temp - 273.15d) + " degrees and " + responseObject.weather[0].main + " can be seen in " + responseObject.name; 
+                    }
+                }
+
+                return "It's 28 degrees and cloudy in Colombo";
             }
             else if (input.Contains("Play some music") || input.Contains("Play music"))
             {

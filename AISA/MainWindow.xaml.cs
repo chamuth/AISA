@@ -146,7 +146,10 @@ namespace AISA
 
         private void linkContainer_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            Process.Start(LinkURL.Content.ToString());
+            if (linkContainer.Opacity == 1)
+            {
+                Process.Start(LinkURL.Content.ToString());
+            }
         }
     }
 }
