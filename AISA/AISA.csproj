@@ -68,7 +68,11 @@
     </ApplicationDefinition>
     <Compile Include="Core\Context.cs" />
     <Compile Include="Core\Greetings.cs" />
+    <Compile Include="Core\OpenSpeak.cs" />
     <Compile Include="Core\ViewControllerConnector.cs" />
+    <Compile Include="Custom Controls\HelpItem.xaml.cs">
+      <DependentUpon>HelpItem.xaml</DependentUpon>
+    </Compile>
     <Compile Include="SpeechRecognition\AudioHandler.cs" />
     <Compile Include="SpeechRecognition\CommandHandler.cs" />
     <Compile Include="Custom Controls\RectangularButton.xaml.cs">
@@ -80,6 +84,10 @@
     <Compile Include="SpeechRecognition\AISAHandler.cs" />
     <Compile Include="SpeechRecognition\Ask.cs" />
     <Compile Include="Core\Recognizer.cs" />
+    <Page Include="Custom Controls\HelpItem.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Custom Controls\RectangularButton.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -150,6 +158,20 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\close.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Help\clock.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Help\weather.png" />
+    <Resource Include="Resources\Help\news.png" />
+    <Resource Include="Resources\Help\camera.png" />
+    <Resource Include="Resources\Help\class.png" />
+    <Resource Include="Resources\Help\facebook.png" />
+    <Resource Include="Resources\Help\books.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Help\questions.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

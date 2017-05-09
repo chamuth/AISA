@@ -4,11 +4,41 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:AISA"
+        xmlns:sys="clr-namespace:System;assembly=mscorlib"
         xmlns:ed="http://schemas.microsoft.com/expression/2010/drawing" xmlns:Custom_Controls="clr-namespace:AISA.Custom_Controls" x:Class="AISA.MainWindow"
         mc:Ignorable="d"
         Title="AISA - The Smart Assistant" WindowStyle="None" Height="622.848" Width="324.024" AllowsTransparency="True" Background="#EE000000" Loaded="Window_Loaded" ResizeMode="NoResize">
-    
+
     <Window.Resources>
+        <!--#region HELP ARRAYS-->
+        <x:Array Type="sys:String" x:Key="help1">
+            <sys:String>&quot;What's the time?&quot;</sys:String>
+            <sys:String>&quot;Time?&quot;</sys:String>
+        </x:Array>
+
+        <x:Array Type="sys:String" x:Key="help2">
+            <sys:String>&quot;Weather?&quot;</sys:String>
+            <sys:String>&quot;How's the weather like?&quot;</sys:String>
+        </x:Array>
+        
+        <x:Array Type="sys:String" x:Key="help3">
+            <sys:String>&quot;Who made you?&quot;</sys:String>
+            <sys:String>&quot;What's your name?&quot;</sys:String>
+        </x:Array>
+        
+        <x:Array Type="sys:String" x:Key="help4">
+            <sys:String>&quot;Let's take a picture&quot;</sys:String>
+            <sys:String>&quot;Take a picture&quot;</sys:String>
+            <sys:String>&quot;Take a selfie&quot;</sys:String>
+        </x:Array>
+
+        <x:Array Type="sys:String" x:Key="help5">
+            <sys:String>&quot;Check in Twitter&quot;</sys:String>
+            <sys:String>&quot;Go to YouTube&quot;</sys:String>
+            <sys:String>&quot;Go to Wikipedia&quot;</sys:String>
+        </x:Array>
+        <!--#endregion-->
+        
         <Storyboard x:Key="ResultsAnimation">
             <ThicknessAnimationUsingKeyFrames Storyboard.TargetProperty="(FrameworkElement.Margin)" Storyboard.TargetName="ResultSheet">
                 <EasingThicknessKeyFrame KeyTime="0" Value="25,100">
@@ -46,7 +76,7 @@
             </DoubleAnimationUsingKeyFrames>
         </Storyboard>
     </Window.Resources>
-    
+
     <Window.Triggers>
         <EventTrigger RoutedEvent="FrameworkElement.Loaded">
             <BeginStoryboard Storyboard="{StaticResource ResultsAnimation}"/>
@@ -54,46 +84,72 @@
     </Window.Triggers>
 
     <Grid>
-        <Custom_Controls:Spinner x:Name="Spinner" Visibility="Hidden" Width="50" Height="50"/>
-        <Label x:Name="Hypothesis" Visibility="Hidden" Foreground="Gray" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,100,0,0">...</Label>
-        
-        <Grid Visibility="Visible" x:Name="AskSheet" Margin="35,15,35,100">
-            <Grid x:Name="BasicInternalsAskSheet" VerticalAlignment="Center">
-                <Label x:Name="HelloUser" FontFamily="Roboto Light" HorizontalAlignment="Center" VerticalAlignment="Top" Foreground="#BBB" FontSize="15">
-                    What's going on?
-                </Label>
-                <TextBlock x:Name="SecondaryGreeting" TextAlignment="Center" TextWrapping="WrapWithOverflow" Margin="0 35 0 0" FontFamily="Roboto Light" HorizontalAlignment="Center" VerticalAlignment="Top" Foreground= "White" FontSize="35">
+        <Grid x:Name="ApplicationInterface">
+            <Custom_Controls:Spinner x:Name="Spinner" Visibility="Hidden" Width="50" Height="50"/>
+            <Label x:Name="Hypothesis" Visibility="Hidden" Foreground="Gray" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,100,0,0">...</Label>
+
+            <Grid Visibility="Visible" x:Name="AskSheet" Margin="35,15,35,100">
+                <Grid x:Name="BasicInternalsAskSheet" VerticalAlignment="Center">
+                    <Label x:Name="HelloUser" FontFamily="Roboto Light" HorizontalAlignment="Center" VerticalAlignment="Top" Foreground="#BBB" FontSize="15">
+                        What's going on?
+                    </Label>
+                    <TextBlock x:Name="SecondaryGreeting" TextAlignment="Center" TextWrapping="WrapWithOverflow" Margin="0 35 0 0" FontFamily="Roboto Light" HorizontalAlignment="Center" VerticalAlignment="Top" Foreground= "White" FontSize="35">
                     Ask me something!
-                </TextBlock>
+                    </TextBlock>
+                </Grid>
             </Grid>
-        </Grid>
-        
-        <Grid Visibility="Hidden" x:Name="ResultSheet" Margin="35,15,35,100">
-            <Grid x:Name="BasicContent" VerticalAlignment="Center">
-                <Label x:Name="q_label" FontFamily="Roboto Light" HorizontalAlignment="Center" VerticalAlignment="Top" Foreground="#BBB" FontSize="15">
-                    "What's the weather like?"
-                </Label>
-                <TextBlock x:Name="a_label" TextAlignment="Center" TextWrapping="WrapWithOverflow" Margin="0 35 0 0" FontFamily="Roboto Light" HorizontalAlignment="Center" VerticalAlignment="Top" Foreground= "White" FontSize="35">
+
+            <Grid Visibility="Hidden" x:Name="ResultSheet" Margin="35,15,35,100">
+                <Grid x:Name="BasicContent" VerticalAlignment="Center">
+                    <Label x:Name="q_label" FontFamily="Roboto Light" HorizontalAlignment="Center" VerticalAlignment="Top" Foreground="#BBB" FontSize="15">
+                        "What's the weather like?"
+                    </Label>
+                    <TextBlock x:Name="a_label" TextAlignment="Center" TextWrapping="WrapWithOverflow" Margin="0 35 0 0" FontFamily="Roboto Light" HorizontalAlignment="Center" VerticalAlignment="Top" Foreground= "White" FontSize="35">
                     It's 28 degrees and Cloudy in Hiriwadunna
-                </TextBlock>
+                    </TextBlock>
+                </Grid>
+
+                <Grid Opacity="0" x:Name="linkContainer" Height="50"  Width="250" VerticalAlignment="Bottom" Margin="0,0,0,25" Background="#0AFFFFFF" MouseDown="linkContainer_MouseDown">
+                    <Label x:Name="LinkName" Foreground="White" FontSize="13" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="5,3,5,5" >AISA - Chamuth</Label>
+                    <Label x:Name="LinkURL" Foreground="Gray" FontSize="12" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="5,22,5,0" >http://www.github.com/cc/AISA</Label>
+                </Grid>
             </Grid>
 
-            <Grid Opacity="0" x:Name="linkContainer" Height="50"  Width="250" VerticalAlignment="Bottom" Margin="0,0,0,25" Background="#0AFFFFFF" MouseDown="linkContainer_MouseDown">
-                <Label x:Name="LinkName" Foreground="White" FontSize="13" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="5,3,5,5" >AISA - Chamuth</Label>
-                <Label x:Name="LinkURL" Foreground="Gray" FontSize="12" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="5,22,5,0" >http://www.github.com/cc/AISA</Label>
-            </Grid>
+            <!--#region Footer Buttons-->
+            <Custom_Controls:Speech ToolTip="Activated AISA" x:Name="Speech" Width="50" Height="50" VerticalAlignment="Bottom" Margin="25px"/>
+
+
+            <Custom_Controls:RectangularButton Clicked="ExitAISA" ToolTip="Exit AISA" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="25px" Width="25" Height="25" Source="Resources/close.png"/>
+            <Custom_Controls:RectangularButton ToolTip="Toggle Fullscreen" Clicked="Maximize" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="25px 25px 60px 25px" Width="25" Height="25" Source="Resources/expand.png"/>
+
+            <Custom_Controls:RectangularButton ToolTip="Get Help" Clicked="Help" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="25px" Width="25" Height="25" Source="Resources/help.png"/>
+            <Custom_Controls:RectangularButton ToolTip="Reminders and Alarms" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="60px 25px 25px 25px" Width="25" Height="25" Source="Resources/reminders.png"/>
+            <!--#endregion-->
         </Grid>
 
-         <!--#region Footer Buttons-->
-        <Custom_Controls:Speech ToolTip="Activated AISA" x:Name="Speech" Width="50" Height="50" VerticalAlignment="Bottom" Margin="25px"/>
-        
-        
-        <Custom_Controls:RectangularButton Clicked="ExitAISA" ToolTip="Exit AISA" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="25px" Width="25" Height="25" Source="Resources/close.png"/>
-        <Custom_Controls:RectangularButton ToolTip="Toggle Fullscreen" Clicked="Maximize" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="25px 25px 60px 25px" Width="25" Height="25" Source="Resources/expand.png"/>
-        
-        <Custom_Controls:RectangularButton ToolTip="Get Help"  HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="25px" Width="25" Height="25" Source="Resources/help.png"/>
-        <Custom_Controls:RectangularButton ToolTip="Reminders and Alarms" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="60px 25px 25px 25px" Width="25" Height="25" Source="Resources/reminders.png"/>
-        <!--#endregion-->
-    </Grid>
+        <Grid x:Name="GetHelp" Visibility="Hidden" Opacity="0">
+            <Grid.Background>
+                <SolidColorBrush Color="#C000"></SolidColorBrush>
+            </Grid.Background>
 
+            <ScrollViewer VerticalScrollBarVisibility="Hidden" Margin="0 55 0 20">
+                <StackPanel HorizontalAlignment="Center" VerticalAlignment="Top">
+
+                    <Custom_Controls:HelpItem Source="Resources/Help/clock.png" Task="Ask for the time" Command="&quot;What time is it?&quot;" SubCommands="{ StaticResource help1}">
+                    </Custom_Controls:HelpItem>
+                    <Custom_Controls:HelpItem Source="Resources/Help/weather.png" Task="Ask for the weather" Command="&quot;What's the weather like?&quot;" SubCommands="{ StaticResource help2}">
+                    </Custom_Controls:HelpItem>
+                    <Custom_Controls:HelpItem Source="Resources/Help/questions.png" Task="Ask questions about me" Command="&quot;Who are you?&quot;" SubCommands="{ StaticResource help3}">
+                    </Custom_Controls:HelpItem>
+                    <Custom_Controls:HelpItem Source="Resources/Help/camera.png" Task="Open camera to take pictures" Command="&quot;Open Camera&quot;" SubCommands="{ StaticResource help4}">
+                    </Custom_Controls:HelpItem>
+                    <Custom_Controls:HelpItem Source="Resources/Help/facebook.png" Task="Visit Popular websites" Command="&quot;Check in Facebook&quot;" SubCommands="{ StaticResource help4}">
+                    </Custom_Controls:HelpItem>
+
+                </StackPanel>
+            </ScrollViewer>
+            
+            <Custom_Controls:RectangularButton Clicked="CloseHelp" ToolTip="Close Help" Margin="10" HorizontalAlignment="Right" VerticalAlignment="Top"  Width="30" Height="30" Source="Resources/close.png"></Custom_Controls:RectangularButton>
+        </Grid>
+    </Grid>
 </Window>

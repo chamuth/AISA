@@ -129,7 +129,8 @@ namespace AISA
                     return "It's not morning, Good Afternoon";
                 else
                     return "It's not morning, Good Evening";
-            }else if (input.Contains("Exit") || input.Contains("Exit AISA") || input.Contains("Close AISA") || input.Contains("Close") || input.Contains("Bye") || input.Contains("Good Bye"))
+            }
+            else if (input.Contains("Exit") || input.Contains("Exit AISA") || input.Contains("Close AISA") || input.Contains("Close") || input.Contains("Bye") || input.Contains("Good Bye"))
             {
                 ViewControllerConnector.Exit();
                 return "";
@@ -182,7 +183,7 @@ namespace AISA
                 //TODO: Update this from a news feed
                 return "Well, Sri Lankan Rupee worth " + (1f / 150f).ToString() + " United States Dollars, How does that sound?"; //:V
             }
-            else if (input.Contains("What's the time") || input.Contains("What time is it") || input.Contains("What is the time"))
+            else if (input.Contains("What's the time") || input.Contains("What time is it") || input.Contains("What is the time") || input.Contains("Time"))
             {
                 #region MANUAL FORMAT TIME
                 var ampm = "";
@@ -244,7 +245,6 @@ namespace AISA
             }
             else if (input.Contains("Who made you"))
             {
-                //TODO:Set the URL to a correct endpoint
                 Context.LastURL = "https://github.com/Chamuth/AISA/tree/master";
                 ViewControllerConnector.Connect(ViewControllerConnector.ConnectionMethod.URL, "Chamuth/AISA - GitHub", "https://github.com/Chamuth/AISA/tree/master");
 
@@ -257,6 +257,46 @@ namespace AISA
             {
                 return random(new string[] {
                     "It's AISA", "AISA, Artificial Intelligent Smart Assistant"
+                });
+            }
+            else if (input.Contains("Where are you") || input.Contains("Where do you live"))
+            {
+                return random(new string[]
+                {
+                    "I'm inside your computer you silly", "I live in your computer", "I'm in your computer"
+                });
+            }
+            else if (input.Contains("Who is your father"))
+            {
+                Context.LastURL = "https://github.com/Chamuth/AISA/tree/master";
+                ViewControllerConnector.Connect(ViewControllerConnector.ConnectionMethod.URL, "Chamuth/AISA - GitHub", "https://github.com/Chamuth/AISA/tree/master");
+
+                return random(new string[]
+                {
+                    "I was developed by Team Ninponix. Say \"Follow Link\" to visit my repository", "Team Ninponix, Say \"Go to Link\" to visit my repository"
+                });
+            }
+            else if (input.Contains("What are you"))
+            {
+                return random(new string[]
+                {
+                    "I'm a Personal Assistant", "I'm Smart Personal Assistant of yours"
+                });
+            }
+            else if (input.Contains("about you"))
+            {
+                return random(new string[]
+                {
+                    "I'm AISA, an Artificial Intelligent Smart Assistant developed by Ninponix"
+                });
+            }
+            else if (input.Contains("How you were made"))
+            {
+                Context.LastURL = "https://github.com/Chamuth/AISA/tree/master";
+                ViewControllerConnector.Connect(ViewControllerConnector.ConnectionMethod.URL, "Chamuth/AISA - GitHub", "https://github.com/Chamuth/AISA/tree/master");
+
+                return random(new string[] {
+                    "Checkout my open-source repository here", "I'm actually open source,", "You can see for yourself"
                 });
             }
 
@@ -298,8 +338,7 @@ namespace AISA
             }
             else if (input.ToLower().Contains("weather"))
             {
-                //Get weather information
-
+                // Get location information first
                 var client = new RestClient("http://ip-api.com/json");
                 var request = new RestRequest(Method.GET);
                 IRestResponse response = client.Execute(request);
@@ -308,6 +347,7 @@ namespace AISA
                 {
                     if (response.StatusCode == System.Net.HttpStatusCode.OK)
                     {
+                        // Get weather information then
                         LocationResult l = JsonConvert.DeserializeObject<LocationResult>(response.Content);
                         var weatherclient = new RestClient("http://api.openweathermap.org/data/2.5/weather?q=" + l.city + "&appid=6bc37d05c9bb515c72cd40db94325f51");
                         var weatherrequest = new RestRequest(Method.GET);
@@ -321,7 +361,8 @@ namespace AISA
                             return "It's " + (responseObject.main.temp - 273.15d) + " degrees and " + responseObject.weather[0].main + " can be seen in " + responseObject.name;
                         }
                     }
-                }catch (Exception)
+                }
+                catch (Exception)
                 {
                     return "It's 28 degrees and cloudy in Colombo";
                 }
@@ -407,7 +448,9 @@ namespace AISA
                 "What's the time",
                 "What is the time",
                 "What time is it",
+                "Time",
                 "What's the weather like",
+                "What is the weather like",
                 "Weather",
                 "What's my name",
                 "Say my name",
@@ -421,10 +464,7 @@ namespace AISA
                 "What can I say",
 
                 //ABOUT AISA
-                "Who are you",
-                "Who made you",
-                "What's your name",
-                "What is your name",
+                "Who are you", "How you were made", "Who made you", "What's your name", "What is your name", "Where are you", "Where do you live", "Who is your father", "What are you", "Tell me about you",
 
                 //GENERAL FUNCTIONS
                 "Follow link",

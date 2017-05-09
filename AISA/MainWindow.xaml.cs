@@ -57,33 +57,60 @@ namespace AISA
             ViewControllerConnector.Exit += ExitAISA;
         }
 
+        private bool Maximized = false;
+
         private void Maximize()
         {
-            var da = new DoubleAnimation(0, TimeSpan.FromSeconds(1));
-            BeginAnimation(TopProperty, da); BeginAnimation(LeftProperty, da);
-            var wi = new DoubleAnimation(SystemParameters.FullPrimaryScreenWidth, TimeSpan.FromSeconds(1));
-            var hi = new DoubleAnimation(SystemParameters.MaximizedPrimaryScreenHeight, TimeSpan.FromSeconds(1));
-            da.EasingFunction = new QuinticEase();
-            wi.EasingFunction = new QuinticEase();
-            hi.EasingFunction = new QuinticEase();
+            Maximized = !Maximized;
 
-            BeginAnimation(WidthProperty, wi); BeginAnimation(HeightProperty, hi);
+            if (!Maximized)
+            {
+                //Restore the window
+                //Set Dimensions of the Window
+                Height = 600;
+                Width = 350;
+                Left = SystemParameters.FullPrimaryScreenWidth - Width;
+                Top = SystemParameters.FullPrimaryScreenHeight;
+
+                //Animate from Bottom
+                var da = new DoubleAnimation(SystemParameters.FullPrimaryScreenHeight, SystemParameters.WorkArea.Height - Height, TimeSpan.FromSeconds(1));
+                da.EasingFunction = new QuinticEase();
+                da.BeginTime = TimeSpan.FromSeconds(2);
+                BeginAnimation(TopProperty, da);
+            }
+            else
+            {
+                //Maximize the window
+                var da = new DoubleAnimation(0, TimeSpan.FromSeconds(1));
+                BeginAnimation(TopProperty, da); BeginAnimation(LeftProperty, da);
+                var wi = new DoubleAnimation(SystemParameters.FullPrimaryScreenWidth, TimeSpan.FromSeconds(1));
+                var hi = new DoubleAnimation(SystemParameters.MaximizedPrimaryScreenHeight, TimeSpan.FromSeconds(1));
+                da.EasingFunction = new QuinticEase();
+                wi.EasingFunction = new QuinticEase();
+                hi.EasingFunction = new QuinticEase();
+
+                BeginAnimation(WidthProperty, wi); BeginAnimation(HeightProperty, hi);
+            }
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             //Start AISA Command Recognition
-            AISAHandler.Initialize(() =>
+            try
             {
-                Speech.Activate();
-                AskSheet.Visibility = Visibility.Hidden;
-                Spinner.Visibility = Visibility.Visible;
-                Hypothesis.Visibility = Visibility.Visible;
-            },
-            () =>
-            {
-                Speech.Deactivate();
-            }, HandleResult);
+                AISAHandler.Initialize(() =>
+                {
+                    Speech.Activate();
+                    AskSheet.Visibility = Visibility.Hidden;
+                    Spinner.Visibility = Visibility.Visible;
+                    Hypothesis.Visibility = Visibility.Visible;
+                },
+                () =>
+                {
+                    Speech.Deactivate();
+                }, HandleResult);
+            }
+            catch (Exception) { }
 
             AISAHandler.Start();
 
@@ -136,11 +163,43 @@ namespace AISA
             Hypothesis.BeginAnimation(OpacityProperty, da);
 
             ResultSheet.Visibility = Visibility.Visible;
-            var sa = this.FindResource("ResultsAnimation") as Storyboard;
+            var sa = FindResource("ResultsAnimation") as Storyboard;
             sa.Begin();
 
             q_label.Content = "\"" + Q + "\"";
             a_label.Text = A;
+        }
+
+        /// <summary>
+        /// Fades the GetHelp object in
+        /// </summary>
+        private void Help()
+        {
+            //Set the visibility to true
+            GetHelp.Visibility = Visibility.Visible;
+            GetHelp.Opacity = 0;
+
+            //Animate the fading in of the object
+            var da = new DoubleAnimation(1, TimeSpan.FromMilliseconds(500));
+            da.EasingFunction = new QuinticEase();
+            GetHelp.BeginAnimation(OpacityProperty, da);
+        }
+
+        /// <summary>
+        /// Fades the GetHelp object out
+        /// </summary>
+        private void CloseHelp()
+        {
+            //Animate the fading out of the object
+            var da = new DoubleAnimation(0, TimeSpan.FromMilliseconds(500));
+            da.EasingFunction = new QuinticEase();
+            da.Completed += (a, b) =>
+            {
+                //Actually inactivate GetHelp object from the view
+                GetHelp.Visibility = Visibility.Hidden;
+            };
+
+            GetHelp.BeginAnimation(OpacityProperty, da);
         }
 
         private void StartRecognition()
@@ -173,6 +232,9 @@ namespace AISA
             dt.Start();
         }
 
+        /// <summary>
+        /// What happens when the user clicks on the Speech button himself without saying 'AISA'
+        /// </summary>
         private void SpeechClicked()
         {
 

@@ -13,5 +13,10 @@ namespace AISA
     /// </summary>
     public partial class App : Application
     {
+        public App()
+        {
+            //Initialize the open speaker
+            Core.OpenSpeak.Init();
+        }
     }
 }

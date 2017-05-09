@@ -63,6 +63,7 @@ namespace AISA.Custom_Controls
         public RectangularButton()
         {
             InitializeComponent();
+            ImagePlaceholder.Source = Source;
         }
 
         private void UserControl_MouseDown(object sender, MouseButtonEventArgs e)
