@@ -175,14 +175,20 @@ namespace AISA
         /// </summary>
         private void Help()
         {
-            //Set the visibility to true
-            GetHelp.Visibility = Visibility.Visible;
-            GetHelp.Opacity = 0;
+            if (!ViewControllerConnector.StartedCommandRecognition)
+            {
+                //Stop AISA recognition
+                AISAHandler.Pause();
 
-            //Animate the fading in of the object
-            var da = new DoubleAnimation(1, TimeSpan.FromMilliseconds(500));
-            da.EasingFunction = new QuinticEase();
-            GetHelp.BeginAnimation(OpacityProperty, da);
+                //Set the visibility to true
+                GetHelp.Visibility = Visibility.Visible;
+                GetHelp.Opacity = 0;
+
+                //Animate the fading in of the object
+                var da = new DoubleAnimation(1, TimeSpan.FromMilliseconds(500));
+                da.EasingFunction = new QuinticEase();
+                GetHelp.BeginAnimation(OpacityProperty, da);
+            }
         }
 
         /// <summary>
@@ -190,6 +196,9 @@ namespace AISA
         /// </summary>
         private void CloseHelp()
         {
+            //Start the AISA recognition
+            AISAHandler.Start();
+
             //Animate the fading out of the object
             var da = new DoubleAnimation(0, TimeSpan.FromMilliseconds(500));
             da.EasingFunction = new QuinticEase();
@@ -210,6 +219,9 @@ namespace AISA
             var rec = new Recognizer(() => { Speech.Deactivate(); }, HandleResult);
         }
 
+        /// <summary>
+        /// Exits AISA after greeting the user
+        /// </summary>
         private void ExitAISA()
         {
             //Say the end greeting

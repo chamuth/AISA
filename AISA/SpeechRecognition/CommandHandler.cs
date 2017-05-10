@@ -120,6 +120,7 @@ namespace AISA
 
             Console.WriteLine("Command Started");
 
+            #region GENERAL COMMAND HANDLING
             //Handle Questions / Queries
             if (input.Contains("Good Morning"))
             {
@@ -406,7 +407,9 @@ namespace AISA
                 System.Diagnostics.Process.Start("http://www.wikipedia.com");
                 return "Visiting Wikipedia";
             }
-
+            #endregion
+            
+            
 
             //Something not recognized
             if (Context.Previous == "")
@@ -433,6 +436,7 @@ namespace AISA
         {
             return new string[]
             {
+                #region GENERAL COMMANDS
                 //GENERAL QUESTIONS / QUERIES
                 "Exit","Exit AISA", "Close AISA", "Close", "Bye", "Good Bye",
                 "Good Morning",
@@ -496,7 +500,9 @@ namespace AISA
                 "Check in Twitter",
                 "Go to Twitter",
                 "Go to YouTube",
-                "Go to Wikipedia"
+                "Go to Wikipedia",
+
+                #endregion
             };
         }
     }

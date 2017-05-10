@@ -19,5 +19,7 @@ namespace AISA.Core
         public static Action<string> ChangeHypothesis;
 
         public static Action Exit;
+
+        public static bool StartedCommandRecognition = false;
     }
 }

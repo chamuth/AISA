@@ -25,6 +25,9 @@ namespace AISA.SpeechRecognition
         /// </summary>
         public Recognizer(Action end, Action<string, string> result)
         {
+            //Inform the ViewcontrollerConnector
+            ViewControllerConnector.StartedCommandRecognition = true;
+
             _recognizer.LoadGrammar(new Grammar(new GrammarBuilder(new Choices(CommandHandler.GetCommands()))));
 
             _recognizer.SpeechRecognized += speech_Recognized;
@@ -88,12 +91,18 @@ namespace AISA.SpeechRecognition
 
         private void _recognizer_SpeechRecognitionRejected(object sender, SpeechRecognitionRejectedEventArgs e)
         {
+            //Inform the ViewcontrollerConnector
+            ViewControllerConnector.StartedCommandRecognition = false;
+
             StopRecognition();
             timer.Stop();
         }
 
         private void speech_Recognized(object sender, SpeechRecognizedEventArgs e)
         {
+            //Inform the ViewcontrollerConnector
+            ViewControllerConnector.StartedCommandRecognition = false;
+
             //Activate the ending function
             _End();
 
