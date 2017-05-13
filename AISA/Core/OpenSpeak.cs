@@ -20,12 +20,21 @@ namespace AISA.Core
         /// </summary>
         public static void Init()
         {
+            //Initialize the OpenSpeak Engine
             synthesizer.SelectVoice("Kate");
             synthesizer.Volume = 100;
 
             synthesizer.Rate = 0;
+
+            //Make sure the OpenSpeak Engine is not initializing itself again and again
+            IsInitialized = true;
         }
 
+        /// <summary>
+        /// Speaks using the OpenSpeak Engine
+        /// </summary>
+        /// <param name="Text">Text to speak</param>
+        /// <param name="OnSameThread">Tells if the synthesizer must speak in the same thread or in an asynchronous manner</param>
         public static void Speak(string Text, bool OnSameThread = false)
         {
             if (IsInitialized)
