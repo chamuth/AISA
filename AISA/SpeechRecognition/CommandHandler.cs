@@ -1,4 +1,5 @@
-﻿using AISA.Core;
+﻿using AISA.DataEntities;
+using AISA.Core;
 using Newtonsoft.Json;
 using RestSharp;
 
@@ -11,88 +12,9 @@ using System.Windows;
 
 namespace AISA
 {
-
-    #region FOR DESERIALIZING JSON
-    public class LocationResult
-    {
-        public string status { get; set; }
-        public string country { get; set; }
-        public string countryCode { get; set; }
-        public string region { get; set; }
-        public string regionName { get; set; }
-        public string city { get; set; }
-        public string zip { get; set; }
-        public string lat { get; set; }
-        public string lon { get; set; }
-        public string timezone { get; set; }
-        public string isp { get; set; }
-        public string org { get; set; }
-        public string _as { get; set; }
-        public string query { get; set; }
-    }
-
-    public class Coord
-    {
-        public double lon { get; set; }
-        public double lat { get; set; }
-    }
-
-    public class Weather
-    {
-        public int id { get; set; }
-        public string main { get; set; }
-        public string description { get; set; }
-        public string icon { get; set; }
-    }
-
-    public class Main
-    {
-        public double temp { get; set; }
-        public int pressure { get; set; }
-        public int humidity { get; set; }
-        public double temp_min { get; set; }
-        public double temp_max { get; set; }
-    }
-
-    public class Wind
-    {
-        public double speed { get; set; }
-        public int deg { get; set; }
-    }
-
-    public class Clouds
-    {
-        public int all { get; set; }
-    }
-
-    public class Sys
-    {
-        public int type { get; set; }
-        public int id { get; set; }
-        public double message { get; set; }
-        public string country { get; set; }
-        public int sunrise { get; set; }
-        public int sunset { get; set; }
-    }
-
-    public class WeatherResult
-    {
-        public Coord coord { get; set; }
-        public List<Weather> weather { get; set; }
-        public string @base { get; set; }
-        public Main main { get; set; }
-        public int visibility { get; set; }
-        public Wind wind { get; set; }
-        public Clouds clouds { get; set; }
-        public int dt { get; set; }
-        public Sys sys { get; set; }
-        public int id { get; set; }
-        public string name { get; set; }
-        public int cod { get; set; }
-    }
-
-    #endregion
-
+    /// <summary>
+    /// Class handling the commands sent by the Recognizer class. See also <seealso cref="SpeechRecognition.Recognizer"></seealso>
+    /// </summary>
     public static class CommandHandler
     {
         /// <summary>
@@ -408,8 +330,106 @@ namespace AISA
                 return "Visiting Wikipedia";
             }
             #endregion
-            
-            
+
+            #region STUDENT ASSISTANT COMMAND HANDLING
+            else if (input.Contains("a class") || input.Contains("a tuition class"))
+            {
+                if (Properties.Settings.Default.scholarUsername == "")
+                {
+                    //User is not signed into Scholar
+                    return random(new string[]
+                    {
+                        "Please enter your scholar credentials first", "Please enter your scholar credentials here"
+                    });
+                }
+                else
+                {
+                    //Verify login
+                    var username = Properties.Settings.Default.scholarUsername;
+                    var password = Properties.Settings.Default.scholarPassword;
+
+                    var client = new RestClient("localhost/Scholar/api/u=" + username + "&p" + password);
+                    var request = new RestRequest(Method.GET);
+                    var response = client.Execute(request);
+
+                    if (response.StatusCode == System.Net.HttpStatusCode.OK)
+                    {
+                        try
+                        {
+                            Student.Verify verify = JsonConvert.DeserializeObject<Student.Verify>(response.Content);
+
+                            switch (verify.error)
+                            {
+                                case 0:
+                                    //User exists and the password is correct
+
+                                    //Start finding the class
+
+                                    break;
+                                case 1:
+                                    //User does not exist
+                                    return random(new string[]
+                                    {
+                                        "Please make sure your credentials are correct", "Please re-enter your credentials"
+                                    });
+                                case 2:
+                                    //User exist but the password is incorrect
+                                    return random(new string[]
+                                    {
+                                        "Please make sure your password is correct", "Please re-enter your password"
+                                    });
+                            }
+                        }
+                        catch (Exception)
+                        {
+                            return random(new string[]
+                    {
+                        "Sorry, I'm having some connection issues", "My apologies, make sure you're connected to the Internet", "I cannot connect to my servers, sorry."
+                    });
+                        }
+                    }
+                }
+            }
+            else if (input.Contains("science") && input.Contains("book"))
+            {
+                //User is searching for a science book
+                var client = new RestClient("");
+                var request = new RestRequest(Method.GET);
+
+                var response = client.Execute(request);
+
+                if (response.StatusCode == System.Net.HttpStatusCode.OK)
+                {
+                    try
+                    {
+                        GoodreadsResponse booksObject = JsonConvert.DeserializeObject<GoodreadsResponse>(response.Content);
+                        //TODO: COMPLETE THE BOOK SEARCHING PROCESS HERE
+                    }
+                    catch (JsonSerializationException)
+                    {
+                        return random(new string[]
+                     {
+                        "Sorry, I'm having some connection issues", "My apologies, make sure you're connected to the Internet", "I cannot connect to my servers, sorry."
+                     });
+                    }
+                }
+                else
+                {
+                    return random(new string[]
+                    {
+                        "Sorry, I'm having some connection issues", "My apologies, make sure you're connected to the Internet", "I cannot connect to my servers, sorry."
+                    });
+                }
+            }
+            else if (input.Contains("a book"))
+            {
+                //User is searching for a book, but does not specify a specific category of book
+                return random(new string[]
+                {
+                    "What type of a book you need?", "What kind of a book you need?", "Please tell me a category to search for", "What type of book?"
+                });
+            }
+            #endregion
 
             //Something not recognized
             if (Context.Previous == "")
@@ -502,6 +522,19 @@ namespace AISA
                 "Go to YouTube",
                 "Go to Wikipedia",
 
+                #endregion
+
+                #region STUDENT ORIENTED COMMANDS
+                    #region CLASS SEARCH
+                    "Find a class", "Find me a class", "Find me a tuition class", "Find a tuition class",
+                    #endregion
+
+                    #region BOOK SEARCH
+                    //Finding a book
+                    "Find me a book", "Find a book", "I want a book",
+                    //Science books
+                    "Find me a science book", "Find me a book about science",
+                    #endregion
                 #endregion
             };
         }

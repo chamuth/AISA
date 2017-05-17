@@ -10,7 +10,7 @@ namespace AISA.Core
     {
         public enum ConnectionMethod
         {
-            URL, 
+            URL,
             Image
         }
 
@@ -21,5 +21,6 @@ namespace AISA.Core
         public static Action Exit;
 
         public static bool StartedCommandRecognition = false;
+
     }
 }

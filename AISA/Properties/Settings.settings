@@ -1,7 +1,12 @@
 ﻿<?xml version='1.0' encoding='utf-8'?>
-<SettingsFile xmlns="uri:settings" CurrentProfile="(Default)">
-  <Profiles>
-    <Profile Name="(Default)" />
-  </Profiles>
-  <Settings />
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="AISA.Properties" GeneratedClassName="Settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="scholarUsername" Type="System.String" Scope="User">
+      <Value Profile="(Default)">chamandana</Value>
+    </Setting>
+    <Setting Name="scholarPassword" Type="System.String" Scope="User">
+      <Value Profile="(Default)">awesomecc2001</Value>
+    </Setting>
+  </Settings>
 </SettingsFile>

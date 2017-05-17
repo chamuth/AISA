@@ -15,8 +15,6 @@ namespace AISA
     {
         public App()
         {
-            //Initialize the open speaker
-            Core.OpenSpeak.Init();
         }
     }
 }

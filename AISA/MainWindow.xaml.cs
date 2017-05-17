@@ -26,8 +26,10 @@ namespace AISA
     /// </summary>
     public partial class MainWindow : Window
     { 
-        private SpeechSynthesizer synthesizer = new SpeechSynthesizer();
 
+        /// <summary>
+        /// Creates a new MainWindow object
+        /// </summary>
         public MainWindow()
         {
             InitializeComponent();
@@ -37,7 +39,7 @@ namespace AISA
             Width = 350;
             Left = SystemParameters.FullPrimaryScreenWidth - Width;
             Top = SystemParameters.FullPrimaryScreenHeight;
-
+            
             //Animate from Bottom
             var da = new DoubleAnimation(SystemParameters.FullPrimaryScreenHeight, SystemParameters.WorkArea.Height - Height, TimeSpan.FromSeconds(1));
             da.EasingFunction = new QuinticEase();
@@ -47,18 +49,18 @@ namespace AISA
             //Set the greeting text
             HelloUser.Content = Greetings.Greet();
 
-            //Configure the speech synthesizer
-            synthesizer.SelectVoice("Kate");
-            synthesizer.Volume = 100;
-
-            synthesizer.Rate = 0;
-
             //Attach the exiting code to the viewControllerConnector
             ViewControllerConnector.Exit += ExitAISA;
+
+            //Initialize the OpenSpeak Engine
+            OpenSpeak.Init();
         }
 
         private bool Maximized = false;
 
+        /// <summary>
+        /// Occurs when the user clicks the maximize button
+        /// </summary>
         private void Maximize()
         {
             Maximized = !Maximized;
@@ -109,6 +111,7 @@ namespace AISA
                 {
                     Speech.Deactivate();
                 }, HandleResult);
+
             }
             catch (Exception) { }
 
@@ -119,12 +122,19 @@ namespace AISA
             ViewControllerConnector.None += NoneHandler;
             ViewControllerConnector.ChangeHypothesis += ChangeHypothesisHandler;
         }
-
+        
+        /// <summary>
+        /// Fired when the Recognizer has released a hypothesis of the word
+        /// </summary>
+        /// <param name="obj">Hypothesis as a string</param>
         private void ChangeHypothesisHandler(string obj)
         {
             Hypothesis.Content = obj; // Change the hypothesis
         }
 
+        /// <summary>
+        /// Fired when user has called a command with no link
+        /// </summary>
         private void NoneHandler()
         {
             //Disappear the linkContainer
@@ -225,7 +235,7 @@ namespace AISA
         private void ExitAISA()
         {
             //Say the end greeting
-            synthesizer.SpeakAsync(Greetings.End());
+            OpenSpeak.Speak(Greetings.End());
 
             AISAHandler.Pause();
 
