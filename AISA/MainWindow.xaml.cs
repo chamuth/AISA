@@ -141,19 +141,52 @@ namespace AISA
             var da = new DoubleAnimation(0, TimeSpan.FromSeconds(1));
             da.EasingFunction = new QuinticEase();
             linkContainer.BeginAnimation(OpacityProperty, da);
+
+            book1.BeginAnimation(OpacityProperty, da);
+            book2.BeginAnimation(OpacityProperty, da);
+            book3.BeginAnimation(OpacityProperty, da);
         }
 
-        private void ConnectionHandler(ViewControllerConnector.ConnectionMethod method, string Title, string URL)
+        private void ConnectionHandler(ViewControllerConnector.ConnectionMethod method, string[] args)
         {
             switch (method)
             {
                 case ViewControllerConnector.ConnectionMethod.URL:
-                    LinkName.Content = Title; // Set the name of the link
-                    LinkURL.Content = URL; // Set the URL of the link
+                    LinkName.Content = args[0]; // Set the name of the link
+                    LinkURL.Content = args[1]; // Set the URL of the link
 
                     var da = new DoubleAnimation(1, TimeSpan.FromSeconds(1));
                     da.EasingFunction = new QuinticEase();
                     linkContainer.BeginAnimation(OpacityProperty, da);
+                    break;
+                case ViewControllerConnector.ConnectionMethod.Book:
+                    book1Name.Content = args[0];
+                    book1Author.Content = args[1];
+                    book2Name.Content = args[2];
+                    book2Author.Content = args[3];
+                    book3Name.Content = args[4];
+                    book3Author.Content = args[5];
+
+                    //Set the images
+                    book1Image.Source = new BitmapImage(new Uri(args[6]));
+                    book2Image.Source = new BitmapImage(new Uri(args[7]));
+                    book3Image.Source = new BitmapImage(new Uri(args[8]));
+
+                    //Set the links to the book stores
+                    book1link = args[9];
+                    book2link = args[10];
+                    book3link = args[11];
+
+                    //Animate the 3 books
+                    var da2 = new DoubleAnimation(1, TimeSpan.FromSeconds(1));
+                    da2.EasingFunction = new QuinticEase();
+
+                    book1.BeginAnimation(OpacityProperty, da2);
+                    da2.BeginTime = TimeSpan.FromSeconds(1);
+                    book2.BeginAnimation(OpacityProperty, da2);
+                    da2.BeginTime = TimeSpan.FromSeconds(2);
+                    book3.BeginAnimation(OpacityProperty, da2);
+
                     break;
             }
         }
@@ -268,6 +301,35 @@ namespace AISA
             {
                 Process.Start(LinkURL.Content.ToString());
             }
+        }
+
+        private string book1link, book2link, book3link;
+
+        private void book1MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            try
+            {
+                Process.Start(book1link);
+            }
+            catch (Exception) { }
+        }
+
+        private void book2MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            try
+            {
+                Process.Start(book2link);
+            }
+            catch (Exception) { }
+        }
+
+        private void book3MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            try
+            {
+                Process.Start(book3link);
+            }
+            catch (Exception) { }
         }
     }
 }

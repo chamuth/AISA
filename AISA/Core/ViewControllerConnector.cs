@@ -11,11 +11,12 @@ namespace AISA.Core
         public enum ConnectionMethod
         {
             URL,
-            Image
+            Image,
+            Book
         }
 
         public static Action None;
-        public static Action<ConnectionMethod, string, string> Connect;
+        public static Action<ConnectionMethod, string[]> Connect;
         public static Action<string> ChangeHypothesis;
 
         public static Action Exit;

@@ -1,155 +1,915 @@
-﻿using System;
-using System.Xml.Serialization;
-using System.Collections.Generic;
-
-namespace AISA.DataEntities
+﻿
+/// <remarks/>
+[System.SerializableAttribute()]
+[System.ComponentModel.DesignerCategoryAttribute("code")]
+[System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
+[System.Xml.Serialization.XmlRootAttribute(Namespace = "", IsNullable = false)]
+public partial class GoodreadsResponse
 {
-    [XmlRoot(ElementName = "id")]
-    public class Id
+
+    private GoodreadsResponseRequest requestField;
+
+    private GoodreadsResponseSearch searchField;
+
+    /// <remarks/>
+    public GoodreadsResponseRequest Request
     {
-        [XmlAttribute(AttributeName = "type")]
-        public string Type { get; set; }
-        [XmlText]
-        public string Text { get; set; }
+        get
+        {
+            return this.requestField;
+        }
+        set
+        {
+            this.requestField = value;
+        }
     }
 
-    [XmlRoot(ElementName = "books_count")]
-    public class Books_count
+    /// <remarks/>
+    public GoodreadsResponseSearch search
     {
-        [XmlAttribute(AttributeName = "type")]
-        public string Type { get; set; }
-        [XmlText]
-        public string Text { get; set; }
+        get
+        {
+            return this.searchField;
+        }
+        set
+        {
+            this.searchField = value;
+        }
+    }
+}
+
+/// <remarks/>
+[System.SerializableAttribute()]
+[System.ComponentModel.DesignerCategoryAttribute("code")]
+[System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
+public partial class GoodreadsResponseRequest
+{
+
+    private bool authenticationField;
+
+    private string keyField;
+
+    private string methodField;
+
+    /// <remarks/>
+    public bool authentication
+    {
+        get
+        {
+            return this.authenticationField;
+        }
+        set
+        {
+            this.authenticationField = value;
+        }
     }
 
-    [XmlRoot(ElementName = "ratings_count")]
-    public class Ratings_count
+    /// <remarks/>
+    public string key
     {
-        [XmlAttribute(AttributeName = "type")]
-        public string Type { get; set; }
-        [XmlText]
-        public string Text { get; set; }
+        get
+        {
+            return this.keyField;
+        }
+        set
+        {
+            this.keyField = value;
+        }
     }
 
-    [XmlRoot(ElementName = "text_reviews_count")]
-    public class Text_reviews_count
+    /// <remarks/>
+    public string method
     {
-        [XmlAttribute(AttributeName = "type")]
-        public string Type { get; set; }
-        [XmlText]
-        public string Text { get; set; }
+        get
+        {
+            return this.methodField;
+        }
+        set
+        {
+            this.methodField = value;
+        }
+    }
+}
+
+/// <remarks/>
+[System.SerializableAttribute()]
+[System.ComponentModel.DesignerCategoryAttribute("code")]
+[System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
+public partial class GoodreadsResponseSearch
+{
+
+    private string queryField;
+
+    private byte resultsstartField;
+
+    private byte resultsendField;
+
+    private uint totalresultsField;
+
+    private string sourceField;
+
+    private decimal querytimesecondsField;
+
+    private GoodreadsResponseSearchWork[] resultsField;
+
+    /// <remarks/>
+    public string query
+    {
+        get
+        {
+            return this.queryField;
+        }
+        set
+        {
+            this.queryField = value;
+        }
     }
 
-    [XmlRoot(ElementName = "original_publication_year")]
-    public class Original_publication_year
+    /// <remarks/>
+    [System.Xml.Serialization.XmlElementAttribute("results-start")]
+    public byte resultsstart
     {
-        [XmlAttribute(AttributeName = "type")]
-        public string Type { get; set; }
-        [XmlText]
-        public string Text { get; set; }
+        get
+        {
+            return this.resultsstartField;
+        }
+        set
+        {
+            this.resultsstartField = value;
+        }
     }
 
-    [XmlRoot(ElementName = "original_publication_month")]
-    public class Original_publication_month
+    /// <remarks/>
+    [System.Xml.Serialization.XmlElementAttribute("results-end")]
+    public byte resultsend
     {
-        [XmlAttribute(AttributeName = "type")]
-        public string Type { get; set; }
-        [XmlText]
-        public string Text { get; set; }
+        get
+        {
+            return this.resultsendField;
+        }
+        set
+        {
+            this.resultsendField = value;
+        }
     }
 
-    [XmlRoot(ElementName = "original_publication_day")]
-    public class Original_publication_day
+    /// <remarks/>
+    [System.Xml.Serialization.XmlElementAttribute("total-results")]
+    public uint totalresults
     {
-        [XmlAttribute(AttributeName = "type")]
-        public string Type { get; set; }
-        [XmlText]
-        public string Text { get; set; }
+        get
+        {
+            return this.totalresultsField;
+        }
+        set
+        {
+            this.totalresultsField = value;
+        }
     }
 
-    [XmlRoot(ElementName = "author")]
-    public class Author
+    /// <remarks/>
+    public string source
     {
-        [XmlElement(ElementName = "id")]
-        public Id Id { get; set; }
-        [XmlElement(ElementName = "name")]
-        public string Name { get; set; }
+        get
+        {
+            return this.sourceField;
+        }
+        set
+        {
+            this.sourceField = value;
+        }
     }
 
-    [XmlRoot(ElementName = "best_book")]
-    public class Best_book
+    /// <remarks/>
+    [System.Xml.Serialization.XmlElementAttribute("query-time-seconds")]
+    public decimal querytimeseconds
     {
-        [XmlElement(ElementName = "id")]
-        public Id Id { get; set; }
-        [XmlElement(ElementName = "title")]
-        public string Title { get; set; }
-        [XmlElement(ElementName = "author")]
-        public Author Author { get; set; }
-        [XmlElement(ElementName = "image_url")]
-        public string Image_url { get; set; }
-        [XmlElement(ElementName = "small_image_url")]
-        public string Small_image_url { get; set; }
-        [XmlAttribute(AttributeName = "type")]
-        public string Type { get; set; }
+        get
+        {
+            return this.querytimesecondsField;
+        }
+        set
+        {
+            this.querytimesecondsField = value;
+        }
     }
 
-    [XmlRoot(ElementName = "work")]
-    public class Work
+    /// <remarks/>
+    [System.Xml.Serialization.XmlArrayItemAttribute("work", IsNullable = false)]
+    public GoodreadsResponseSearchWork[] results
     {
-        [XmlElement(ElementName = "id")]
-        public Id Id { get; set; }
-        [XmlElement(ElementName = "books_count")]
-        public Books_count Books_count { get; set; }
-        [XmlElement(ElementName = "ratings_count")]
-        public Ratings_count Ratings_count { get; set; }
-        [XmlElement(ElementName = "text_reviews_count")]
-        public Text_reviews_count Text_reviews_count { get; set; }
-        [XmlElement(ElementName = "original_publication_year")]
-        public Original_publication_year Original_publication_year { get; set; }
-        [XmlElement(ElementName = "original_publication_month")]
-        public Original_publication_month Original_publication_month { get; set; }
-        [XmlElement(ElementName = "original_publication_day")]
-        public Original_publication_day Original_publication_day { get; set; }
-        [XmlElement(ElementName = "average_rating")]
-        public string Average_rating { get; set; }
-        [XmlElement(ElementName = "best_book")]
-        public Best_book Best_book { get; set; }
+        get
+        {
+            return this.resultsField;
+        }
+        set
+        {
+            this.resultsField = value;
+        }
+    }
+}
+
+/// <remarks/>
+[System.SerializableAttribute()]
+[System.ComponentModel.DesignerCategoryAttribute("code")]
+[System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
+public partial class GoodreadsResponseSearchWork
+{
+
+    private GoodreadsResponseSearchWorkID idField;
+
+    private GoodreadsResponseSearchWorkBooks_count books_countField;
+
+    private GoodreadsResponseSearchWorkRatings_count ratings_countField;
+
+    private GoodreadsResponseSearchWorkText_reviews_count text_reviews_countField;
+
+    private GoodreadsResponseSearchWorkOriginal_publication_year original_publication_yearField;
+
+    private GoodreadsResponseSearchWorkOriginal_publication_month original_publication_monthField;
+
+    private GoodreadsResponseSearchWorkOriginal_publication_day original_publication_dayField;
+
+    private decimal average_ratingField;
+
+    private GoodreadsResponseSearchWorkBest_book best_bookField;
+
+    /// <remarks/>
+    public GoodreadsResponseSearchWorkID id
+    {
+        get
+        {
+            return this.idField;
+        }
+        set
+        {
+            this.idField = value;
+        }
     }
 
-    [XmlRoot(ElementName = "results")]
-    public class Results
+    /// <remarks/>
+    public GoodreadsResponseSearchWorkBooks_count books_count
     {
-        [XmlElement(ElementName = "work")]
-        public Work Work { get; set; }
+        get
+        {
+            return this.books_countField;
+        }
+        set
+        {
+            this.books_countField = value;
+        }
     }
 
-    [XmlRoot(ElementName = "search")]
-    public class Search
+    /// <remarks/>
+    public GoodreadsResponseSearchWorkRatings_count ratings_count
     {
-        [XmlElement(ElementName = "query")]
-        public string Query { get; set; }
-        [XmlElement(ElementName = "results-start")]
-        public string Resultsstart { get; set; }
-        [XmlElement(ElementName = "results-end")]
-        public string Resultsend { get; set; }
-        [XmlElement(ElementName = "total-results")]
-        public string Totalresults { get; set; }
-        [XmlElement(ElementName = "source")]
-        public string Source { get; set; }
-        [XmlElement(ElementName = "query-time-seconds")]
-        public string Querytimeseconds { get; set; }
-        [XmlElement(ElementName = "results")]
-        public Results Results { get; set; }
+        get
+        {
+            return this.ratings_countField;
+        }
+        set
+        {
+            this.ratings_countField = value;
+        }
     }
 
-    [XmlRoot(ElementName = "GoodreadsResponse")]
-    public class GoodreadsResponse
+    /// <remarks/>
+    public GoodreadsResponseSearchWorkText_reviews_count text_reviews_count
     {
-        [XmlElement(ElementName = "Request")]
-        public string Request { get; set; }
-        [XmlElement(ElementName = "search")]
-        public Search Search { get; set; }
+        get
+        {
+            return this.text_reviews_countField;
+        }
+        set
+        {
+            this.text_reviews_countField = value;
+        }
     }
 
+    /// <remarks/>
+    public GoodreadsResponseSearchWorkOriginal_publication_year original_publication_year
+    {
+        get
+        {
+            return this.original_publication_yearField;
+        }
+        set
+        {
+            this.original_publication_yearField = value;
+        }
+    }
+
+    /// <remarks/>
+    public GoodreadsResponseSearchWorkOriginal_publication_month original_publication_month
+    {
+        get
+        {
+            return this.original_publication_monthField;
+        }
+        set
+        {
+            this.original_publication_monthField = value;
+        }
+    }
+
+    /// <remarks/>
+    public GoodreadsResponseSearchWorkOriginal_publication_day original_publication_day
+    {
+        get
+        {
+            return this.original_publication_dayField;
+        }
+        set
+        {
+            this.original_publication_dayField = value;
+        }
+    }
+
+    /// <remarks/>
+    public decimal average_rating
+    {
+        get
+        {
+            return this.average_ratingField;
+        }
+        set
+        {
+            this.average_ratingField = value;
+        }
+    }
+
+    /// <remarks/>
+    public GoodreadsResponseSearchWorkBest_book best_book
+    {
+        get
+        {
+            return this.best_bookField;
+        }
+        set
+        {
+            this.best_bookField = value;
+        }
+    }
+}
+
+/// <remarks/>
+[System.SerializableAttribute()]
+[System.ComponentModel.DesignerCategoryAttribute("code")]
+[System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
+public partial class GoodreadsResponseSearchWorkID
+{
+
+    private string typeField;
+
+    private uint valueField;
+
+    /// <remarks/>
+    [System.Xml.Serialization.XmlAttributeAttribute()]
+    public string type
+    {
+        get
+        {
+            return this.typeField;
+        }
+        set
+        {
+            this.typeField = value;
+        }
+    }
+
+    /// <remarks/>
+    [System.Xml.Serialization.XmlTextAttribute()]
+    public uint Value
+    {
+        get
+        {
+            return this.valueField;
+        }
+        set
+        {
+            this.valueField = value;
+        }
+    }
+}
+
+/// <remarks/>
+[System.SerializableAttribute()]
+[System.ComponentModel.DesignerCategoryAttribute("code")]
+[System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
+public partial class GoodreadsResponseSearchWorkBooks_count
+{
+
+    private string typeField;
+
+    private ushort valueField;
+
+    /// <remarks/>
+    [System.Xml.Serialization.XmlAttributeAttribute()]
+    public string type
+    {
+        get
+        {
+            return this.typeField;
+        }
+        set
+        {
+            this.typeField = value;
+        }
+    }
+
+    /// <remarks/>
+    [System.Xml.Serialization.XmlTextAttribute()]
+    public ushort Value
+    {
+        get
+        {
+            return this.valueField;
+        }
+        set
+        {
+            this.valueField = value;
+        }
+    }
+}
+
+/// <remarks/>
+[System.SerializableAttribute()]
+[System.ComponentModel.DesignerCategoryAttribute("code")]
+[System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
+public partial class GoodreadsResponseSearchWorkRatings_count
+{
+
+    private string typeField;
+
+    private uint valueField;
+
+    /// <remarks/>
+    [System.Xml.Serialization.XmlAttributeAttribute()]
+    public string type
+    {
+        get
+        {
+            return this.typeField;
+        }
+        set
+        {
+            this.typeField = value;
+        }
+    }
+
+    /// <remarks/>
+    [System.Xml.Serialization.XmlTextAttribute()]
+    public uint Value
+    {
+        get
+        {
+            return this.valueField;
+        }
+        set
+        {
+            this.valueField = value;
+        }
+    }
+}
+
+/// <remarks/>
+[System.SerializableAttribute()]
+[System.ComponentModel.DesignerCategoryAttribute("code")]
+[System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
+public partial class GoodreadsResponseSearchWorkText_reviews_count
+{
+
+    private string typeField;
+
+    private ushort valueField;
+
+    /// <remarks/>
+    [System.Xml.Serialization.XmlAttributeAttribute()]
+    public string type
+    {
+        get
+        {
+            return this.typeField;
+        }
+        set
+        {
+            this.typeField = value;
+        }
+    }
+
+    /// <remarks/>
+    [System.Xml.Serialization.XmlTextAttribute()]
+    public ushort Value
+    {
+        get
+        {
+            return this.valueField;
+        }
+        set
+        {
+            this.valueField = value;
+        }
+    }
+}
+
+/// <remarks/>
+[System.SerializableAttribute()]
+[System.ComponentModel.DesignerCategoryAttribute("code")]
+[System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
+public partial class GoodreadsResponseSearchWorkOriginal_publication_year
+{
+
+    private string typeField;
+
+    private ushort valueField;
+
+    /// <remarks/>
+    [System.Xml.Serialization.XmlAttributeAttribute()]
+    public string type
+    {
+        get
+        {
+            return this.typeField;
+        }
+        set
+        {
+            this.typeField = value;
+        }
+    }
+
+    /// <remarks/>
+    [System.Xml.Serialization.XmlTextAttribute()]
+    public ushort Value
+    {
+        get
+        {
+            return this.valueField;
+        }
+        set
+        {
+            this.valueField = value;
+        }
+    }
+}
+
+/// <remarks/>
+[System.SerializableAttribute()]
+[System.ComponentModel.DesignerCategoryAttribute("code")]
+[System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
+public partial class GoodreadsResponseSearchWorkOriginal_publication_month
+{
+
+    private string typeField;
+
+    private bool nilField;
+
+    private bool nilFieldSpecified;
+
+    private string valueField;
+
+    /// <remarks/>
+    [System.Xml.Serialization.XmlAttributeAttribute()]
+    public string type
+    {
+        get
+        {
+            return this.typeField;
+        }
+        set
+        {
+            this.typeField = value;
+        }
+    }
+
+    /// <remarks/>
+    [System.Xml.Serialization.XmlAttributeAttribute()]
+    public bool nil
+    {
+        get
+        {
+            return this.nilField;
+        }
+        set
+        {
+            this.nilField = value;
+        }
+    }
+
+    /// <remarks/>
+    [System.Xml.Serialization.XmlIgnoreAttribute()]
+    public bool nilSpecified
+    {
+        get
+        {
+            return this.nilFieldSpecified;
+        }
+        set
+        {
+            this.nilFieldSpecified = value;
+        }
+    }
+
+    /// <remarks/>
+    [System.Xml.Serialization.XmlTextAttribute()]
+    public string Value
+    {
+        get
+        {
+            return this.valueField;
+        }
+        set
+        {
+            this.valueField = value;
+        }
+    }
+}
+
+/// <remarks/>
+[System.SerializableAttribute()]
+[System.ComponentModel.DesignerCategoryAttribute("code")]
+[System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
+public partial class GoodreadsResponseSearchWorkOriginal_publication_day
+{
+
+    private string typeField;
+
+    private bool nilField;
+
+    private bool nilFieldSpecified;
+
+    private string valueField;
+
+    /// <remarks/>
+    [System.Xml.Serialization.XmlAttributeAttribute()]
+    public string type
+    {
+        get
+        {
+            return this.typeField;
+        }
+        set
+        {
+            this.typeField = value;
+        }
+    }
+
+    /// <remarks/>
+    [System.Xml.Serialization.XmlAttributeAttribute()]
+    public bool nil
+    {
+        get
+        {
+            return this.nilField;
+        }
+        set
+        {
+            this.nilField = value;
+        }
+    }
+
+    /// <remarks/>
+    [System.Xml.Serialization.XmlIgnoreAttribute()]
+    public bool nilSpecified
+    {
+        get
+        {
+            return this.nilFieldSpecified;
+        }
+        set
+        {
+            this.nilFieldSpecified = value;
+        }
+    }
+
+    /// <remarks/>
+    [System.Xml.Serialization.XmlTextAttribute()]
+    public string Value
+    {
+        get
+        {
+            return this.valueField;
+        }
+        set
+        {
+            this.valueField = value;
+        }
+    }
+}
+
+/// <remarks/>
+[System.SerializableAttribute()]
+[System.ComponentModel.DesignerCategoryAttribute("code")]
+[System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
+public partial class GoodreadsResponseSearchWorkBest_book
+{
+
+    private GoodreadsResponseSearchWorkBest_bookID idField;
+
+    private string titleField;
+
+    private GoodreadsResponseSearchWorkBest_bookAuthor authorField;
+
+    private string image_urlField;
+
+    private string small_image_urlField;
+
+    private string typeField;
+
+    /// <remarks/>
+    public GoodreadsResponseSearchWorkBest_bookID id
+    {
+        get
+        {
+            return this.idField;
+        }
+        set
+        {
+            this.idField = value;
+        }
+    }
+
+    /// <remarks/>
+    public string title
+    {
+        get
+        {
+            return this.titleField;
+        }
+        set
+        {
+            this.titleField = value;
+        }
+    }
+
+    /// <remarks/>
+    public GoodreadsResponseSearchWorkBest_bookAuthor author
+    {
+        get
+        {
+            return this.authorField;
+        }
+        set
+        {
+            this.authorField = value;
+        }
+    }
+
+    /// <remarks/>
+    public string image_url
+    {
+        get
+        {
+            return this.image_urlField;
+        }
+        set
+        {
+            this.image_urlField = value;
+        }
+    }
+
+    /// <remarks/>
+    public string small_image_url
+    {
+        get
+        {
+            return this.small_image_urlField;
+        }
+        set
+        {
+            this.small_image_urlField = value;
+        }
+    }
+
+    /// <remarks/>
+    [System.Xml.Serialization.XmlAttributeAttribute()]
+    public string type
+    {
+        get
+        {
+            return this.typeField;
+        }
+        set
+        {
+            this.typeField = value;
+        }
+    }
+}
+
+/// <remarks/>
+[System.SerializableAttribute()]
+[System.ComponentModel.DesignerCategoryAttribute("code")]
+[System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
+public partial class GoodreadsResponseSearchWorkBest_bookID
+{
+
+    private string typeField;
+
+    private uint valueField;
+
+    /// <remarks/>
+    [System.Xml.Serialization.XmlAttributeAttribute()]
+    public string type
+    {
+        get
+        {
+            return this.typeField;
+        }
+        set
+        {
+            this.typeField = value;
+        }
+    }
+
+    /// <remarks/>
+    [System.Xml.Serialization.XmlTextAttribute()]
+    public uint Value
+    {
+        get
+        {
+            return this.valueField;
+        }
+        set
+        {
+            this.valueField = value;
+        }
+    }
+}
+
+/// <remarks/>
+[System.SerializableAttribute()]
+[System.ComponentModel.DesignerCategoryAttribute("code")]
+[System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
+public partial class GoodreadsResponseSearchWorkBest_bookAuthor
+{
+
+    private GoodreadsResponseSearchWorkBest_bookAuthorID idField;
+
+    private string nameField;
+
+    /// <remarks/>
+    public GoodreadsResponseSearchWorkBest_bookAuthorID id
+    {
+        get
+        {
+            return this.idField;
+        }
+        set
+        {
+            this.idField = value;
+        }
+    }
+
+    /// <remarks/>
+    public string name
+    {
+        get
+        {
+            return this.nameField;
+        }
+        set
+        {
+            this.nameField = value;
+        }
+    }
+}
+
+/// <remarks/>
+[System.SerializableAttribute()]
+[System.ComponentModel.DesignerCategoryAttribute("code")]
+[System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
+public partial class GoodreadsResponseSearchWorkBest_bookAuthorID
+{
+
+    private string typeField;
+
+    private uint valueField;
+
+    /// <remarks/>
+    [System.Xml.Serialization.XmlAttributeAttribute()]
+    public string type
+    {
+        get
+        {
+            return this.typeField;
+        }
+        set
+        {
+            this.typeField = value;
+        }
+    }
+
+    /// <remarks/>
+    [System.Xml.Serialization.XmlTextAttribute()]
+    public uint Value
+    {
+        get
+        {
+            return this.valueField;
+        }
+        set
+        {
+            this.valueField = value;
+        }
+    }
 }
 

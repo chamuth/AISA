@@ -111,9 +111,15 @@ namespace AISA.SpeechRecognition
 
             //Speak the answer from the CommandHandler
             var result_string = CommandHandler.Handle(e.Result.Text);
-            synthesizer.SpeakAsync(result_string);
-            ResultCallback(e.Result.Text, result_string);
-
+            if (!result_string.StartsWith("SUDO:"))
+            {
+                ResultCallback(e.Result.Text, result_string);
+            }else
+            {
+                ResultCallback(e.Result.Text, "Here's what I've got");
+            }
+            
+            synthesizer.SpeakAsync(result_string.Replace("SUDO:", ""));
             //Null the recognizer
             _recognizer = null;
 

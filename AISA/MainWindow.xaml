@@ -113,6 +113,22 @@
                     <Label x:Name="LinkName" Foreground="White" FontSize="13" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="5,3,5,5" >AISA - Chamuth</Label>
                     <Label x:Name="LinkURL" Foreground="Gray" FontSize="12" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="5,22,5,0" >http://www.github.com/cc/AISA</Label>
                 </Grid>
+
+                <Grid Opacity="0" x:Name="book3" Height="50"  Width="250" VerticalAlignment="Bottom" Margin="0,0,0,25" Background="#0AFFFFFF" MouseDown="book3MouseDown">
+                    <Image x:Name="book3Image" Width="40" HorizontalAlignment="Left" Stretch="Fill"></Image>
+                    <Label x:Name="book3Name" Foreground="White" FontSize="13" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="50,3,5,5" >AISA - Chamuth</Label>
+                    <Label x:Name="book3Author" Foreground="Gray" FontSize="12" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="50,22,5,0" >http://www.github.com/cc/AISA</Label>
+                </Grid>
+                <Grid Opacity="0" x:Name="book2" Height="50"  Width="250" VerticalAlignment="Bottom" Margin="0,0,0,75" Background="#0AFFFFFF" MouseDown="book2MouseDown">
+                    <Image x:Name="book2Image" Width="40" HorizontalAlignment="Left" Stretch="Fill"></Image>
+                    <Label x:Name="book2Name" Foreground="White" FontSize="13" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="50,3,5,5" >AISA - Chamuth</Label>
+                    <Label x:Name="book2Author" Foreground="Gray" FontSize="12" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="50,22,5,0" >http://www.github.com/cc/AISA</Label>
+                </Grid>
+                <Grid Opacity="0" x:Name="book1" Height="50"  Width="250" VerticalAlignment="Bottom" Margin="0,0,0,125" Background="#0AFFFFFF" MouseDown="book1MouseDown">
+                    <Image x:Name="book1Image" Width="40" HorizontalAlignment="Left" Stretch="Fill"></Image>
+                    <Label x:Name="book1Name" Foreground="White" FontSize="13" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="50,3,5,5" >AISA - Chamuth</Label>
+                    <Label x:Name="book1Author" Foreground="Gray" FontSize="12" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="50,22,5,0" >http://www.github.com/cc/AISA</Label>
+                </Grid>
             </Grid>
 
             <!--#region Footer Buttons-->

@@ -9,6 +9,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Xml.Serialization;
+using System.IO;
+using System.Xml;
+using System.Collections;
 
 namespace AISA
 {
@@ -169,7 +173,7 @@ namespace AISA
             else if (input.Contains("Who made you"))
             {
                 Context.LastURL = "https://github.com/Chamuth/AISA/tree/master";
-                ViewControllerConnector.Connect(ViewControllerConnector.ConnectionMethod.URL, "Chamuth/AISA - GitHub", "https://github.com/Chamuth/AISA/tree/master");
+                ViewControllerConnector.Connect(ViewControllerConnector.ConnectionMethod.URL, new string[] { "Chamuth/AISA - GitHub", "https://github.com/Chamuth/AISA/tree/master" });
 
                 return random(new string[]
                 {
@@ -192,7 +196,7 @@ namespace AISA
             else if (input.Contains("Who is your father"))
             {
                 Context.LastURL = "https://github.com/Chamuth/AISA/tree/master";
-                ViewControllerConnector.Connect(ViewControllerConnector.ConnectionMethod.URL, "Chamuth/AISA - GitHub", "https://github.com/Chamuth/AISA/tree/master");
+                ViewControllerConnector.Connect(ViewControllerConnector.ConnectionMethod.URL, new string[] { "Chamuth/AISA - GitHub", "https://github.com/Chamuth/AISA/tree/master" });
 
                 return random(new string[]
                 {
@@ -216,7 +220,7 @@ namespace AISA
             else if (input.Contains("How you were made"))
             {
                 Context.LastURL = "https://github.com/Chamuth/AISA/tree/master";
-                ViewControllerConnector.Connect(ViewControllerConnector.ConnectionMethod.URL, "Chamuth/AISA - GitHub", "https://github.com/Chamuth/AISA/tree/master");
+                ViewControllerConnector.Connect(ViewControllerConnector.ConnectionMethod.URL, new string[] { "Chamuth/AISA - GitHub", "https://github.com/Chamuth/AISA/tree/master" });
 
                 return random(new string[] {
                     "Checkout my open-source repository here", "I'm actually open source,", "You can see for yourself"
@@ -393,33 +397,15 @@ namespace AISA
             else if (input.Contains("science") && input.Contains("book"))
             {
                 //User is searching for a science book
-                var client = new RestClient("");
-                var request = new RestRequest(Method.GET);
-
-                var response = client.Execute(request);
-
-                if (response.StatusCode == System.Net.HttpStatusCode.OK)
-                {
-                    try
-                    {
-                        GoodreadsResponse booksObject = JsonConvert.DeserializeObject<GoodreadsResponse>(response.Content);
-                        //TODO: COMPLETE THE BOOK SEARCHING PROCESS HERE
-                    }
-                    catch (JsonSerializationException)
-                    {
-                        return random(new string[]
-                     {
-                        "Sorry, I'm having some connection issues", "My apologies, make sure you're connected to the Internet", "I cannot connect to my servers, sorry."
-                     });
-                    }
-                }
-                else
-                {
-                    return random(new string[]
-                    {
-                        "Sorry, I'm having some connection issues", "My apologies, make sure you're connected to the Internet", "I cannot connect to my servers, sorry."
-                    });
-                }
+                return searchBooks("science");
+            }
+            else if ((input.Contains("mathematics") || input.Contains("maths") ) && input.Contains("book") )
+            {
+                return searchBooks("mathematics");
+            }
+            else if (input.Contains("nature") && input.Contains("book"))
+            {
+                return searchBooks("nature");
             }
             else if (input.Contains("a book"))
             {
@@ -444,6 +430,90 @@ namespace AISA
                 //Asking something else
                 return random(new string[] {
                     "I don't know what to say, Please ask me something else", "Oops, please tell me what you need?", "Sorry, I don't understand what you're saying", "Sorry, I didn't understand that, please retry"
+                });
+            }
+        }
+
+        private static GoodreadsResponseSearchWork[] random(GoodreadsResponseSearchWork[] i)
+        {
+            var rand = new Random().Next(1, i.Length);
+
+            return new GoodreadsResponseSearchWork[]
+            {
+                i[rand], (rand + 1 < i.Length)?i[rand + 1]:i[rand - 2], (rand - 1 > 0)?i[rand - 1]:i[rand + 2]
+            };
+        }
+
+        /// <summary>
+        /// Quick function to search books
+        /// </summary>
+        /// <param name="v"></param>
+        /// <returns></returns>
+        private static string searchBooks(string v)
+        {
+            var key = "iBDvQ3HOYOPOaFboICTtrw";
+            var restClient = new RestClient("https://www.goodreads.com/search.xml?key=" + key + "&q=" + v);
+            var restRequest = new RestRequest(Method.GET);
+
+            var restresponse = restClient.Execute(restRequest);
+
+            if (restresponse.Content != "" && restresponse.StatusCode == System.Net.HttpStatusCode.OK)
+            {
+                try
+                {
+                    var serializer = new XmlSerializer(typeof(GoodreadsResponse));
+                    GoodreadsResponse result;
+                    //Copy
+                    Clipboard.SetText(restresponse.Content);
+
+                    using (TextReader xmlreader = new StringReader(restresponse.Content))
+                    {
+                        result = (GoodreadsResponse)serializer.Deserialize(xmlreader);
+                    }
+
+                    var sending_string = "I found ";
+                    var results = random(result.search.results);
+
+                    for (int i = 0; i < 3; i++)
+                    {
+                        if (i < 2)
+                            sending_string += results[i].best_book.title + " by " + results[i].best_book.author.name + ", ";
+                        else
+                            sending_string += " and " +  results[i].best_book.title + " by " + results[i].best_book.author.name;
+                    }
+
+                    Context.BuyThatBook = new string[]
+                    {
+                        results[0].best_book.title,
+                        results[1].best_book.title,
+                        results[2].best_book.title,
+                    };
+
+                    ViewControllerConnector.Connect(ViewControllerConnector.ConnectionMethod.Book, new string[]
+                    {
+                        results[0].best_book.title, results[0].best_book.author.name,
+                        results[1].best_book.title, results[1].best_book.author.name,
+                        results[2].best_book.title, results[2].best_book.author.name,
+                        results[0].best_book.small_image_url, results[1].best_book.small_image_url, results[2].best_book.small_image_url,
+                        "http://www.amazon.com/s/ref=nb_sb_noss_2?field-keywords=" + results[0].best_book.title,
+                        "http://www.amazon.com/s/ref=nb_sb_noss_2?field-keywords=" + results[1].best_book.title,
+                        "http://www.amazon.com/s/ref=nb_sb_noss_2?field-keywords=" + results[2].best_book.title,
+                    });
+
+                    return "SUDO:" + sending_string;
+                }
+                catch (IOException)
+                {
+                    return random(new string[]
+                    {
+                        "Sorry, I'm having some connection issues", "My apologies, make sure you're connected to the Internet", "I cannot connect to my servers, sorry."
+                    });
+                }
+            }else
+            {
+                return random(new string[]
+                {
+                    "Sorry, I'm having some connection issues", "My apologies, make sure you're connected to the Internet", "I cannot connect to my servers, sorry."
                 });
             }
         }
@@ -533,7 +603,9 @@ namespace AISA
                     //Finding a book
                     "Find me a book", "Find a book", "I want a book",
                     //Science books
-                    "Find me a science book", "Find me a book about science",
+                    "Find me a science book", "Find me a book about science", "Find me a mathematics book",
+                    "Find me a maths book", "Find me a book about mathematics", "Find me a book about maths",
+                    "Find me a book about nature"
                     #endregion
                 #endregion
             };
