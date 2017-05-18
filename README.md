@@ -25,3 +25,9 @@
 3. Speech Rejection Handling
 4. Speech Hypothesizing
 5. Having an eye-catching User Interface, User Experience, Sound Effects, and Animations
+
+### USING THIS SOFTWARE AS AN OPEN SOURCE REPOSITORY
+
+<strong>Prerequisites</strong>
+1. Microsoft .NET Framework 4.5.2 Required
+2. NaturalVoice Kate for better speech synthesis
