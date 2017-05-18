@@ -394,12 +394,12 @@ namespace AISA
                     }
                 }
             }
+            #region BOOK SEARCH MODULE
             else if (input.Contains("science") && input.Contains("book"))
             {
-                //User is searching for a science book
                 return searchBooks("science");
             }
-            else if ((input.Contains("mathematics") || input.Contains("maths") ) && input.Contains("book") )
+            else if ((input.Contains("mathematics") || input.Contains("maths")) && input.Contains("book"))
             {
                 return searchBooks("mathematics");
             }
@@ -407,12 +407,52 @@ namespace AISA
             {
                 return searchBooks("nature");
             }
+            else if (input.Contains("geography") && input.Contains("book"))
+            {
+                return searchBooks("geography");
+            }
+            else if (input.Contains("astronomy") && input.Contains("book"))
+            {
+                return searchBooks("astronomy");
+            }
+            else if (input.Contains("algebra") && input.Contains("book"))
+            {
+                return searchBooks("algebra");
+            }
+            else if (input.Contains("trigonometry") && input.Contains("book"))
+            {
+                return searchBooks("trigonometry");
+            }
+            else if ((input.Contains("information technology") || input.Contains("IT")) && input.Contains("book"))
+            {
+                return searchBooks("information technology");
+            }
+            else if (input.Contains("astronomy") && input.Contains("book"))
+            {
+                return searchBooks("astronomy");
+            }
+            else if (input.Contains("programming") && input.Contains("book"))
+            {
+                return searchBooks("programming");
+            }
+            #endregion
+            else if (input.ToLower().Contains("buy that book"))
+            {
+                if (Context.BuyThatBook == null)
+                {
+                    return "Which book?";
+                }
+                else
+                {
+                    return "Please tell me, first, second or third book?";
+                }
+            }
             else if (input.Contains("a book"))
             {
                 //User is searching for a book, but does not specify a specific category of book
                 return random(new string[]
                 {
-                    "What type of a book you need?", "What kind of a book you need?", "Please tell me a category to search for", "What type of book?"
+                "What type of a book you need?", "What kind of a book you need?", "Please tell me a category to search for", "What type of book?"
                 });
             }
             #endregion
@@ -463,12 +503,16 @@ namespace AISA
                 {
                     var serializer = new XmlSerializer(typeof(GoodreadsResponse));
                     GoodreadsResponse result;
-                    //Copy
-                    Clipboard.SetText(restresponse.Content);
-
+                     
                     using (TextReader xmlreader = new StringReader(restresponse.Content))
                     {
-                        result = (GoodreadsResponse)serializer.Deserialize(xmlreader);
+                        try
+                        {
+                            result = (GoodreadsResponse)serializer.Deserialize(xmlreader);
+                        }catch (Exception)
+                        {
+                            return "Our servers are down, please retry";
+                        }
                     }
 
                     var sending_string = "I found ";
@@ -605,7 +649,9 @@ namespace AISA
                     //Science books
                     "Find me a science book", "Find me a book about science", "Find me a mathematics book",
                     "Find me a maths book", "Find me a book about mathematics", "Find me a book about maths",
-                    "Find me a book about nature"
+                    "Find me a book about nature", "Find me a book about geography", "Find me a book about astronomy",
+                    "Find me an algebra book", "Find me a book about algebra", "Find me a trigonometry book", "Find me a book about trigonometry", "Find me a book about information technology",
+                    "Find me a book about IT", "Find me an IT book", "Find me an information technology book", "Find me a dictionary", "Find me a programming book", "Find me a book about programming", "Let's buy that book", "Buy that book"
                     #endregion
                 #endregion
             };

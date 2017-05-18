@@ -65,7 +65,11 @@ namespace AISA.SpeechRecognition
                     da.Tick += (a, b) =>
                     {
                         da.Stop();
-                        _recognizer.RecognizeAsync(RecognizeMode.Multiple);
+
+                        try
+                        {
+                            _recognizer.RecognizeAsync(RecognizeMode.Multiple);
+                        }catch (Exception) { }
                     };
 
                     da.Start();
