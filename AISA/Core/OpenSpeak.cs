@@ -21,7 +21,7 @@ namespace AISA.Core
         public static void Init()
         {
             //Initialize the OpenSpeak Engine
-            synthesizer.SelectVoice("Kate");
+            synthesizer.SelectVoiceByHints(VoiceGender.Female, VoiceAge.Adult);
             synthesizer.Volume = 100;
 
             synthesizer.Rate = 0;

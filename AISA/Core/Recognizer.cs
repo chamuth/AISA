@@ -38,7 +38,7 @@ namespace AISA.SpeechRecognition
             _recognizer.SetInputToDefaultAudioDevice();
             _recognizer.RecognizeAsync(RecognizeMode.Single);
 
-            synthesizer.SelectVoice("Kate");
+            synthesizer.SelectVoiceByHints(VoiceGender.Female, VoiceAge.Adult);
             synthesizer.Volume = 100;
 
             synthesizer.Rate = 0;
