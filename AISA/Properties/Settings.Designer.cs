@@ -25,7 +25,7 @@ namespace AISA.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("chamandana")]
+        [global::System.Configuration.DefaultSettingValueAttribute("chamuth")]
         public string scholarUsername {
             get {
                 return ((string)(this["scholarUsername"]));
@@ -37,13 +37,25 @@ namespace AISA.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("awesomecc2001")]
+        [global::System.Configuration.DefaultSettingValueAttribute("CCGreatCC2001")]
         public string scholarPassword {
             get {
                 return ((string)(this["scholarPassword"]));
             }
             set {
                 this["scholarPassword"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("2018 Advanced Level")]
+        public string studentGrade {
+            get {
+                return ((string)(this["studentGrade"]));
+            }
+            set {
+                this["studentGrade"] = value;
             }
         }
     }

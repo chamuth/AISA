@@ -72,6 +72,9 @@
       <HintPath>..\packages\RestSharp.105.2.3\lib\net452\RestSharp.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Scholar">
+      <HintPath>..\Scholar\bin\Debug\Scholar.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
@@ -103,7 +106,6 @@
     </Compile>
     <Compile Include="DataEntities\Books.cs" />
     <Compile Include="DataEntities\Location.cs" />
-    <Compile Include="DataEntities\Scholar.cs" />
     <Compile Include="DataEntities\Weather.cs" />
     <Compile Include="SpeechRecognition\AudioHandler.cs" />
     <Compile Include="SpeechRecognition\CommandHandler.cs" />

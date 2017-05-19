@@ -3,10 +3,13 @@
   <Profiles />
   <Settings>
     <Setting Name="scholarUsername" Type="System.String" Scope="User">
-      <Value Profile="(Default)">chamandana</Value>
+      <Value Profile="(Default)">chamuth</Value>
     </Setting>
     <Setting Name="scholarPassword" Type="System.String" Scope="User">
-      <Value Profile="(Default)">awesomecc2001</Value>
+      <Value Profile="(Default)">CCGreatCC2001</Value>
+    </Setting>
+    <Setting Name="studentGrade" Type="System.String" Scope="User">
+      <Value Profile="(Default)">2018 Advanced Level</Value>
     </Setting>
   </Settings>
 </SettingsFile>

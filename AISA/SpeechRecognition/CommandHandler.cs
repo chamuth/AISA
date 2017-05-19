@@ -2,6 +2,7 @@
 using AISA.Core;
 using Newtonsoft.Json;
 using RestSharp;
+using Scholar;
 
 using System;
 using System.Collections.Generic;
@@ -21,6 +22,7 @@ namespace AISA
     /// </summary>
     public static class CommandHandler
     {
+
         /// <summary>
         /// Get random string from the input string array
         /// </summary>
@@ -338,6 +340,11 @@ namespace AISA
             #region STUDENT ASSISTANT COMMAND HANDLING
             else if (input.Contains("a class") || input.Contains("a tuition class"))
             {
+
+                return "SUDO:" + FindAClass(6);
+            }
+            else if (input.Contains("a class") || input.Contains("a tuition class"))
+            {
                 if (Properties.Settings.Default.scholarUsername == "")
                 {
                     //User is not signed into Scholar
@@ -348,50 +355,12 @@ namespace AISA
                 }
                 else
                 {
-                    //Verify login
-                    var username = Properties.Settings.Default.scholarUsername;
-                    var password = Properties.Settings.Default.scholarPassword;
+                    return "SUDO:" + FindAClass(6);
 
-                    var client = new RestClient("localhost/Scholar/api/u=" + username + "&p" + password);
-                    var request = new RestRequest(Method.GET);
-                    var response = client.Execute(request);
-
-                    if (response.StatusCode == System.Net.HttpStatusCode.OK)
-                    {
-                        try
-                        {
-                            Student.Verify verify = JsonConvert.DeserializeObject<Student.Verify>(response.Content);
-
-                            switch (verify.error)
-                            {
-                                case 0:
-                                    //User exists and the password is correct
-
-                                    //Start finding the class
-
-                                    break;
-                                case 1:
-                                    //User does not exist
-                                    return random(new string[]
-                                    {
-                                        "Please make sure your credentials are correct", "Please re-enter your credentials"
-                                    });
-                                case 2:
-                                    //User exist but the password is incorrect
-                                    return random(new string[]
-                                    {
-                                        "Please make sure your password is correct", "Please re-enter your password"
-                                    });
-                            }
-                        }
-                        catch (Exception)
-                        {
-                            return random(new string[]
-                    {
-                        "Sorry, I'm having some connection issues", "My apologies, make sure you're connected to the Internet", "I cannot connect to my servers, sorry."
-                    });
-                        }
-                    }
+                    //return random(new string[]
+                    //{
+                    //    "Please tell me which category", "Which type of a class you're looking for?", "What kind of a class"
+                    //});
                 }
             }
             #region BOOK SEARCH MODULE
@@ -447,12 +416,44 @@ namespace AISA
                     return "Please tell me, first, second or third book?";
                 }
             }
+            else if ((input.ToLower().Contains("first") || input.ToLower().Contains("second") || input.ToLower().Contains("third")) && input.ToLower().Contains("buy"))
+            {
+                if (Context.BuyThatBook != null)
+                {
+                    if (input.ToLower().Contains("first"))
+                    {
+                        System.Diagnostics.Process.Start("https://www.amazon.com/s/ref=nb_sb_noss_2?field-keywords=" + Context.BuyThatBook[0]);
+                    }
+                    else if (input.ToLower().Contains("second"))
+                    {
+                        System.Diagnostics.Process.Start("https://www.amazon.com/s/ref=nb_sb_noss_2?field-keywords=" + Context.BuyThatBook[1]);
+                    }
+                    else if (input.ToLower().Contains("third"))
+                    {
+                        System.Diagnostics.Process.Start("https://www.amazon.com/s/ref=nb_sb_noss_2?field-keywords=" + Context.BuyThatBook[2]);
+                    }
+
+                    return "Opening web browser";
+                }
+            }
+            else if ((input.ToLower().Contains("first") || input.ToLower().Contains("second") || input.ToLower().Contains("third")) && input.ToLower().Contains("book"))
+            {
+                if (Context.Previous.ToLower().Contains("buy that book"))
+                {
+                    System.Diagnostics.Process.Start("https://www.amazon.com/s/ref=nb_sb_noss_2?field-keywords=" + Context.BuyThatBook[0]);
+                    return "Opening web browser";
+                }
+                else
+                {
+                    return "Which book?";
+                }
+            }
             else if (input.Contains("a book"))
             {
                 //User is searching for a book, but does not specify a specific category of book
                 return random(new string[]
                 {
-                "What type of a book you need?", "What kind of a book you need?", "Please tell me a category to search for", "What type of book?"
+                    "What type of a book you need?", "What kind of a book you need?", "Please tell me a category to search for", "What type of book?"
                 });
             }
             #endregion
@@ -472,6 +473,89 @@ namespace AISA
                     "I don't know what to say, Please ask me something else", "Oops, please tell me what you need?", "Sorry, I don't understand what you're saying", "Sorry, I didn't understand that, please retry"
                 });
             }
+        }
+
+        /// <summary>
+        /// Finds a class using the Scholar Search Engine
+        /// </summary>
+        /// <param name="category"></param>
+        /// <returns></returns>
+        public static string FindAClass(int category)
+        {
+            string returner = "I found ";
+
+            var username = Properties.Settings.Default.scholarUsername;
+            var password = Properties.Settings.Default.scholarPassword;
+
+            //Verify the user
+
+            if (Student.VerifyStudent(username, password).error == 0)
+            {
+                //User exists and the password is correct
+
+                //Search the class by category
+                var search1 = Class.SearchByGrade(Properties.Settings.Default.studentGrade);
+                var search2 = Class.SearchByCategory(category);
+
+                var complete = search2;
+
+                for (int i = 0; i < 3; i++)
+                {
+                    if (complete.results.Length > i)
+                    {
+                        var current = complete.results[i];
+
+                        var searchClass = Class.GetInformation(int.Parse(current));
+                        var searchTeacher = Teacher.GetInformation(searchClass.information.teacher);
+                        var teachername = searchTeacher.information.firstname + " " + searchTeacher.information.lastname;
+
+                        if (searchClass.error == 0)
+                        {
+                            //No error found on the index of the class
+                            if (complete.results.Length != 1)
+                            {
+                                if (complete.results.Length > 3)
+                                {
+                                    if (i != 2)
+                                    {
+                                        returner += searchClass.information.name + " by " + teachername + ", ";
+                                    }
+                                    else
+                                    {
+                                        returner += "and " + searchClass.information.name + " by " + teachername;
+                                    }
+                                }
+                                else
+                                {
+                                    if (i != complete.results.Length - 1)
+                                    {
+                                        returner += searchClass.information.name + " by " + teachername + ", ";
+                                    }
+                                    else
+                                    {
+                                        returner += "and " + searchClass.information.name + " by " + teachername;
+                                        break;
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                returner = searchClass.information.name + " by " + teachername;
+                            }
+                        }
+                    }
+                }
+            }
+            else
+            {
+                //User does not exist or the password is wrong
+                return random(new string[]
+                {
+                    "Please make sure your credentials are correct", "Please re-enter your credentials"
+                });
+            }
+
+            return returner;
         }
 
         private static GoodreadsResponseSearchWork[] random(GoodreadsResponseSearchWork[] i)
@@ -503,13 +587,14 @@ namespace AISA
                 {
                     var serializer = new XmlSerializer(typeof(GoodreadsResponse));
                     GoodreadsResponse result;
-                     
+
                     using (TextReader xmlreader = new StringReader(restresponse.Content))
                     {
                         try
                         {
                             result = (GoodreadsResponse)serializer.Deserialize(xmlreader);
-                        }catch (Exception)
+                        }
+                        catch (Exception)
                         {
                             return "Our servers are down, please retry";
                         }
@@ -523,7 +608,7 @@ namespace AISA
                         if (i < 2)
                             sending_string += results[i].best_book.title + " by " + results[i].best_book.author.name + ", ";
                         else
-                            sending_string += " and " +  results[i].best_book.title + " by " + results[i].best_book.author.name;
+                            sending_string += " and " + results[i].best_book.title + " by " + results[i].best_book.author.name;
                     }
 
                     Context.BuyThatBook = new string[]
@@ -553,7 +638,8 @@ namespace AISA
                         "Sorry, I'm having some connection issues", "My apologies, make sure you're connected to the Internet", "I cannot connect to my servers, sorry."
                     });
                 }
-            }else
+            }
+            else
             {
                 return random(new string[]
                 {
@@ -651,7 +737,7 @@ namespace AISA
                     "Find me a maths book", "Find me a book about mathematics", "Find me a book about maths",
                     "Find me a book about nature", "Find me a book about geography", "Find me a book about astronomy",
                     "Find me an algebra book", "Find me a book about algebra", "Find me a trigonometry book", "Find me a book about trigonometry", "Find me a book about information technology",
-                    "Find me a book about IT", "Find me an IT book", "Find me an information technology book", "Find me a dictionary", "Find me a programming book", "Find me a book about programming", "Let's buy that book", "Buy that book"
+                    "Find me a book about IT", "Find me an IT book", "Find me an information technology book", "Find me a programming book", "Find me a book about programming", "Let's buy that book", "Buy that book", "Buy the first book", "Buy the second book", "Buy the third book", "First book", "Second book", "Third Book"
                     #endregion
                 #endregion
             };
