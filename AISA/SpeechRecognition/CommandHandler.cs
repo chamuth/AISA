@@ -182,6 +182,11 @@ namespace AISA
                     "I was developed by Team Ninponix. Say \"Follow Link\" to visit my repository", "Team Ninponix, Say \"Go to Link\" to visit my repository"
                 });
             }
+            else if (input.Contains("Go to GitHub"))
+            {
+                System.Diagnostics.Process.Start("http://www.github.com");
+                return "Opening web browser";
+            }
             else if (input.Contains("What's your name") || input.Contains("What is your name"))
             {
                 return random(new string[] {
@@ -232,14 +237,20 @@ namespace AISA
 
             else if (input.Contains("Follow link") || input.Contains("Go to link") || input.Contains("Visit link") || input.Contains("Visit last link") || input.Contains("Follow last link") || input.Contains("Go to last link"))
             {
-                if (Context.LastURL.Trim() != "")
+                if (Context.LastURL != null)
                 {
-                    //Follow the last link
-                    System.Diagnostics.Process.Start(Context.LastURL);
-                    Context.LastURL = "";
-                    return "Opening web browser";
-                }
-                else
+                    if (Context.LastURL.Trim() != "")
+                    {
+                        //Follow the last link
+                        System.Diagnostics.Process.Start(Context.LastURL);
+                        Context.LastURL = "";
+                        return "Opening web browser";
+                    }
+                    else
+                    {
+                        return "What link?";
+                    }
+                }else
                 {
                     return "What link?";
                 }
@@ -340,28 +351,14 @@ namespace AISA
             #region STUDENT ASSISTANT COMMAND HANDLING
             else if (input.Contains("a class") || input.Contains("a tuition class"))
             {
-
-                return "SUDO:" + FindAClass(6);
+                return random(new string[]
+                {
+                    "Please tell me which category", "Which type of a class you're looking for?", "What kind of a class"
+                });
             }
-            else if (input.Contains("a class") || input.Contains("a tuition class"))
+            else if ((input.Contains("class") || input.Contains("tuition class")) && input.ToLower().Contains("physics"))
             {
-                if (Properties.Settings.Default.scholarUsername == "")
-                {
-                    //User is not signed into Scholar
-                    return random(new string[]
-                    {
-                        "Please enter your scholar credentials first", "Please enter your scholar credentials here"
-                    });
-                }
-                else
-                {
-                    return "SUDO:" + FindAClass(6);
-
-                    //return random(new string[]
-                    //{
-                    //    "Please tell me which category", "Which type of a class you're looking for?", "What kind of a class"
-                    //});
-                }
+                return FindAClass(11);
             }
             #region BOOK SEARCH MODULE
             else if (input.Contains("science") && input.Contains("book"))
@@ -721,12 +718,13 @@ namespace AISA
                 "Go to Twitter",
                 "Go to YouTube",
                 "Go to Wikipedia",
-
+                "Go to GitHub",
                 #endregion
 
                 #region STUDENT ORIENTED COMMANDS
                     #region CLASS SEARCH
                     "Find a class", "Find me a class", "Find me a tuition class", "Find a tuition class",
+                    "Find me a physics class", "Find a physics class", "Find me a science class", "Find a science class", "Find me an IT class", "Find an IT class", "Find me an Information Technology class", "Find an Information Technology class", "Find me a mathematics class", "Find a mathematics class", "Find me a maths class", "Find a maths class",
                     #endregion
 
                     #region BOOK SEARCH
