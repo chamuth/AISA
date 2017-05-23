@@ -30,4 +30,3 @@
 
 <strong>Prerequisites</strong>
 1. Microsoft .NET Framework 4.5.2 Required
-2. NaturalVoice Kate for better speech synthesis
