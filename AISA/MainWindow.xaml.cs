@@ -267,6 +267,9 @@ namespace AISA
         /// </summary>
         private void ExitAISA()
         {
+            //Stop the AISA Recognition
+            
+
             //Say the end greeting
             OpenSpeak.Speak(Greetings.End());
 

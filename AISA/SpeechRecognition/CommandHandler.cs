@@ -250,7 +250,8 @@ namespace AISA
                     {
                         return "What link?";
                     }
-                }else
+                }
+                else
                 {
                     return "What link?";
                 }
@@ -349,6 +350,9 @@ namespace AISA
             #endregion
 
             #region STUDENT ASSISTANT COMMAND HANDLING
+
+            #region CLASS SEARCHING MODULE
+            //array(  "Agriculture", "Architecture", "Biological Science", "Biomedical Science", "Business", "Communication", "Computer Science", "Computer Engineering", "Education", "Engineering", "Mathematics", "Media and Telecommunication", "Medical and Health", "Physical Science", "Psychology", "Science", "Other" );
             else if (input.Contains("a class") || input.Contains("a tuition class"))
             {
                 return random(new string[]
@@ -356,10 +360,68 @@ namespace AISA
                     "Please tell me which category", "Which type of a class you're looking for?", "What kind of a class"
                 });
             }
-            else if ((input.Contains("class") || input.Contains("tuition class")) && input.ToLower().Contains("physics"))
+            else if ((input.Contains("class") || input.Contains("tuition class")) && (input.ToLower().Contains("agriculture")))
+            {
+                return FindAClass(0);
+            }
+            else if ((input.Contains("class") || input.Contains("tuition class")) && (input.ToLower().Contains("architecture")))
+            {
+                return FindAClass(1);
+            }
+            else if ((input.Contains("class") || input.Contains("tuition class")) && (input.ToLower().Contains("biology") || input.ToLower().Contains("bio")))
+            {
+                return FindAClass(2);
+            }
+            else if ((input.Contains("class") || input.Contains("tuition class")) && (input.ToLower().Contains("medical")))
+            {
+                return FindAClass(3);
+            }
+            else if ((input.Contains("class") || input.Contains("tuition class")) && (input.ToLower().Contains("business") || input.ToLower().Contains("accounting") || input.ToLower().Contains("commerce") || input.ToLower().Contains("econ")))
+            {
+                return FindAClass(4);
+            }
+            else if ((input.Contains("class") || input.Contains("tuition class")) && (input.ToLower().Contains("communication technology")))
+            {
+                return FindAClass(5);
+            }
+            else if ((input.Contains("class") || input.Contains("tuition class")) && (input.ToLower().Contains("computer science") || input.ToLower().Contains("information technology") || input.ToLower().Contains("it") || input.ToLower().Contains("ict")))
+            {
+                return FindAClass(6);
+            }
+            else if ((input.Contains("class") || input.Contains("tuition class")) && (input.ToLower().Contains("software engineering") || input.ToLower().Contains("programming")))
+            {
+                return FindAClass(7);
+            }
+            else if ((input.Contains("class") || input.Contains("tuition class")) && (input.ToLower().Contains("engineering") || input.ToLower().Contains("electrical engineering")))
+            {
+                return FindAClass(9);
+            }
+            else if ((input.Contains("class") || input.Contains("tuition class")) && (input.ToLower().Contains("maths") || input.ToLower().Contains("mathematics")))
+            {
+                return FindAClass(10);
+            }
+            else if ((input.Contains("class") || input.Contains("tuition class")) && (input.ToLower().Contains("media")))
             {
                 return FindAClass(11);
             }
+            else if ((input.Contains("class") || input.Contains("tuition class")) && (input.ToLower().Contains("medical")))
+            {
+                return FindAClass(12);
+            }
+            else if ((input.Contains("class") || input.Contains("tuition class")) && (input.ToLower().Contains("physics") || input.ToLower().Contains("physical science")))
+            {
+                return FindAClass(13);
+            }
+            else if ((input.Contains("class") || input.Contains("tuition class")) && (input.ToLower().Contains("psychology")))
+            {
+                return FindAClass(14);
+            }
+            else if ((input.Contains("class") || input.Contains("tuition class")) && (input.ToLower().Contains("science") || input.ToLower().Contains("chemistry")))
+            {
+                return FindAClass(15);
+            }
+            #endregion
+
             #region BOOK SEARCH MODULE
             else if (input.Contains("science") && input.Contains("book"))
             {
@@ -479,13 +541,12 @@ namespace AISA
         /// <returns></returns>
         public static string FindAClass(int category)
         {
-            string returner = "I found ";
+            string returner = "SUDO: I found ";
 
             var username = Properties.Settings.Default.scholarUsername;
             var password = Properties.Settings.Default.scholarPassword;
 
-            //Verify the user
-
+            //Verify the student username and the password
             if (Student.VerifyStudent(username, password).error == 0)
             {
                 //User exists and the password is correct
@@ -494,54 +555,70 @@ namespace AISA
                 var search1 = Class.SearchByGrade(Properties.Settings.Default.studentGrade);
                 var search2 = Class.SearchByCategory(category);
 
-                var complete = search2;
+                var complete = search1.results.Intersect<string>(search2.results);
 
-                for (int i = 0; i < 3; i++)
+
+                if (complete != null)
                 {
-                    if (complete.results.Length > i)
+
+                    for (int i = 0; i < 3; i++)
                     {
-                        var current = complete.results[i];
-
-                        var searchClass = Class.GetInformation(int.Parse(current));
-                        var searchTeacher = Teacher.GetInformation(searchClass.information.teacher);
-                        var teachername = searchTeacher.information.firstname + " " + searchTeacher.information.lastname;
-
-                        if (searchClass.error == 0)
+                        if (complete.Count() > i)
                         {
-                            //No error found on the index of the class
-                            if (complete.results.Length != 1)
+                            var current = complete.ToArray()[i];
+
+                            var searchClass = Class.GetInformation(int.Parse(current));
+                            var searchTeacher = Teacher.GetInformation(searchClass.information.teacher);
+                            var teachername = searchTeacher.information.firstname + " " + searchTeacher.information.lastname;
+
+                            if (searchClass.error == 0)
                             {
-                                if (complete.results.Length > 3)
+                                //No error found on the index of the class
+                                if (complete.Count() != 1)
                                 {
-                                    if (i != 2)
+                                    if (complete.Count() > 3)
                                     {
-                                        returner += searchClass.information.name + " by " + teachername + ", ";
+                                        if (i != 2)
+                                        {
+                                            returner += searchClass.information.name + " by " + teachername + ", ";
+                                        }
+                                        else
+                                        {
+                                            returner += "and " + searchClass.information.name + " by " + teachername;
+                                        }
                                     }
                                     else
                                     {
-                                        returner += "and " + searchClass.information.name + " by " + teachername;
+                                        if (i != complete.Count() - 1)
+                                        {
+                                            returner += searchClass.information.name + " by " + teachername + ", ";
+                                        }
+                                        else
+                                        {
+                                            returner += "and " + searchClass.information.name + " by " + teachername;
+                                            break;
+                                        }
                                     }
                                 }
                                 else
                                 {
-                                    if (i != complete.results.Length - 1)
-                                    {
-                                        returner += searchClass.information.name + " by " + teachername + ", ";
-                                    }
-                                    else
-                                    {
-                                        returner += "and " + searchClass.information.name + " by " + teachername;
-                                        break;
-                                    }
+                                    returner = "SUDO:" + searchClass.information.name + " by " + teachername;
                                 }
                             }
                             else
                             {
-                                returner = searchClass.information.name + " by " + teachername;
+                                returner = "Found zero classes";
                             }
+
                         }
                     }
+
                 }
+                else
+                {
+                    returner = "Found zero classes";
+                }
+            
             }
             else
             {
@@ -724,7 +801,22 @@ namespace AISA
                 #region STUDENT ORIENTED COMMANDS
                     #region CLASS SEARCH
                     "Find a class", "Find me a class", "Find me a tuition class", "Find a tuition class",
-                    "Find me a physics class", "Find a physics class", "Find me a science class", "Find a science class", "Find me an IT class", "Find an IT class", "Find me an Information Technology class", "Find an Information Technology class", "Find me a mathematics class", "Find a mathematics class", "Find me a maths class", "Find a maths class",
+                    "Find me an agriculture class", "Find an agriculture class",
+                    "Find me an architecture class", "Find an architecture class",
+                    "Find me a Biology class", "Find me a Bio class", "Find a Biology class", "Find a bio class",
+                    "Find me a medical science class", "Find a medical science class",
+                    "Find me a business class", "Find me an accounting class", "Find me a commerce class", "Find me a econ class",
+                    "Find a business class", "Find an accounting class", "Find a commerce class", "Find a econ class",
+                    "Find me a communication technology class", "Find a communication technology class",
+                    "Find a Computer Science class", "Find me a Computer Science class", "Find me an Information Technology class", "Find an Information Technology class", "Find me an IT class", "Find an IT class", "Find me an ICT class", "Find an ICT class",
+                    "Find a Software Engineering class", "Find me a Software Engineering class", "Find me a programming class", "Find a programming class",
+                    "Find an Engineering class", "Find me an engineering class", "Find an electrical engineering class", "Find me an electrical engineering class",
+                    "Find me a maths class", "Find me a mathematics class", "Find a maths class", "Find a mathematics class",
+                    "Find me a media class", "Find a media class",
+                    "Find me a medical class" , "Find a medical class",
+                    "Find me a physics class", "Find a physics class", "Find a physical science class", "Find me a physical science class",
+                    "Find me a psychology class", "Find a psychology class",
+                    "Find me a science class", "Find a science class", "Find me a chemistry class", "Find a chemistry class",
                     #endregion
 
                     #region BOOK SEARCH
