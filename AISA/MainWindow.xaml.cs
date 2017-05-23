@@ -122,12 +122,7 @@ namespace AISA
             ViewControllerConnector.None += NoneHandler;
             ViewControllerConnector.ChangeHypothesis += ChangeHypothesisHandler;
             ViewControllerConnector.AsyncResult += AsyncResultChanged;
-
-            
-            //Setup the windows hiding behavior
-
         }
-        
 
         /// <summary>
         /// This occurs on asynchronous basis
@@ -373,6 +368,11 @@ namespace AISA
         }
 
         private string book1link, book2link, book3link;
+
+        private void window_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            
+        }
 
         private void book1MouseDown(object sender, MouseButtonEventArgs e)
         {
