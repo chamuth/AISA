@@ -121,8 +121,71 @@ namespace AISA
             ViewControllerConnector.Connect += ConnectionHandler;
             ViewControllerConnector.None += NoneHandler;
             ViewControllerConnector.ChangeHypothesis += ChangeHypothesisHandler;
+            ViewControllerConnector.AsyncResult += AsyncResultChanged;
+
+            
+            //Setup the windows hiding behavior
+
         }
         
+
+        /// <summary>
+        /// This occurs on asynchronous basis
+        /// </summary>
+        /// <param name="Q"></param>
+        /// <param name="A"></param>
+        private void AsyncResultChanged(string Q, string A)
+        {
+            this.Dispatcher.Invoke(() =>
+            {
+                if (A.StartsWith("SUDO:") == false)
+                {
+
+                    //Play results audio
+                    AudioHandler.Results();
+
+                    //Hide the spinner
+                    Spinner.Hide();
+
+                    //Hide the hypothesis
+                    var da = new DoubleAnimation(0, TimeSpan.FromMilliseconds(500));
+                    Hypothesis.BeginAnimation(OpacityProperty, da);
+
+                    ResultSheet.Visibility = Visibility.Visible;
+                    var sa = FindResource("ResultsAnimation") as Storyboard;
+                    sa.Begin();
+
+                    //Speak the answer
+                    OpenSpeak.Speak(A);
+
+                    q_label.Content = "\"" + Q + "\"";
+                    a_label.Text = A;
+                }else
+                {
+                    //Play results audio
+                    AudioHandler.Results();
+
+                    //Hide the spinner
+                    Spinner.Hide();
+
+                    //Hide the hypothesis
+                    var da = new DoubleAnimation(0, TimeSpan.FromMilliseconds(500));
+                    Hypothesis.BeginAnimation(OpacityProperty, da);
+
+                    ResultSheet.Visibility = Visibility.Visible;
+                    var sa = FindResource("ResultsAnimation") as Storyboard;
+                    sa.Begin();
+
+                    //Speak the answer
+                    OpenSpeak.Speak(A.Replace("SUDO:", ""));
+
+                    q_label.Content = "\"" + Q + "\"";
+                    a_label.Text = "Here's what I've got";
+                }
+            });
+        }
+
+
         /// <summary>
         /// Fired when the Recognizer has released a hypothesis of the word
         /// </summary>
@@ -196,21 +259,24 @@ namespace AISA
         /// </summary>
         /// <param name="Q">The Question / Query asked by the user</param>
         /// <param name="A">The result for it</param>
-        private void HandleResult(string Q, string A)
+        private void HandleResult(string Q, string A, bool _async =false)
         {
-            //Hide the spinner
-            Spinner.Hide();
+            if (!_async)
+            {
+                //Hide the spinner
+                Spinner.Hide();
 
-            //Hide the hypothesis
-            var da = new DoubleAnimation(0, TimeSpan.FromMilliseconds(500));
-            Hypothesis.BeginAnimation(OpacityProperty, da);
+                //Hide the hypothesis
+                var da = new DoubleAnimation(0, TimeSpan.FromMilliseconds(500));
+                Hypothesis.BeginAnimation(OpacityProperty, da);
 
-            ResultSheet.Visibility = Visibility.Visible;
-            var sa = FindResource("ResultsAnimation") as Storyboard;
-            sa.Begin();
+                ResultSheet.Visibility = Visibility.Visible;
+                var sa = FindResource("ResultsAnimation") as Storyboard;
+                sa.Begin();
 
-            q_label.Content = "\"" + Q + "\"";
-            a_label.Text = A;
+                q_label.Content = "\"" + Q + "\"";
+                a_label.Text = A;
+            }
         }
 
         /// <summary>

@@ -17,13 +17,13 @@ namespace AISA.SpeechRecognition
         private SpeechRecognitionEngine _recognizer = new SpeechRecognitionEngine();
         private SpeechSynthesizer synthesizer = new SpeechSynthesizer();
         private Action _End = null;
-        private Action<string, string> ResultCallback;
+        private Action<string, string,bool> ResultCallback;
         private DispatcherTimer timer = new DispatcherTimer();
 
         /// <summary>
         /// Creates a new Speech Recognizer Object
         /// </summary>
-        public Recognizer(Action end, Action<string, string> result)
+        public Recognizer(Action end, Action<string, string, bool> result)
         {
             //Inform the ViewcontrollerConnector
             ViewControllerConnector.StartedCommandRecognition = true;
@@ -81,7 +81,7 @@ namespace AISA.SpeechRecognition
             //Say that it's wrong
             var result_string = CommandHandler.Handle("ERR:WRONG");
             synthesizer.SpeakAsync(result_string);
-            ResultCallback("Couldn't recognize", result_string);
+            ResultCallback("Couldn't recognize", result_string, false);
 
             //Null the recognizer
             _recognizer = null;
@@ -106,19 +106,32 @@ namespace AISA.SpeechRecognition
             //Activate the ending function
             _End();
 
-            //Play results audio
-            AudioHandler.Results();
 
             //Speak the answer from the CommandHandler
             var result_string = CommandHandler.Handle(e.Result.Text);
-            if (!result_string.StartsWith("SUDO:"))
+            var async = false;
+
+            if (result_string.StartsWith("ASYNC:"))
             {
-                ResultCallback(e.Result.Text, result_string);
+                //Remove async keyword
+                async = true;
+                result_string = result_string.Replace("ASYNC:", "");
             }else
             {
-                ResultCallback(e.Result.Text, "Here's what I've got");
+
+                //Play results audio
+                AudioHandler.Results();
             }
-            
+
+            if (!result_string.StartsWith("SUDO:"))
+            {
+                ResultCallback(e.Result.Text, result_string, async);
+            }
+            else
+            {
+                ResultCallback(e.Result.Text, "Here's what I've got", async);
+            }
+
             synthesizer.SpeakAsync(result_string.Replace("SUDO:", ""));
             //Null the recognizer
             _recognizer = null;

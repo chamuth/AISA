@@ -27,14 +27,14 @@ namespace AISA.SpeechRecognition
         private static SpeechRecognitionEngine _recognizer = new SpeechRecognitionEngine();
         private static Action AISACallback;
         private static Action AISAEndCallback;
-        private static Action<string, string> AISAResultCallback;
+        private static Action<string, string, bool> AISAResultCallback;
 
         /// <summary>
         /// Initialize the AISA Handler
         /// </summary>
         /// <param name="start">Lambda Expression that executes when AISA is recognized</param>
         /// <param name="end">Lambda Expression when the program command is executed</param>
-        public static void Initialize(Action start, Action end, Action<string, string> result)
+        public static void Initialize(Action start, Action end, Action<string, string, bool> result)
         {
             _recognizer.LoadGrammar(new Grammar(new GrammarBuilder(new Choices(new string[] { "AISA" }))));
             _recognizer.SpeechRecognized += _recognizer_SpeechRecognized;

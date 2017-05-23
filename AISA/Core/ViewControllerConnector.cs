@@ -23,5 +23,7 @@ namespace AISA.Core
 
         public static bool StartedCommandRecognition = false;
 
+        public static Action<string, string> AsyncResult;
+
     }
 }

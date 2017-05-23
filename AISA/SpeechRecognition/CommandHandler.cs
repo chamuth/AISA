@@ -14,6 +14,8 @@ using System.Xml.Serialization;
 using System.IO;
 using System.Xml;
 using System.Collections;
+using System.Threading;
+using System.Windows.Threading;
 
 namespace AISA
 {
@@ -279,36 +281,43 @@ namespace AISA
             }
             else if (input.ToLower().Contains("weather"))
             {
-                // Get location information first
-                var client = new RestClient("http://ip-api.com/json");
-                var request = new RestRequest(Method.GET);
-                IRestResponse response = client.Execute(request);
-
-                try
+                var seperatethread = new ThreadStart(() =>
                 {
-                    if (response.StatusCode == System.Net.HttpStatusCode.OK)
+                    // Get location information first
+                    var client = new RestClient("http://ip-api.com/json");
+                    var request = new RestRequest(Method.GET);
+                    IRestResponse response = client.Execute(request);
+
+                    try
                     {
-                        // Get weather information then
-                        LocationResult l = JsonConvert.DeserializeObject<LocationResult>(response.Content);
-                        var weatherclient = new RestClient("http://api.openweathermap.org/data/2.5/weather?q=" + l.city + "&appid=6bc37d05c9bb515c72cd40db94325f51");
-                        var weatherrequest = new RestRequest(Method.GET);
-                        IRestResponse weatherresponse = weatherclient.Execute(weatherrequest);
-
-                        if (weatherresponse.StatusCode == System.Net.HttpStatusCode.OK && weatherresponse.Content.Trim() != "")
+                        if (response.StatusCode == System.Net.HttpStatusCode.OK)
                         {
-                            var x = weatherresponse.Content;
-                            WeatherResult responseObject = JsonConvert.DeserializeObject<WeatherResult>(weatherresponse.Content);
+                            // Get weather information then
+                            LocationResult l = JsonConvert.DeserializeObject<LocationResult>(response.Content);
+                            var weatherclient = new RestClient("http://api.openweathermap.org/data/2.5/weather?q=" + l.city + "&appid=6bc37d05c9bb515c72cd40db94325f51");
+                            var weatherrequest = new RestRequest(Method.GET);
+                            IRestResponse weatherresponse = weatherclient.Execute(weatherrequest);
 
-                            return "It's " + (responseObject.main.temp - 273.15d) + " degrees and " + responseObject.weather[0].main + " can be seen in " + responseObject.name;
+                            if (weatherresponse.StatusCode == System.Net.HttpStatusCode.OK && weatherresponse.Content.Trim() != "")
+                            {
+                                var x = weatherresponse.Content;
+                                WeatherResult responseObject = JsonConvert.DeserializeObject<WeatherResult>(weatherresponse.Content);
+
+                                ViewControllerConnector.AsyncResult(input, "It's " + (responseObject.main.temp - 273.15d) + " degrees and " + responseObject.weather[0].main + " can be seen in " + responseObject.name);
+                            }
                         }
                     }
-                }
-                catch (Exception)
-                {
-                    return "It's 28 degrees and cloudy in Colombo";
-                }
+                    catch (Exception)
+                    {
+                        ViewControllerConnector.AsyncResult(input, "It's 28 degrees and cloudy in Colombo");
+                    }
+                });
 
-                return "It's 28 degrees and cloudy in Colombo";
+                //Start a separate thread from the above
+                var thread = new Thread(seperatethread);
+                thread.Start();
+
+                return "ASYNC:";
             }
             else if (input.Contains("Play some music") || input.Contains("Play music"))
             {
@@ -541,95 +550,112 @@ namespace AISA
         /// <returns></returns>
         public static string FindAClass(int category)
         {
-            string returner = "SUDO: I found ";
-
-            var username = Properties.Settings.Default.scholarUsername;
-            var password = Properties.Settings.Default.scholarPassword;
-
-            //Verify the student username and the password
-            if (Student.VerifyStudent(username, password).error == 0)
+            var threadstart = new ThreadStart(() =>
             {
-                //User exists and the password is correct
+                string returner = "SUDO: I found ";
 
-                //Search the class by category
-                var search1 = Class.SearchByGrade(Properties.Settings.Default.studentGrade);
-                var search2 = Class.SearchByCategory(category);
+                var username = Properties.Settings.Default.scholarUsername;
+                var password = Properties.Settings.Default.scholarPassword;
 
-                var complete = search1.results.Intersect<string>(search2.results);
-
-
-                if (complete != null)
+                //Verify the student username and the password
+                if (Student.VerifyStudent(username, password).error == 0)
                 {
+                    //User exists and the password is correct
 
-                    for (int i = 0; i < 3; i++)
+                    //Search the class by category
+                    var search1 = Class.SearchByGrade(Properties.Settings.Default.studentGrade);
+                    var search2 = Class.SearchByCategory(category);
+
+                    IEnumerable<string> complete = null;
+
+                    if (search1.results == null)
                     {
-                        if (complete.Count() > i)
+                        complete = search2.results;
+                    }else if (search2.results == null)
+                    {
+                        complete = search1.results;
+                    }else { 
+                        complete = search1.results.Intersect<string>(search2.results);
+                    }
+
+                    if (complete != null)
+                    {
+
+                        for (int i = 0; i < 3; i++)
                         {
-                            var current = complete.ToArray()[i];
-
-                            var searchClass = Class.GetInformation(int.Parse(current));
-                            var searchTeacher = Teacher.GetInformation(searchClass.information.teacher);
-                            var teachername = searchTeacher.information.firstname + " " + searchTeacher.information.lastname;
-
-                            if (searchClass.error == 0)
+                            if (complete.Count() > i)
                             {
-                                //No error found on the index of the class
-                                if (complete.Count() != 1)
+                                var current = complete.ToArray()[i];
+
+                                var searchClass = Class.GetInformation(int.Parse(current));
+                                var searchTeacher = Teacher.GetInformation(searchClass.information.teacher);
+                                var teachername = searchTeacher.information.firstname + " " + searchTeacher.information.lastname;
+
+                                if (searchClass.error == 0)
                                 {
-                                    if (complete.Count() > 3)
+                                    //No error found on the index of the class
+                                    if (complete.Count() != 1)
                                     {
-                                        if (i != 2)
+                                        if (complete.Count() > 3)
                                         {
-                                            returner += searchClass.information.name + " by " + teachername + ", ";
+                                            if (i != 2)
+                                            {
+                                                returner += searchClass.information.name + " by " + teachername + ", ";
+                                            }
+                                            else
+                                            {
+                                                returner += "and " + searchClass.information.name + " by " + teachername;
+                                            }
                                         }
                                         else
                                         {
-                                            returner += "and " + searchClass.information.name + " by " + teachername;
+                                            if (i != complete.Count() - 1)
+                                            {
+                                                returner += searchClass.information.name + " by " + teachername + ", ";
+                                            }
+                                            else
+                                            {
+                                                returner += "and " + searchClass.information.name + " by " + teachername;
+                                                break;
+                                            }
                                         }
                                     }
                                     else
                                     {
-                                        if (i != complete.Count() - 1)
-                                        {
-                                            returner += searchClass.information.name + " by " + teachername + ", ";
-                                        }
-                                        else
-                                        {
-                                            returner += "and " + searchClass.information.name + " by " + teachername;
-                                            break;
-                                        }
+                                        returner = "SUDO:" + searchClass.information.name + " by " + teachername;
                                     }
                                 }
                                 else
                                 {
-                                    returner = "SUDO:" + searchClass.information.name + " by " + teachername;
+                                    returner = "Found zero classes";
                                 }
-                            }
-                            else
-                            {
-                                returner = "Found zero classes";
-                            }
 
+                            }
                         }
+
+                    }
+                    else
+                    {
+                        returner = "Found zero classes";
                     }
 
                 }
                 else
                 {
-                    returner = "Found zero classes";
-                }
-            
-            }
-            else
-            {
-                //User does not exist or the password is wrong
-                return random(new string[]
-                {
+                    //User does not exist or the password is wrong
+                    returner = random(new string[]
+                    {
                     "Please make sure your credentials are correct", "Please re-enter your credentials"
-                });
-            }
+                    });
+                }
 
-            return returner;
+                ViewControllerConnector.AsyncResult(Context.Current, returner);
+            });
+
+            var thread = new Thread(threadstart);
+            thread.Start();
+
+            return "ASYNC:";
         }
 
         private static GoodreadsResponseSearchWork[] random(GoodreadsResponseSearchWork[] i)
@@ -649,77 +675,88 @@ namespace AISA
         /// <returns></returns>
         private static string searchBooks(string v)
         {
-            var key = "iBDvQ3HOYOPOaFboICTtrw";
-            var restClient = new RestClient("https://www.goodreads.com/search.xml?key=" + key + "&q=" + v);
-            var restRequest = new RestRequest(Method.GET);
-
-            var restresponse = restClient.Execute(restRequest);
-
-            if (restresponse.Content != "" && restresponse.StatusCode == System.Net.HttpStatusCode.OK)
+            var threadstart = new ThreadStart(() =>
             {
-                try
+                var key = "iBDvQ3HOYOPOaFboICTtrw";
+                var restClient = new RestClient("https://www.goodreads.com/search.xml?key=" + key + "&q=" + v);
+                var restRequest = new RestRequest(Method.GET);
+
+                var restresponse = restClient.Execute(restRequest);
+
+                if (restresponse.Content != "" && restresponse.StatusCode == System.Net.HttpStatusCode.OK)
                 {
-                    var serializer = new XmlSerializer(typeof(GoodreadsResponse));
-                    GoodreadsResponse result;
-
-                    using (TextReader xmlreader = new StringReader(restresponse.Content))
+                    try
                     {
-                        try
+                        var serializer = new XmlSerializer(typeof(GoodreadsResponse));
+                        GoodreadsResponse result = new GoodreadsResponse();
+
+                        using (TextReader xmlreader = new StringReader(restresponse.Content))
                         {
-                            result = (GoodreadsResponse)serializer.Deserialize(xmlreader);
+                            try
+                            {
+                                result = (GoodreadsResponse)serializer.Deserialize(xmlreader);
+                            }
+                            catch (Exception)
+                            {
+                                ViewControllerConnector.AsyncResult(Context.Current, "SUDO:" + "Our servers are down, please retry");
+                            }
                         }
-                        catch (Exception)
+
+                        var sending_string = "I found ";
+                        var results = random(result.search.results);
+
+                        for (int i = 0; i < 3; i++)
                         {
-                            return "Our servers are down, please retry";
+                            if (i < 2)
+                                sending_string += results[i].best_book.title + " by " + results[i].best_book.author.name + ", ";
+                            else
+                                sending_string += " and " + results[i].best_book.title + " by " + results[i].best_book.author.name;
                         }
-                    }
 
-                    var sending_string = "I found ";
-                    var results = random(result.search.results);
-
-                    for (int i = 0; i < 3; i++)
-                    {
-                        if (i < 2)
-                            sending_string += results[i].best_book.title + " by " + results[i].best_book.author.name + ", ";
-                        else
-                            sending_string += " and " + results[i].best_book.title + " by " + results[i].best_book.author.name;
-                    }
-
-                    Context.BuyThatBook = new string[]
-                    {
+                        Context.BuyThatBook = new string[]
+                        {
                         results[0].best_book.title,
                         results[1].best_book.title,
                         results[2].best_book.title,
-                    };
+                        };
 
-                    ViewControllerConnector.Connect(ViewControllerConnector.ConnectionMethod.Book, new string[]
-                    {
-                        results[0].best_book.title, results[0].best_book.author.name,
-                        results[1].best_book.title, results[1].best_book.author.name,
-                        results[2].best_book.title, results[2].best_book.author.name,
-                        results[0].best_book.small_image_url, results[1].best_book.small_image_url, results[2].best_book.small_image_url,
-                        "http://www.amazon.com/s/ref=nb_sb_noss_2?field-keywords=" + results[0].best_book.title,
-                        "http://www.amazon.com/s/ref=nb_sb_noss_2?field-keywords=" + results[1].best_book.title,
-                        "http://www.amazon.com/s/ref=nb_sb_noss_2?field-keywords=" + results[2].best_book.title,
-                    });
+                        Application.Current.Dispatcher.Invoke(() =>
+                        {
+                            ViewControllerConnector.Connect(ViewControllerConnector.ConnectionMethod.Book, new string[]
+                            {
+                                results[0].best_book.title, results[0].best_book.author.name,
+                                results[1].best_book.title, results[1].best_book.author.name,
+                                results[2].best_book.title, results[2].best_book.author.name,
+                                results[0].best_book.small_image_url, results[1].best_book.small_image_url, results[2].best_book.small_image_url,
+                                "http://www.amazon.com/s/ref=nb_sb_noss_2?field-keywords=" + results[0].best_book.title,
+                                "http://www.amazon.com/s/ref=nb_sb_noss_2?field-keywords=" + results[1].best_book.title,
+                                "http://www.amazon.com/s/ref=nb_sb_noss_2?field-keywords=" + results[2].best_book.title,
+                            });
+                        });
 
-                    return "SUDO:" + sending_string;
-                }
-                catch (IOException)
-                {
-                    return random(new string[]
+                        ViewControllerConnector.AsyncResult(Context.Current, "SUDO:" + sending_string);
+                    }
+                    catch (IOException)
                     {
+                        ViewControllerConnector.AsyncResult(Context.Current, random(new string[]
+                        {
                         "Sorry, I'm having some connection issues", "My apologies, make sure you're connected to the Internet", "I cannot connect to my servers, sorry."
-                    });
+                        }));
+                    }
                 }
-            }
-            else
-            {
-                return random(new string[]
+                else
                 {
+                    ViewControllerConnector.AsyncResult(Context.Previous, random(new string[]
+                    {
                     "Sorry, I'm having some connection issues", "My apologies, make sure you're connected to the Internet", "I cannot connect to my servers, sorry."
-                });
-            }
+                    }));
+                }
+            });
+
+            var thread = new Thread(threadstart);
+            thread.Start();
+
+            return "ASYNC:";
         }
 
         /// <summary>
