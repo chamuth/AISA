@@ -25,5 +25,8 @@ namespace AISA.Core
 
         public static Action<string, string> AsyncResult;
 
+        public static Action MainWindowHide;
+        public static Action MainWindowShow;
+
     }
 }

@@ -5,8 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:AISA"
         xmlns:sys="clr-namespace:System;assembly=mscorlib"
-        xmlns:ed="http://schemas.microsoft.com/expression/2010/drawing" xmlns:Custom_Controls="clr-namespace:AISA.Custom_Controls" x:Class="AISA.MainWindow"
-        mc:Ignorable="d" x:Name="window" MouseDoubleClick="window_MouseDoubleClick"
+        xmlns:ed="http://sche mas.microsoft.com/expression/2010/drawing" xmlns:Custom_Controls="clr-namespace:AISA.Custom_Controls" x:Class="AISA.MainWindow"
+        mc:Ignorable="d" x:Name="window" MouseDoubleClick="window_MouseDoubleClick" Topmost="True"
         Title="AISA - The Smart Assistant" WindowStyle="None" Height="622.848" Width="324.024" AllowsTransparency="True" Background="#EE000000" Loaded="Window_Loaded" ResizeMode="NoResize">
 
     <Window.Resources>

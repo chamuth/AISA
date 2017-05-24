@@ -15,6 +15,12 @@ namespace AISA
     {
         public App()
         {
+            var Badge = new Badge();
+            Badge.Show();
+
+            var Window = new MainWindow();
+            Window.Show();
+            Window.HideWindow();
         }
     }
 }

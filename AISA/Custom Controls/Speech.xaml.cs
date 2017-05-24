@@ -42,16 +42,7 @@ namespace AISA.Custom_Controls
             ellipse.Fill = new SolidColorBrush(Color.FromArgb(255, 0, 150, 255));
             if (clicked)
             {
-                //Activate or deactivate
-                activated = !activated;
-                if (activated)
-                {
-                    Activate();
-                }
-                else
-                {
-                    Deactivate();
-                }
+                Clicked();
             }
         }
         public void Activate()
@@ -67,6 +58,8 @@ namespace AISA.Custom_Controls
 
             var opa = new DoubleAnimation(1, 0, TimeSpan.FromMilliseconds(500));
             topDrawer.BeginAnimation(OpacityProperty, opa);
+
+            activated = true;
         }
 
         public void Deactivate()
@@ -79,6 +72,8 @@ namespace AISA.Custom_Controls
             var da = new DoubleAnimation(50, TimeSpan.FromMilliseconds(500));
             ellipse.BeginAnimation(WidthProperty, da);
             ellipse.BeginAnimation(HeightProperty, da);
+
+            activated = false;
         }
 
         private void UserControl_Loaded(object sender, RoutedEventArgs e)

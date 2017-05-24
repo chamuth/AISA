@@ -122,6 +122,7 @@ namespace AISA
             ViewControllerConnector.None += NoneHandler;
             ViewControllerConnector.ChangeHypothesis += ChangeHypothesisHandler;
             ViewControllerConnector.AsyncResult += AsyncResultChanged;
+            ViewControllerConnector.MainWindowShow += ShowWindow;
         }
 
         /// <summary>
@@ -369,9 +370,31 @@ namespace AISA
 
         private string book1link, book2link, book3link;
 
-        private void window_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        public void window_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            
+            HideWindow();
+        }
+
+        public void HideWindow()
+        {
+            //Disappear the program
+            var da = new DoubleAnimation(SystemParameters.PrimaryScreenHeight, TimeSpan.FromMilliseconds(500));
+            da.EasingFunction = new QuinticEase();
+            BeginAnimation(TopProperty, da);
+
+            AISAHandler.Pause();
+
+            ViewControllerConnector.MainWindowHide();
+        }
+
+        public void ShowWindow()
+        {
+            AISAHandler.Start();
+
+            //Disappear the program
+            var da = new DoubleAnimation(SystemParameters.WorkArea.Height - Height, TimeSpan.FromSeconds(1));
+            da.EasingFunction = new QuinticEase();
+            BeginAnimation(TopProperty, da);
         }
 
         private void book1MouseDown(object sender, MouseButtonEventArgs e)
