@@ -21,6 +21,8 @@ namespace AISA
             var Window = new MainWindow();
             Window.Show();
             Window.HideWindow();
+
+            Scholar.Connector.APIEndpoint = "http://localhost/Scholar/API/";
         }
     }
 }

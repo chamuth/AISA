@@ -5,11 +5,12 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:AISA"
         xmlns:Custom_Controls="clr-namespace:AISA.Custom_Controls" x:Class="AISA.Badge"
-        mc:Ignorable="d" Topmost="True"
+        mc:Ignorable="d" Topmost="True" ShowInTaskbar="False"
         Title="Badge" Height="50" Width="50" WindowStyle="None" ResizeMode="NoResize" AllowsTransparency="True" Background="Transparent">
     <Grid>
 
-        <Custom_Controls:Speech x:Name="BadgeButton" HorizontalAlignment="Left" VerticalAlignment="Top" Clicked="HideMe"/>
+        <Custom_Controls:Collapse x:Name="BadgeButton" HorizontalAlignment="Left" VerticalAlignment="Top" Clicked="HideMe"/>
     
     </Grid>
 </Window>
+ 

@@ -67,26 +67,38 @@ namespace AISA
 
             if (!Maximized)
             {
-                //Restore the window
-                //Set Dimensions of the Window
-                Height = 600;
-                Width = 350;
-                Left = SystemParameters.FullPrimaryScreenWidth - Width;
-                Top = SystemParameters.FullPrimaryScreenHeight;
-
+                //TODO:Implement MainWindow Maximization Abilities.
                 //Animate from Bottom
                 var da = new DoubleAnimation(SystemParameters.FullPrimaryScreenHeight, SystemParameters.WorkArea.Height - Height, TimeSpan.FromSeconds(1));
                 da.EasingFunction = new QuinticEase();
-                da.BeginTime = TimeSpan.FromSeconds(2);
                 BeginAnimation(TopProperty, da);
+
+                var wi = new DoubleAnimation(350, TimeSpan.FromSeconds(1));
+                var hi = new DoubleAnimation(600, TimeSpan.FromSeconds(1));
+                da.EasingFunction = new QuinticEase();
+                wi.EasingFunction = new QuinticEase();
+                hi.EasingFunction = new QuinticEase();
+
+                wi.BeginTime = TimeSpan.FromSeconds(1); 
+                hi.BeginTime = TimeSpan.FromSeconds(1);
+
+                BeginAnimation(WidthProperty, wi); BeginAnimation(HeightProperty, hi);
+
+                //Set Dimensions of the Window
+                var xa = new DoubleAnimation(SystemParameters.FullPrimaryScreenWidth - 350, TimeSpan.FromSeconds(1));
+                var ya = new DoubleAnimation(SystemParameters.FullPrimaryScreenHeight - 600, TimeSpan.FromSeconds(1));
+
+                //Begin the top and left animation
+                BeginAnimation(LeftProperty, xa);
+                BeginAnimation(TopProperty, ya);
             }
             else
             {
                 //Maximize the window
                 var da = new DoubleAnimation(0, TimeSpan.FromSeconds(1));
                 BeginAnimation(TopProperty, da); BeginAnimation(LeftProperty, da);
-                var wi = new DoubleAnimation(SystemParameters.FullPrimaryScreenWidth, TimeSpan.FromSeconds(1));
-                var hi = new DoubleAnimation(SystemParameters.MaximizedPrimaryScreenHeight, TimeSpan.FromSeconds(1));
+                var wi = new DoubleAnimation(SystemParameters.PrimaryScreenWidth, TimeSpan.FromSeconds(1));
+                var hi = new DoubleAnimation(SystemParameters.PrimaryScreenHeight, TimeSpan.FromSeconds(1));
                 da.EasingFunction = new QuinticEase();
                 wi.EasingFunction = new QuinticEase();
                 hi.EasingFunction = new QuinticEase();
@@ -102,6 +114,7 @@ namespace AISA
             {
                 AISAHandler.Initialize(() =>
                 {
+                    Spinner.Opacity = 1d;
                     Speech.Activate();
                     AskSheet.Visibility = Visibility.Hidden;
                     Spinner.Visibility = Visibility.Visible;
@@ -123,6 +136,13 @@ namespace AISA
             ViewControllerConnector.ChangeHypothesis += ChangeHypothesisHandler;
             ViewControllerConnector.AsyncResult += AsyncResultChanged;
             ViewControllerConnector.MainWindowShow += ShowWindow;
+            ViewControllerConnector.startPaper += StartPaper;
+        }
+
+        public void StartPaper(string _class, string paper_index)
+        {
+            //Start a new MCQ
+            new MCQ(_class,paper_index).ShowDialog();
         }
 
         /// <summary>

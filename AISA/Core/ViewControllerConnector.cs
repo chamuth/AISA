@@ -28,5 +28,7 @@ namespace AISA.Core
         public static Action MainWindowHide;
         public static Action MainWindowShow;
 
+        public static Action<string, string> startPaper { get; set; }
+
     }
 }

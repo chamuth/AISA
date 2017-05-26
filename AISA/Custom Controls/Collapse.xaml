@@ -1,0 +1,35 @@
+﻿<UserControl x:Class="AISA.Custom_Controls.Collapse"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:AISA.Custom_Controls"
+             mc:Ignorable="d" 
+             Loaded="UserControl_Loaded" d:DesignHeight="50" d:DesignWidth="50" MouseDown="UserControl_MouseDown" MouseUp="UserControl_MouseUp">
+    <UserControl.Resources>
+        <Storyboard x:Key="VisualDropAnimation" AutoReverse="False" RepeatBehavior="Forever">
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(FrameworkElement.Width)" Storyboard.TargetName="ellipse">
+                <EasingDoubleKeyFrame KeyTime="0" Value="50"/>
+                <EasingDoubleKeyFrame KeyTime="0:0:1" Value="45"/>
+                <EasingDoubleKeyFrame KeyTime="0:0:2" Value="50"/>
+            </DoubleAnimationUsingKeyFrames>
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(FrameworkElement.Height)" Storyboard.TargetName="ellipse">
+                <EasingDoubleKeyFrame KeyTime="0" Value="50"/>
+                <EasingDoubleKeyFrame KeyTime="0:0:1" Value="45"/>
+                <EasingDoubleKeyFrame KeyTime="0:0:2" Value="50"/>
+            </DoubleAnimationUsingKeyFrames>
+        </Storyboard>
+    </UserControl.Resources>
+    <UserControl.Triggers>
+        <EventTrigger RoutedEvent="FrameworkElement.Loaded"/>
+    </UserControl.Triggers>
+    
+    
+    <Grid>
+        <Ellipse x:Name="ellipse" Fill="#FF0096FF" Width="50" Height="50"/>
+        <Ellipse Opacity="0" x:Name="topDrawer" Fill="#FF0069B2"></Ellipse>
+        <Image x:Name="image" HorizontalAlignment="Center" VerticalAlignment="Center" Width="25" Height="25" Source="res/collapse.png"/>
+    </Grid>
+    
+    
+</UserControl>

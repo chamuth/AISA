@@ -524,6 +524,134 @@ namespace AISA
                     "What type of a book you need?", "What kind of a book you need?", "Please tell me a category to search for", "What type of book?"
                 });
             }
+
+            //PAPERS
+            else if (input.ToLower().Contains("let's write a paper") || input.ToLower().Contains("do i have any papers") || input.ToLower().Contains("do i have any papers to write"))
+            {
+                //Check for all of the classes the student attend
+
+                var threadstart = new ThreadStart(() =>
+                {
+
+                    var classes = Student.GetClasses(Properties.Settings.Default.scholarUsername);
+
+                    foreach (var _class in classes.classes)
+                    {
+                        var papers = Class.GetMCQPapers(int.Parse(_class));
+                        var indexes = papers.papers;
+
+                        indexes = indexes.Where((i) =>
+                        {
+                            if (Context.previousPaper != null)
+                            {
+                                if (_class == Context.previousPaper[0])
+                                {
+                                    if (indexes.Length > 1)
+                                    {
+                                        if (indexes[1] == i)
+                                        {
+                                            return false;
+                                        }
+                                        else
+                                        {
+                                            if (Paper.VerifyWritten(int.Parse(_class), i, Properties.Settings.Default.scholarUsername).written == 1)
+                                            {
+                                                ViewControllerConnector.AsyncResult(Context.Current, "SUDO:The paper was written by you");
+                                                return false;
+                                            }
+                                            else
+                                            {
+                                                return true;
+                                            }
+                                        }
+                                    }
+                                    else
+                                    {
+                                        if (Paper.VerifyWritten(int.Parse(_class), i, Properties.Settings.Default.scholarUsername).written == 1)
+                                        {
+                                            ViewControllerConnector.AsyncResult(Context.Current, "SUDO:The paper was written by you");
+                                            return false;
+                                        }
+                                        else
+                                        {
+                                            return true;
+                                        }
+                                    }
+                                }
+                                else
+                                {
+                                    if (Paper.VerifyWritten(int.Parse(_class), i, Properties.Settings.Default.scholarUsername).written == 1)
+                                    {
+                                        ViewControllerConnector.AsyncResult(Context.Current, "SUDO:The paper was written by you");
+                                        return false;
+                                    }
+                                    else
+                                    {
+                                        return true;
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                if (Paper.VerifyWritten(int.Parse(_class), i, Properties.Settings.Default.scholarUsername).written == 1)
+                                {
+                                    ViewControllerConnector.AsyncResult(Context.Current, "SUDO:The paper was written by you");
+                                    return false;
+                                }
+                                else
+                                {
+                                    return true;
+                                }
+                            }
+
+                        }).Select(i => i).ToArray();
+
+                        //Get the first paper's information
+                        if (indexes != null)
+                        {
+                            var thepaper = Class.GetMCQPaper(int.Parse(_class), indexes[0], Properties.Settings.Default.scholarUsername, Properties.Settings.Default.scholarPassword);
+                            var currentname = thepaper.name;
+
+                            //Get the class information from the server
+                            var classinfo = Class.GetInformation(int.Parse(_class));
+
+                            //Setup the paper that I've been working with
+                            Context.previousPaper = new string[]
+                            {
+                                _class, indexes[0].ToString()
+                            };
+
+                            ViewControllerConnector.AsyncResult(Context.Current, "SUDO:You have a paper, " + currentname + " from " + classinfo.information.name);
+                            break;
+                        }
+                        else
+                        {
+                            ViewControllerConnector.AsyncResult(Context.Current, "You don't have any paper");
+                        }
+
+                    }
+                });
+
+                var thread = new Thread(threadstart);
+                thread.Start();
+
+                return "ASYNC:";
+            }
+            else if (input.ToLower().Contains("let's write it") || input.ToLower().Contains("let's write that") || input.ToLower().Contains("Let's write") || input.ToLower().Contains("Let's start"))
+            {
+                var threadstart = new ThreadStart(() =>
+                {
+                    //Get details about the paper
+                    Context.currentPaper = Class.GetMCQPaper(int.Parse(Context.previousPaper[0]), int.Parse(Context.previousPaper[1]), Properties.Settings.Default.scholarUsername, Properties.Settings.Default.scholarPassword);
+                    //Start the paper
+                    ViewControllerConnector.startPaper(Context.previousPaper[0], Context.previousPaper[1]);
+
+                    ViewControllerConnector.AsyncResult(Context.Current, "Started the paper");
+                });
+
+                return "ASYNC:";
+            }
+            
             #endregion
 
             //Something not recognized
@@ -645,7 +773,7 @@ namespace AISA
                     //User does not exist or the password is wrong
                     returner = random(new string[]
                     {
-                    "Please make sure your credentials are correct", "Please re-enter your credentials"
+                        "Please make sure your credentials are correct", "Please re-enter your credentials"
                     });
                 }
 
@@ -854,11 +982,16 @@ namespace AISA
                     "Find me a physics class", "Find a physics class", "Find a physical science class", "Find me a physical science class",
                     "Find me a psychology class", "Find a psychology class",
                     "Find me a science class", "Find a science class", "Find me a chemistry class", "Find a chemistry class",
-                    #endregion
+                #endregion
+                #region PAPERS
+                    "Let's write a paper", "Do I have any papers", "Do I have any papers to write", 
 
-                    #region BOOK SEARCH
-                    //Finding a book
-                    "Find me a book", "Find a book", "I want a book",
+                    "Let's write it" , "Let's write that", "Let's write that paper", "Let's write", "Let's start",
+                #endregion
+
+                #region BOOK SEARCH
+                //Finding a book
+                "Find me a book", "Find a book", "I want a book",
                     //Science books
                     "Find me a science book", "Find me a book about science", "Find me a mathematics book",
                     "Find me a maths book", "Find me a book about mathematics", "Find me a book about maths",

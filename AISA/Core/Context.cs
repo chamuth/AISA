@@ -13,5 +13,9 @@ namespace AISA.Core
         public static string LastURL { get; set; }
 
         public static string[] BuyThatBook { get; set; }
+        public static string[] previousPaper { get; set; }
+
+
+        public static Scholar.MCQPaper currentPaper { get; set; }
     }
 }

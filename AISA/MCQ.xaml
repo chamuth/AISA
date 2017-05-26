@@ -1,0 +1,62 @@
+﻿<Window xmlns:Custom_Controls="clr-namespace:AISA.Custom_Controls"  x:Class="AISA.MCQ"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:AISA"
+        mc:Ignorable="d" WindowStyle="None" ResizeMode="NoResize"
+        Title="MCQ" Height="500" Width="700" Background="#EE000000" WindowStartupLocation="CenterScreen">
+
+    <Grid>
+        <Label x:Name="PaperName" Margin="50 40 0 0" HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="25" Foreground="White">
+            PAPER__NAME
+        </Label>
+
+        <!--Window Label / Badge-->
+        <Grid Background="#2FFF" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="50 90 0 0" Width="94" Height="35">
+            <Label Foreground="White" FontFamily="Segoe UI" Margin="10 0 0 0" HorizontalContentAlignment="LEFT" VerticalContentAlignment="Center">MCQ PAPER</Label>
+        </Grid>
+
+        <Grid Background="#2FFF" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0 50 50 0">
+            <Label Foreground="White" FontSize="20" FontFamily="Segoe UI" Margin="5 0 5 0">1/10</Label>
+        </Grid>
+
+        <Label Foreground="White" FontSize="20" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="50,162,0,0">
+            What's the question?
+        </Label>
+
+        <Grid x:Name="Answers">
+            <Label Margin="65,212,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="18" Foreground="White">
+                A -
+            </Label>
+            <RadioButton FontSize="18" VerticalContentAlignment="Center" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="105,220,0,0" Foreground="#AFFF">
+                Answer one stands here
+            </RadioButton>
+
+            <Label Margin="65,252,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="18" Foreground="White">
+                B -
+            </Label>
+            <RadioButton FontSize="18" VerticalContentAlignment="Center" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="105,260,0,0" Foreground="#AFFF">
+                Answer two stands here
+            </RadioButton>
+
+            <Label Margin="65,292,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="18" Foreground="White">
+                C -
+            </Label>
+            <RadioButton FontSize="18" VerticalContentAlignment="Center" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="105,300,0,0" Foreground="#AFFF">
+                Answer three stands here
+            </RadioButton>
+
+            <Label Margin="65,332,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="18" Foreground="White">
+                D -
+            </Label>
+            <RadioButton FontSize="18" VerticalContentAlignment="Center" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="105,340,0,0" Foreground="#AFFF">
+                Answer four stands here
+            </RadioButton>
+        </Grid>
+
+
+        <Custom_Controls:Next VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="30" Width="60" Height="60"/>
+        <Custom_Controls:Previous VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="30" Width="60" Height="60"/>
+    </Grid>
+</Window>

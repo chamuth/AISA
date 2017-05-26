@@ -66,6 +66,10 @@
     <SignAssembly>false</SignAssembly>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="itextsharp, Version=5.5.11.0, Culture=neutral, PublicKeyToken=8354ae6d2174ddca, processorArchitecture=MSIL">
+      <HintPath>..\packages\iTextSharp.5.5.11\lib\itextsharp.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Microsoft.Expression.Drawing, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.10.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
@@ -111,9 +115,21 @@
     <Compile Include="Custom Controls\HelpItem.xaml.cs">
       <DependentUpon>HelpItem.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Custom Controls\Collapse.xaml.cs">
+      <DependentUpon>Collapse.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Custom Controls\Previous.xaml.cs">
+      <DependentUpon>Previous.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Custom Controls\Next.xaml.cs">
+      <DependentUpon>Next.xaml</DependentUpon>
+    </Compile>
     <Compile Include="DataEntities\Books.cs" />
     <Compile Include="DataEntities\Location.cs" />
     <Compile Include="DataEntities\Weather.cs" />
+    <Compile Include="MCQ.xaml.cs">
+      <DependentUpon>MCQ.xaml</DependentUpon>
+    </Compile>
     <Compile Include="SpeechRecognition\AudioHandler.cs" />
     <Compile Include="SpeechRecognition\CommandHandler.cs" />
     <Compile Include="Custom Controls\RectangularButton.xaml.cs">
@@ -133,9 +149,21 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Custom Controls\Previous.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Custom Controls\Next.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Custom Controls\RectangularButton.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Custom Controls\Collapse.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Custom Controls\Speech.xaml">
       <SubType>Designer</SubType>
@@ -160,6 +188,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="MCQ.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">
@@ -230,7 +262,13 @@
       <Install>false</Install>
     </BootstrapperPackage>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Resource Include="Custom Controls\res\collapse.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Custom Controls\res\next.png" />
+    <Resource Include="Custom Controls\res\previous.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

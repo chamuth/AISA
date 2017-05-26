@@ -20,12 +20,12 @@
             <sys:String>&quot;Weather?&quot;</sys:String>
             <sys:String>&quot;How's the weather like?&quot;</sys:String>
         </x:Array>
-        
+
         <x:Array Type="sys:String" x:Key="help3">
             <sys:String>&quot;Who made you?&quot;</sys:String>
             <sys:String>&quot;What's your name?&quot;</sys:String>
         </x:Array>
-        
+
         <x:Array Type="sys:String" x:Key="help4">
             <sys:String>&quot;Let's take a picture&quot;</sys:String>
             <sys:String>&quot;Take a picture&quot;</sys:String>
@@ -38,7 +38,7 @@
             <sys:String>&quot;Go to Wikipedia&quot;</sys:String>
         </x:Array>
         <!--#endregion-->
-        
+
         <Storyboard x:Key="ResultsAnimation">
             <ThicknessAnimationUsingKeyFrames Storyboard.TargetProperty="(FrameworkElement.Margin)" Storyboard.TargetName="ResultSheet">
                 <EasingThicknessKeyFrame KeyTime="0" Value="25,100">
@@ -82,7 +82,6 @@
             <BeginStoryboard Storyboard="{StaticResource ResultsAnimation}"/>
         </EventTrigger>
     </Window.Triggers>
-
     <Grid>
         <Grid x:Name="ApplicationInterface">
             <Custom_Controls:Spinner x:Name="Spinner" Visibility="Hidden" Width="50" Height="50"/>
@@ -164,7 +163,7 @@
 
                 </StackPanel>
             </ScrollViewer>
-            
+
             <Custom_Controls:RectangularButton Clicked="CloseHelp" ToolTip="Close Help" Margin="10" HorizontalAlignment="Right" VerticalAlignment="Top"  Width="30" Height="30" Source="Resources/close.png"></Custom_Controls:RectangularButton>
         </Grid>
     </Grid>
