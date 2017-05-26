@@ -643,11 +643,18 @@ namespace AISA
                 {
                     //Get details about the paper
                     Context.currentPaper = Class.GetMCQPaper(int.Parse(Context.previousPaper[0]), int.Parse(Context.previousPaper[1]), Properties.Settings.Default.scholarUsername, Properties.Settings.Default.scholarPassword);
+
                     //Start the paper
-                    ViewControllerConnector.startPaper(Context.previousPaper[0], Context.previousPaper[1]);
+                    Application.Current.Dispatcher.Invoke(() =>
+                    {
+                        ViewControllerConnector.startPaper(Context.previousPaper[0], Context.previousPaper[1]);
+                    });
 
                     ViewControllerConnector.AsyncResult(Context.Current, "Started the paper");
                 });
+
+                var thread = new Thread(threadstart);
+                thread.Start();
 
                 return "ASYNC:";
             }

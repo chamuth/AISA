@@ -141,8 +141,10 @@ namespace AISA
 
         public void StartPaper(string _class, string paper_index)
         {
+            MessageBox.Show("Starting the paper");
             //Start a new MCQ
-            new MCQ(_class,paper_index).ShowDialog();
+            var mcq = new MCQ(_class, paper_index);
+            mcq.ShowDialog();
         }
 
         /// <summary>
