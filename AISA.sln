@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AISA", "AISA\AISA.csproj", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Scholar", "..\Scholar\Scholar.csproj", "{E74E1EC2-3E1B-4655-B451-5D04B4EC2ABE}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AISA-API", "AISA-API\AISA-API.csproj", "{7D11C2D0-5AB3-414B-8FB4-4CCEDC657821}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{E74E1EC2-3E1B-4655-B451-5D04B4EC2ABE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E74E1EC2-3E1B-4655-B451-5D04B4EC2ABE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E74E1EC2-3E1B-4655-B451-5D04B4EC2ABE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7D11C2D0-5AB3-414B-8FB4-4CCEDC657821}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7D11C2D0-5AB3-414B-8FB4-4CCEDC657821}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7D11C2D0-5AB3-414B-8FB4-4CCEDC657821}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7D11C2D0-5AB3-414B-8FB4-4CCEDC657821}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

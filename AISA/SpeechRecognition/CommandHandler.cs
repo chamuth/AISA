@@ -680,7 +680,7 @@ namespace AISA
             var threadstart = new ThreadStart(() =>
             {
                 string returner = "SUDO: I found ";
-
+                
                 var username = Properties.Settings.Default.scholarUsername;
                 var password = Properties.Settings.Default.scholarPassword;
 
@@ -991,14 +991,19 @@ namespace AISA
                     "Let's write it" , "Let's write that", "Let's write that paper", "Let's write", "Let's start",
                 #endregion
 
+                #region FACTS
+                    "Tell me a science fact", "Show me a science fact", "Science fact", "A science fact",
+                    "Tell me a mathematics fact", "Show me  a mathematics fact", "Mathematics fact", "A mathematics fact",
+                    "Tell me a maths fact", "Show me a maths fact", "Maths fact", "A maths fact",
+                #endregion
+
                 #region BOOK SEARCH
                 //Finding a book
                 "Find me a book", "Find a book", "I want a book",
                     //Science books
                     "Find me a science book", "Find me a book about science", "Find me a mathematics book",
                     "Find me a maths book", "Find me a book about mathematics", "Find me a book about maths",
-                    "Find me a book about nature", "Find me a book about geography", "Find me a book about astronomy",
-                    "Find me an algebra book", "Find me a book about algebra", "Find me a trigonometry book", "Find me a book about trigonometry", "Find me a book about information technology",
+                    "Find me a book abouSbook", "Find me a book about algebra", "Find me a trigonometry book", "Find me a book about trigonometry", "Find me a book about information technology",
                     "Find me a book about IT", "Find me an IT book", "Find me an information technology book", "Find me a programming book", "Find me a book about programming", "Let's buy that book", "Buy that book", "Buy the first book", "Buy the second book", "Buy the third book", "First book", "Second book", "Third Book"
                     #endregion
                 #endregion
