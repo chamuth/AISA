@@ -16,6 +16,7 @@ using System.Xml;
 using System.Collections;
 using System.Threading;
 using System.Windows.Threading;
+using AISA_API;
 
 namespace AISA
 {
@@ -651,6 +652,18 @@ namespace AISA
                     return "Which paper";
                 }
             }
+
+            #region FACTS
+            else if (input.ToLower().Contains("science fact"))
+            {
+                //Get a scientific fact from AISA Server
+                FactualEngine.GetFact(new ScienceFactualEngineHelper());
+            }
+            else if (input.ToLower().Contains("mathematics fact") || input.ToLower().Contains("maths fact")) 
+            {
+                //Get a mathematical fact from the AISA Server
+            }
+            #endregion
 
             #endregion
             //Something not recognized

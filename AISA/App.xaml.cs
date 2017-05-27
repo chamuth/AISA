@@ -22,7 +22,17 @@ namespace AISA
             Window.Show();
             Window.HideWindow();
 
+            //Initialize the endpoints
+            InitializeEndpoints();
+        }
+
+        /// <summary>
+        /// Sets all of the Endpoint variables to their endpoint locations
+        /// </summary>
+        private void InitializeEndpoints()
+        {
             Scholar.Connector.APIEndpoint = "http://localhost/Scholar/API/";
+            AISA_API.Endpoint.EndpointString = "http://localhost/AISA";
         }
     }
 }
