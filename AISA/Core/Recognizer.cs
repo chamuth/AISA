@@ -67,8 +67,11 @@ namespace AISA.SpeechRecognition
 
         private void _recognizer_SpeechDetected(object sender, SpeechDetectedEventArgs e)
         {
-            //Reset the preview panel
-            ViewControllerConnector.None();
+            if (ViewControllerConnector.PaperStarted == false)
+            {
+                //Reset the preview panel
+                ViewControllerConnector.None();
+            }
         }
 
         private void StopRecognition()
@@ -91,54 +94,72 @@ namespace AISA.SpeechRecognition
 
         private void _recognizer_SpeechRecognitionRejected(object sender, SpeechRecognitionRejectedEventArgs e)
         {
-            //Inform the ViewcontrollerConnector
-            ViewControllerConnector.StartedCommandRecognition = false;
+            if (ViewControllerConnector.PaperStarted == false)
+            {
+                //Inform the ViewcontrollerConnector
+                ViewControllerConnector.StartedCommandRecognition = false;
 
-            StopRecognition();
-            timer.Stop();
+                StopRecognition();
+                timer.Stop();
+            }
         }
 
         private void speech_Recognized(object sender, SpeechRecognizedEventArgs e)
         {
-            //Inform the ViewcontrollerConnector
-            ViewControllerConnector.StartedCommandRecognition = false;
-
-            //Activate the ending function
-            _End();
-
-
-            //Speak the answer from the CommandHandler
-            var result_string = CommandHandler.Handle(e.Result.Text);
-            var async = false;
-
-            if (result_string.StartsWith("ASYNC:"))
+            if (ViewControllerConnector.PaperStarted == false)
             {
-                //Remove async keyword
-                async = true;
-                result_string = result_string.Replace("ASYNC:", "");
-            }else
-            {
+                //Inform the ViewcontrollerConnector
+                ViewControllerConnector.StartedCommandRecognition = false;
 
-                //Play results audio
-                AudioHandler.Results();
+                //Activate the ending function
+                _End();
+
+
+                //Speak the answer from the CommandHandler
+                var result_string = CommandHandler.Handle(e.Result.Text);
+                var async = false;
+
+                if (result_string.StartsWith("ASYNC:"))
+                {
+                    //Remove async keyword
+                    async = true;
+                    result_string = result_string.Replace("ASYNC:", "");
+                }
+                else
+                {
+
+                    //Play results audio
+                    AudioHandler.Results();
+                }
+
+                if(result_string == "SUDO:Started the paper")
+                {
+                    //Start the paper
+                   
+                        ViewControllerConnector.startPaper(Context.previousPaper[0], Context.previousPaper[1]);
+                   
+
+                    ViewControllerConnector.PaperStarted = true;
+                }
+
+
+                if (!result_string.StartsWith("SUDO:"))
+                {
+                    ResultCallback(e.Result.Text, result_string, async);
+                }
+                else
+                {
+                    ResultCallback(e.Result.Text, "Here's what I've got", async);
+                }
+
+                synthesizer.SpeakAsync(result_string.Replace("SUDO:", ""));
+                //Null the recognizer
+                _recognizer = null;
+
+                //Start AISA Handler again
+                AISAHandler.Start(true);
+                timer.Stop();
             }
-
-            if (!result_string.StartsWith("SUDO:"))
-            {
-                ResultCallback(e.Result.Text, result_string, async);
-            }
-            else
-            {
-                ResultCallback(e.Result.Text, "Here's what I've got", async);
-            }
-
-            synthesizer.SpeakAsync(result_string.Replace("SUDO:", ""));
-            //Null the recognizer
-            _recognizer = null;
-
-            //Start AISA Handler again
-            AISAHandler.Start(true);
-            timer.Stop();
         }
 
     }

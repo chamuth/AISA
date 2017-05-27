@@ -141,10 +141,14 @@ namespace AISA
 
         public void StartPaper(string _class, string paper_index)
         {
-            MessageBox.Show("Starting the paper");
+            //Pause the AISA Handler 
+            AISAHandler.Pause();
+            ViewControllerConnector.PaperStarted = true;
+
             //Start a new MCQ
             var mcq = new MCQ(_class, paper_index);
-            mcq.ShowDialog();
+            mcq.Show();
+
         }
 
         /// <summary>

@@ -8,55 +8,67 @@
         Title="MCQ" Height="400" Width="700" Background="#EE000000" Topmost="True" WindowStartupLocation="CenterScreen">
 
     <Grid>
-        <Label x:Name="PaperName" Margin="50 40 0 0" HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="25" Foreground="White">
-            PAPER__NAME
-        </Label>
+        <Grid>
+            <Label x:Name="PaperName" Margin="50 40 0 0" HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="25" Foreground="White">
+                PAPER__NAME
+            </Label>
 
-        <!--Window Label / Badge-->
-        <Grid Background="#2FFF" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="50 90 0 0" Width="94" Height="35">
-            <Label Foreground="White" FontFamily="Segoe UI" Margin="10 0 0 0" HorizontalContentAlignment="LEFT" VerticalContentAlignment="Center">MCQ PAPER</Label>
+            <!--Window Label / Badge-->
+            <Grid Background="#2FFF" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="50 90 0 0" Width="94" Height="35">
+                <Label Foreground="White" FontFamily="Segoe UI" Margin="10 0 0 0" HorizontalContentAlignment="LEFT" VerticalContentAlignment="Center">MCQ PAPER</Label>
+            </Grid>
+
+            <Grid Background="#2FFF" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0 50 50 0">
+                <Label Foreground="White" FontSize="20" x:Name="QuestionIndex" FontFamily="Segoe UI" Margin="5 0 5 0">1/10</Label>
+            </Grid>
+
+            <TextBlock Foreground="White" FontSize="16"  VerticalAlignment="Top" Margin="50,156,150,0" x:Name="QuestionName" TextWrapping="Wrap" TextTrimming="CharacterEllipsis" Height="25">
+                What's the question?
+            </TextBlock>
+
+            <Grid x:Name="Answers">
+                <Label Margin="65,206,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="15" Foreground="White">
+                    A -
+                </Label>
+                <RadioButton FontSize="15" VerticalContentAlignment="Center" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="105,214,0,0" Foreground="#AFFF" x:Name="Answer1">
+                    Answer one stands here
+                </RadioButton>
+
+                <Label Margin="65,238,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="15" Foreground="White">
+                    B -
+                </Label>
+                <RadioButton FontSize="15" VerticalContentAlignment="Center" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="105,246,0,0" Foreground="#AFFF" x:Name="Answer2">
+                    Answer two stands here
+                </RadioButton>
+
+                <Label Margin="65,270,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="15" Foreground="White">
+                    C -
+                </Label>
+                <RadioButton FontSize="15" VerticalContentAlignment="Center" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="105,278,0,0" Foreground="#AFFF" x:Name="Answer3">
+                    Answer three stands here
+                </RadioButton>
+
+                <Label Margin="65,302,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="15" Foreground="White">
+                    D -
+                </Label>
+                <RadioButton FontSize="15" VerticalContentAlignment="Center" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="105,310,0,0" Foreground="#AFFF" x:Name="Answer4">
+                    Answer four stands here
+                </RadioButton>
+            </Grid>
+
+
+            <Custom_Controls:Next VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="30 30 50 75" Width="60" Height="60" ToolTip="Next Question" MouseUp="Next_MouseUp"/>
+            <Custom_Controls:Previous VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="30 30 50 175" Width="60" Height="60" ToolTip="Previous Question" MouseUp="Previous_MouseUp"/>
         </Grid>
+        <Grid Visibility="Hidden" Opacity="0" x:Name="UploadingPanel">
+            <Grid.Background>
+                <SolidColorBrush Color="#A000"></SolidColorBrush>
+            </Grid.Background>
 
-        <Grid Background="#2FFF" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0 50 50 0">
-            <Label Foreground="White" FontSize="20" x:Name="QuestionIndex" FontFamily="Segoe UI" Margin="5 0 5 0">1/10</Label>
+            <Grid x:Name="MesageContainer" Background="DodgerBlue" Margin="0 120 0 120">
+                <Custom_Controls:Spinner x:Name="UploadingSpinner" Width="50" Height="50"></Custom_Controls:Spinner>
+            </Grid>
+            
         </Grid>
-
-        <Label Foreground="White" FontSize="16" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="50,156,0,0" x:Name="QuestionName">
-            What's the question?
-        </Label>
-
-        <Grid x:Name="Answers">
-            <Label Margin="65,206,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="15" Foreground="White">
-                A -
-            </Label>
-            <RadioButton FontSize="15" VerticalContentAlignment="Center" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="105,214,0,0" Foreground="#AFFF" x:Name="Answer1">
-                Answer one stands here
-            </RadioButton>
-
-            <Label Margin="65,238,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="15" Foreground="White">
-                B -
-            </Label>
-            <RadioButton FontSize="15" VerticalContentAlignment="Center" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="105,246,0,0" Foreground="#AFFF" x:Name="Answer2">
-                Answer two stands here
-            </RadioButton>
-
-            <Label Margin="65,270,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="15" Foreground="White">
-                C -
-            </Label>
-            <RadioButton FontSize="15" VerticalContentAlignment="Center" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="105,278,0,0" Foreground="#AFFF" x:Name="Answer3">
-                Answer three stands here
-            </RadioButton>
-
-            <Label Margin="65,302,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="15" Foreground="White">
-                D -
-            </Label>
-            <RadioButton FontSize="15" VerticalContentAlignment="Center" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="105,310,0,0" Foreground="#AFFF" x:Name="Answer4">
-                Answer four stands here
-            </RadioButton>
-        </Grid>
-
-
-        <Custom_Controls:Next VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="30 30 50 75" Width="60" Height="60" ToolTip="Next Question" MouseUp="Next_MouseUp"/>
-        <Custom_Controls:Previous VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="30 30 50 175" Width="60" Height="60" ToolTip="Previous Question" MouseUp="Previous_MouseUp"/>
     </Grid>
 </Window>

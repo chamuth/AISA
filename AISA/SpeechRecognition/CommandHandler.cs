@@ -607,7 +607,11 @@ namespace AISA
                         }).Select(i => i).ToArray();
 
                         //Get the first paper's information
-                        if (indexes != null)
+                        if (indexes == null || indexes.Length == 0)
+                        {
+                            ViewControllerConnector.AsyncResult(Context.Current, "You don't have any paper");
+                        }
+                        else
                         {
                             var thepaper = Class.GetMCQPaper(int.Parse(_class), indexes[0], Properties.Settings.Default.scholarUsername, Properties.Settings.Default.scholarPassword);
                             var currentname = thepaper.name;
@@ -624,10 +628,6 @@ namespace AISA
                             ViewControllerConnector.AsyncResult(Context.Current, "SUDO:You have a paper, " + currentname + " from " + classinfo.information.name);
                             break;
                         }
-                        else
-                        {
-                            ViewControllerConnector.AsyncResult(Context.Current, "You don't have any paper");
-                        }
 
                     }
                 });
@@ -637,30 +637,22 @@ namespace AISA
 
                 return "ASYNC:";
             }
-            else if (input.ToLower().Contains("let's write it") || input.ToLower().Contains("let's write that") || input.ToLower().Contains("Let's write") || input.ToLower().Contains("Let's start"))
+            else if (input.ToLower().Contains("let's write it") || input.ToLower().Contains("let's write that") || input.ToLower().Contains("let's write") || input.ToLower().Contains("let's start"))
             {
-                var threadstart = new ThreadStart(() =>
+                if (Context.previousPaper != null)
                 {
                     //Get details about the paper
                     Context.currentPaper = Class.GetMCQPaper(int.Parse(Context.previousPaper[0]), int.Parse(Context.previousPaper[1]), Properties.Settings.Default.scholarUsername, Properties.Settings.Default.scholarPassword);
 
-                    //Start the paper
-                    Application.Current.Dispatcher.Invoke(() =>
-                    {
-                        ViewControllerConnector.startPaper(Context.previousPaper[0], Context.previousPaper[1]);
-                    });
-
-                    ViewControllerConnector.AsyncResult(Context.Current, "Started the paper");
-                });
-
-                var thread = new Thread(threadstart);
-                thread.Start();
-
-                return "ASYNC:";
+                    return "SUDO:Started the paper";
+                }
+                else
+                {
+                    return "Which paper";
+                }
             }
-            
-            #endregion
 
+            #endregion
             //Something not recognized
             if (Context.Previous == "")
             {
@@ -706,10 +698,13 @@ namespace AISA
                     if (search1.results == null)
                     {
                         complete = search2.results;
-                    }else if (search2.results == null)
+                    }
+                    else if (search2.results == null)
                     {
                         complete = search1.results;
-                    }else { 
+                    }
+                    else
+                    {
                         complete = search1.results.Intersect<string>(search2.results);
                     }
 
@@ -991,7 +986,7 @@ namespace AISA
                     "Find me a science class", "Find a science class", "Find me a chemistry class", "Find a chemistry class",
                 #endregion
                 #region PAPERS
-                    "Let's write a paper", "Do I have any papers", "Do I have any papers to write", 
+                    "Let's write a paper", "Do I have any papers", "Do I have any papers to write",
 
                     "Let's write it" , "Let's write that", "Let's write that paper", "Let's write", "Let's start",
                 #endregion

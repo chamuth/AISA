@@ -52,5 +52,16 @@ namespace AISA.Core
             }
         }
 
+        public static void Stop()
+        {
+            //Reset the synthesizer
+            synthesizer = null;
+
+            synthesizer = new SpeechSynthesizer();
+            synthesizer.SelectVoiceByHints(VoiceGender.Female, VoiceAge.Adult);
+            synthesizer.Volume = 100;
+            synthesizer.Rate = 0;
+        }
+
     }
 }

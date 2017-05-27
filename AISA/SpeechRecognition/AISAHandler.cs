@@ -8,6 +8,7 @@ using System.Speech.Recognition;
 using System.Windows;
 using System.Windows.Media;
 using System.Windows.Threading;
+using AISA.Core;
 
 namespace AISA.SpeechRecognition
 {
@@ -56,45 +57,52 @@ namespace AISA.SpeechRecognition
 
         public static void Start(bool first = false)
         {
-            try
+            if (ViewControllerConnector.PaperStarted == false)
             {
-                if (first == true)
+                try
                 {
-                    var da = new DispatcherTimer();
-                    da.Interval = TimeSpan.FromSeconds(4);
-                    da.Tick += (a, b) =>
+                    if (first == true)
                     {
-                        da.Stop();
-
-                        try
+                        var da = new DispatcherTimer();
+                        da.Interval = TimeSpan.FromSeconds(4);
+                        da.Tick += (a, b) =>
                         {
-                            _recognizer.RecognizeAsync(RecognizeMode.Multiple);
-                        }catch (Exception) { }
-                    };
+                            da.Stop();
 
-                    da.Start();
+                            try
+                            {
+                                _recognizer.RecognizeAsync(RecognizeMode.Multiple);
+                            }
+                            catch (Exception) { }
+                        };
+
+                        da.Start();
+                    }
+                    else
+                    {
+                        _recognizer.RecognizeAsync(RecognizeMode.Multiple);
+                    }
                 }
-                else
-                {
-                    _recognizer.RecognizeAsync(RecognizeMode.Multiple);
-                }
+                catch (Exception) { }
             }
-            catch (Exception) { }
         }
 
         public static void Pause()
         {
-            _recognizer.RecognizeAsyncStop();
+            _recognizer.RecognizeAsyncCancel();
         }
 
         private static void _recognizer_SpeechRecognized(object sender, SpeechRecognizedEventArgs e)
         {
-            if (e.Result.Text == "AISA")
+            if (ViewControllerConnector.PaperStarted == false)
             {
-                AudioHandler.Start();
-                AISACallback();
-                Pause();
-                var rec = new Recognizer(AISAEndCallback, AISAResultCallback);
+                if (e.Result.Text == "AISA")
+                {
+                    AudioHandler.Start();
+                    AISACallback();
+                    Pause();
+                    var rec = new Recognizer(AISAEndCallback, AISAResultCallback);
+                }
             }
         }
     }

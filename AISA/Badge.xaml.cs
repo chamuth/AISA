@@ -48,7 +48,7 @@ namespace AISA
             da.EasingFunction = new QuinticEase();
             BeginAnimation(OpacityProperty, da);
 
-            ViewControllerConnector.MainWindowShow();
+            ViewControllerConnector.MainWindowShow?.Invoke();
         }
     }
 }
