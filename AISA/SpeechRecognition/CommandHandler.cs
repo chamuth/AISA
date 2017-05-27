@@ -667,10 +667,10 @@ namespace AISA
 
                 var thread = new Thread(threadstart);
                 thread.Start();
-                
+
                 return "ASYNC:";
             }
-            else if (input.ToLower().Contains("mathematics fact") || input.ToLower().Contains("maths fact")) 
+            else if (input.ToLower().Contains("mathematics fact") || input.ToLower().Contains("maths fact"))
             {
                 //Get a mathematical fact from the AISA Server
                 var threadstart = new ThreadStart(() =>
@@ -686,8 +686,28 @@ namespace AISA
 
                 return "ASYNC:";
             }
+            else if (input.ToLower().Contains("competition") || input.ToLower().Contains("scholarship"))
+            {
+                //Get the chances available from the AISA Servers
+                var threadstart = new ThreadStart(() =>
+                {
+                    var chance = ScolsAndComps.Find();
+                    var output = chance.chance.ToString() + ", " + chance.description.ToString();
 
-            
+                    ViewControllerConnector.AsyncResult(Context.Current, "SUDO:" + output);
+
+                    Application.Current.Dispatcher.Invoke(() =>
+                    {
+                        ViewControllerConnector.Connect(ViewControllerConnector.ConnectionMethod.URL, new string[] { chance.chance,  chance.website });
+                    });
+                });
+
+                var thread = new Thread(threadstart);
+                thread.Start();
+
+                return "ASYNC:";
+            }
+
             #endregion
 
             #endregion
@@ -718,7 +738,7 @@ namespace AISA
             var threadstart = new ThreadStart(() =>
             {
                 string returner = "SUDO: I found ";
-                
+
                 var username = Properties.Settings.Default.scholarUsername;
                 var password = Properties.Settings.Default.scholarPassword;
 

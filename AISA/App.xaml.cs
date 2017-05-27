@@ -24,6 +24,9 @@ namespace AISA
 
             //Initialize the endpoints
             InitializeEndpoints();
+
+            //Get command LEngth
+            MessageBox.Show(CommandHandler.GetCommands().Length.ToString());
         }
 
         /// <summary>

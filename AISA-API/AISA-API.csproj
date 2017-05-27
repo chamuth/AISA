@@ -49,6 +49,7 @@
     <Compile Include="Endpoint.cs" />
     <Compile Include="FactualEngine.cs" />
     <Compile Include="IFactualEngineHelper.cs" />
+    <Compile Include="News.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RestResponseException.cs" />
     <Compile Include="ScolsAndComps.cs" />
