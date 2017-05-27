@@ -657,12 +657,37 @@ namespace AISA
             else if (input.ToLower().Contains("science fact"))
             {
                 //Get a scientific fact from AISA Server
-                FactualEngine.GetFact(new ScienceFactualEngineHelper());
+                var threadstart = new ThreadStart(() =>
+                {
+                    var fact = FactualEngine.GetFact(new ScienceFactualEngineHelper());
+                    var output = fact.fact.ToString();
+
+                    ViewControllerConnector.AsyncResult(Context.Current, output);
+                });
+
+                var thread = new Thread(threadstart);
+                thread.Start();
+                
+                return "ASYNC:";
             }
             else if (input.ToLower().Contains("mathematics fact") || input.ToLower().Contains("maths fact")) 
             {
                 //Get a mathematical fact from the AISA Server
+                var threadstart = new ThreadStart(() =>
+                {
+                    var fact = FactualEngine.GetFact(new MathematicsFactualEngineHelper());
+                    var output = fact.fact.ToString();
+
+                    ViewControllerConnector.AsyncResult(Context.Current, output);
+                });
+
+                var thread = new Thread(threadstart);
+                thread.Start();
+
+                return "ASYNC:";
             }
+
+            
             #endregion
 
             #endregion
@@ -1008,6 +1033,10 @@ namespace AISA
                     "Tell me a science fact", "Show me a science fact", "Science fact", "A science fact",
                     "Tell me a mathematics fact", "Show me  a mathematics fact", "Mathematics fact", "A mathematics fact",
                     "Tell me a maths fact", "Show me a maths fact", "Maths fact", "A maths fact",
+                #endregion
+
+                #region SCHOLAR SHPS AND COMPETITIONS
+                    "Find me a competition", "Find a competition", "Find me a scholarship", "Find a scholarship", "Competition", "Scholarship",
                 #endregion
 
                 #region BOOK SEARCH
