@@ -487,34 +487,48 @@ namespace AISA
             }
             else if ((input.ToLower().Contains("first") || input.ToLower().Contains("second") || input.ToLower().Contains("third")) && input.ToLower().Contains("buy"))
             {
-                if (Context.BuyThatBook != null)
+                try
                 {
-                    if (input.ToLower().Contains("first"))
+                    if (Context.BuyThatBook != null)
                     {
-                        System.Diagnostics.Process.Start("https://www.amazon.com/s/ref=nb_sb_noss_2?field-keywords=" + Context.BuyThatBook[0]);
-                    }
-                    else if (input.ToLower().Contains("second"))
-                    {
-                        System.Diagnostics.Process.Start("https://www.amazon.com/s/ref=nb_sb_noss_2?field-keywords=" + Context.BuyThatBook[1]);
-                    }
-                    else if (input.ToLower().Contains("third"))
-                    {
-                        System.Diagnostics.Process.Start("https://www.amazon.com/s/ref=nb_sb_noss_2?field-keywords=" + Context.BuyThatBook[2]);
-                    }
+                        if (input.ToLower().Contains("first"))
+                        {
+                            System.Diagnostics.Process.Start("https://www.amazon.com/s/ref=nb_sb_noss_2?field-keywords=" + Context.BuyThatBook[0]);
+                        }
+                        else if (input.ToLower().Contains("second"))
+                        {
+                            System.Diagnostics.Process.Start("https://www.amazon.com/s/ref=nb_sb_noss_2?field-keywords=" + Context.BuyThatBook[1]);
+                        }
+                        else if (input.ToLower().Contains("third"))
+                        {
+                            System.Diagnostics.Process.Start("https://www.amazon.com/s/ref=nb_sb_noss_2?field-keywords=" + Context.BuyThatBook[2]);
+                        }
 
+                        return "Opening web browser";
+                    }
+                }
+                catch (Exception)
+                {
                     return "Opening web browser";
                 }
             }
             else if ((input.ToLower().Contains("first") || input.ToLower().Contains("second") || input.ToLower().Contains("third")) && input.ToLower().Contains("book"))
             {
-                if (Context.Previous.ToLower().Contains("buy that book"))
+                try
                 {
-                    System.Diagnostics.Process.Start("https://www.amazon.com/s/ref=nb_sb_noss_2?field-keywords=" + Context.BuyThatBook[0]);
+                    if (Context.Previous.ToLower().Contains("buy that book"))
+                    {
+                        System.Diagnostics.Process.Start("https://www.amazon.com/s/ref=nb_sb_noss_2?field-keywords=" + Context.BuyThatBook[0]);
+                        return "Opening web browser";
+                    }
+                    else
+                    {
+                        return "Which book?";
+                    }
+
+                }catch (Exception)
+                {
                     return "Opening web browser";
-                }
-                else
-                {
-                    return "Which book?";
                 }
             }
             else if (input.Contains("a book"))
@@ -533,25 +547,39 @@ namespace AISA
 
                 var threadstart = new ThreadStart(() =>
                 {
-
-                    var classes = Student.GetClasses(Properties.Settings.Default.scholarUsername);
-
-                    foreach (var _class in classes.classes)
+                    try
                     {
-                        var papers = Class.GetMCQPapers(int.Parse(_class));
-                        var indexes = papers.papers;
+                        var classes = Student.GetClasses(Properties.Settings.Default.scholarUsername);
 
-                        indexes = indexes.Where((i) =>
+                        foreach (var _class in classes.classes)
                         {
-                            if (Context.previousPaper != null)
+                            var papers = Class.GetMCQPapers(int.Parse(_class));
+                            var indexes = papers.papers;
+
+                            indexes = indexes.Where((i) =>
                             {
-                                if (_class == Context.previousPaper[0])
+                                if (Context.previousPaper != null)
                                 {
-                                    if (indexes.Length > 1)
+                                    if (_class == Context.previousPaper[0])
                                     {
-                                        if (indexes[1] == i)
+                                        if (indexes.Length > 1)
                                         {
-                                            return false;
+                                            if (indexes[1] == i)
+                                            {
+                                                return false;
+                                            }
+                                            else
+                                            {
+                                                if (Paper.VerifyWritten(int.Parse(_class), i, Properties.Settings.Default.scholarUsername).written == 1)
+                                                {
+                                                    ViewControllerConnector.AsyncResult(Context.Current, "SUDO:The paper was written by you");
+                                                    return false;
+                                                }
+                                                else
+                                                {
+                                                    return true;
+                                                }
+                                            }
                                         }
                                         else
                                         {
@@ -591,45 +619,40 @@ namespace AISA
                                         return true;
                                     }
                                 }
+
+                            }).Select(i => i).ToArray();
+
+                            //Get the first paper's information
+                            if (indexes == null || indexes.Length == 0)
+                            {
+                                ViewControllerConnector.AsyncResult(Context.Current, "You don't have any paper");
                             }
                             else
                             {
-                                if (Paper.VerifyWritten(int.Parse(_class), i, Properties.Settings.Default.scholarUsername).written == 1)
+                                var thepaper = Class.GetMCQPaper(int.Parse(_class), indexes[0], Properties.Settings.Default.scholarUsername, Properties.Settings.Default.scholarPassword);
+                                var currentname = thepaper.name;
+
+                                //Get the class information from the server
+                                var classinfo = Class.GetInformation(int.Parse(_class));
+
+                                //Setup the paper that I've been working with
+                                Context.previousPaper = new string[]
                                 {
-                                    ViewControllerConnector.AsyncResult(Context.Current, "SUDO:The paper was written by you");
-                                    return false;
-                                }
-                                else
-                                {
-                                    return true;
-                                }
+                                _class, indexes[0].ToString()
+                                };
+
+                                ViewControllerConnector.AsyncResult(Context.Current, "SUDO:You have a paper, " + currentname + " from " + classinfo.information.name);
+                                break;
                             }
 
-                        }).Select(i => i).ToArray();
-
-                        //Get the first paper's information
-                        if (indexes == null || indexes.Length == 0)
-                        {
-                            ViewControllerConnector.AsyncResult(Context.Current, "You don't have any paper");
                         }
-                        else
+                    }catch (Exception)
+                    {
+                        // Receiving failed
+                        ViewControllerConnector.AsyncResult(Context.Current, random(new string[]
                         {
-                            var thepaper = Class.GetMCQPaper(int.Parse(_class), indexes[0], Properties.Settings.Default.scholarUsername, Properties.Settings.Default.scholarPassword);
-                            var currentname = thepaper.name;
-
-                            //Get the class information from the server
-                            var classinfo = Class.GetInformation(int.Parse(_class));
-
-                            //Setup the paper that I've been working with
-                            Context.previousPaper = new string[]
-                            {
-                                _class, indexes[0].ToString()
-                            };
-
-                            ViewControllerConnector.AsyncResult(Context.Current, "SUDO:You have a paper, " + currentname + " from " + classinfo.information.name);
-                            break;
-                        }
-
+                            "Sorry, I couldn't connect to the server", "Sorry, the internet is not working", "Sorry, I can't connect to the internet"
+                        }));
                     }
                 });
 
@@ -640,17 +663,32 @@ namespace AISA
             }
             else if (input.ToLower().Contains("let's write it") || input.ToLower().Contains("let's write that") || input.ToLower().Contains("let's write") || input.ToLower().Contains("let's start"))
             {
-                if (Context.previousPaper != null)
-                {
-                    //Get details about the paper
-                    Context.currentPaper = Class.GetMCQPaper(int.Parse(Context.previousPaper[0]), int.Parse(Context.previousPaper[1]), Properties.Settings.Default.scholarUsername, Properties.Settings.Default.scholarPassword);
+                var threadstart = new ThreadStart(() =>
+               {
+                   try
+                   {
+                       if (Context.previousPaper != null)
+                       {
+                           //Get details about the paper
+                           Context.currentPaper = Class.GetMCQPaper(int.Parse(Context.previousPaper[0]), int.Parse(Context.previousPaper[1]), Properties.Settings.Default.scholarUsername, Properties.Settings.Default.scholarPassword);
 
-                    return "SUDO:Started the paper";
-                }
-                else
-                {
-                    return "Which paper";
-                }
+                           ViewControllerConnector.AsyncResult(Context.Current, "SUDO:Started the paper");
+                       }
+                       else
+                       {
+                           ViewControllerConnector.AsyncResult(Context.Current, "Which paper");
+                       }
+                   }
+                   catch (Exception)
+                   {
+                       ViewControllerConnector.AsyncResult(Context.Current, random(new string[] {
+                            "Hooray, I couldn't receive the paper", "Sorry, I couldn't connect to the server"
+                       }));
+                   }
+               });
+
+
+                
             }
 
             #region FACTS
@@ -659,10 +697,20 @@ namespace AISA
                 //Get a scientific fact from AISA Server
                 var threadstart = new ThreadStart(() =>
                 {
-                    var fact = FactualEngine.GetFact(new ScienceFactualEngineHelper());
-                    var output = fact.fact.ToString();
+                    try
+                    {
+                        var fact = FactualEngine.GetFact(new ScienceFactualEngineHelper());
+                        var output = fact.fact.ToString();
 
-                    ViewControllerConnector.AsyncResult(Context.Current, output);
+                        ViewControllerConnector.AsyncResult(Context.Current, output);
+                    }
+                    catch (Exception)
+                    {
+                        ViewControllerConnector.AsyncResult(Context.Current, random(new string[]
+                        {
+                            "I cannot get facts without the internet, Is that a fact?", "Sorry, the internet is required", "Sorry, I can't get any data from the internet"
+                        }));
+                    }
                 });
 
                 var thread = new Thread(threadstart);
@@ -675,10 +723,20 @@ namespace AISA
                 //Get a mathematical fact from the AISA Server
                 var threadstart = new ThreadStart(() =>
                 {
-                    var fact = FactualEngine.GetFact(new MathematicsFactualEngineHelper());
-                    var output = fact.fact.ToString();
+                    try
+                    {
+                        var fact = FactualEngine.GetFact(new MathematicsFactualEngineHelper());
+                        var output = fact.fact.ToString();
 
-                    ViewControllerConnector.AsyncResult(Context.Current, output);
+                        ViewControllerConnector.AsyncResult(Context.Current, output);
+                    }
+                    catch (Exception)
+                    {
+                        ViewControllerConnector.AsyncResult(Context.Current, random(new string[]
+                        {
+                            "I cannot get facts without the internet, Is that a fact?", "Sorry, the internet is required", "Sorry, I can't get any data from the internet"
+                        }));
+                    }
                 });
 
                 var thread = new Thread(threadstart);
@@ -691,15 +749,25 @@ namespace AISA
                 //Get the chances available from the AISA Servers
                 var threadstart = new ThreadStart(() =>
                 {
-                    var chance = ScolsAndComps.Find();
-                    var output = chance.chance.ToString() + ", " + chance.description.ToString();
-
-                    ViewControllerConnector.AsyncResult(Context.Current, "SUDO:" + output);
-
-                    Application.Current.Dispatcher.Invoke(() =>
+                    try
                     {
-                        ViewControllerConnector.Connect(ViewControllerConnector.ConnectionMethod.URL, new string[] { chance.chance, chance.website });
-                    });
+                        var chance = ScolsAndComps.Find();
+                        var output = chance.chance.ToString() + ", " + chance.description.ToString();
+
+                        ViewControllerConnector.AsyncResult(Context.Current, "SUDO:" + output);
+
+                        Application.Current.Dispatcher.Invoke(() =>
+                        {
+                            ViewControllerConnector.Connect(ViewControllerConnector.ConnectionMethod.URL, new string[] { chance.chance, chance.website });
+                        });
+                    }
+                    catch (Exception)
+                    {
+                        ViewControllerConnector.AsyncResult(Context.Current, random(new string[]
+                        {
+                            "I couldn't connect to the internet", "I can't connect to the internet", "Sorry, I could not receive any data"
+                        }));
+                    }
                 });
 
                 var thread = new Thread(threadstart);
@@ -709,9 +777,11 @@ namespace AISA
             }
             else if (input.ToLower().Contains("news"))
             {
+                //Get news within another thread
                 GetNews();
                 return "ASYNC:";
-            }else if (input.ToLower().Contains("wow"))
+            }
+            else if (input.ToLower().Contains("wow"))
             {
                 if (Context.Previous.ToLower().Contains("fact"))
                 {
@@ -729,20 +799,58 @@ namespace AISA
                         "Practice makes you perfect", "Want some more?", "Well, I can't do anything about that"
                     });
                 }
+                else
+                {
+                    return random(new string[]
+                    {
+                        "Let me know if you want something", "Ask me a question please", "Well, you're already amazed"
+                    });
+                }
             }
 
             #endregion
 
             #region READING PDF FILES
-            if (input.ToLower().Contains("learn science") || input.ToLower().Contains("science book"))
+            else if (input.ToLower().Contains("learn science") || input.ToLower().Contains("read science book"))
             {
                 // User requests to read the science book for him/her
                 // TODO: READ THE CONTENT OF A PDF IN THIS POSITION
             }
-            #endregion  
-
-
+            else if (input.ToLower().Contains("learn mathematics") || input.ToLower().Contains("read mathematics book") || input.ToLower().Contains("learn maths") || input.ToLower().Contains("read maths book"))
+            {
+                // User requests to read the mathematics book for him / her
+                // TODO: READ THE CONTENT OF A PDF IN THIS POSITION
+            }
             #endregion
+            #endregion
+
+            #region JOKES
+            else if (input.ToLower().Contains("joke"))
+            {
+                //User is requesting for a joke from the server
+
+                var threadstart = new ThreadStart(() =>
+               {
+                   try
+                   {
+                       var joke = Jokes.Find();
+
+                       ViewControllerConnector.AsyncResult(Context.Previous, joke.joke);
+
+                   }
+                   catch (Exception)
+                   {
+                       ViewControllerConnector.AsyncResult(Context.Previous, "Sorry I couldn't connect to the server, Is that a joke?");
+                   }
+               });
+
+                var thread = new Thread(threadstart);
+                thread.Start();
+
+                return "ASYNC:";
+            }
+            #endregion
+
             //Something not recognized
             if (Context.Previous == "")
             {
@@ -769,107 +877,116 @@ namespace AISA
         {
             var threadstart = new ThreadStart(() =>
             {
-                string returner = "SUDO: I found ";
-
-                var username = Properties.Settings.Default.scholarUsername;
-                var password = Properties.Settings.Default.scholarPassword;
-
-                //Verify the student username and the password
-                if (Student.VerifyStudent(username, password).error == 0)
+                try
                 {
-                    //User exists and the password is correct
+                    string returner = "SUDO: I found ";
 
-                    //Search the class by category
-                    var search1 = Class.SearchByGrade(Properties.Settings.Default.studentGrade);
-                    var search2 = Class.SearchByCategory(category);
+                    var username = Properties.Settings.Default.scholarUsername;
+                    var password = Properties.Settings.Default.scholarPassword;
 
-                    IEnumerable<string> complete = null;
-
-                    if (search1.results == null)
+                    //Verify the student username and the password
+                    if (Student.VerifyStudent(username, password).error == 0)
                     {
-                        complete = search2.results;
-                    }
-                    else if (search2.results == null)
-                    {
-                        complete = search1.results;
-                    }
-                    else
-                    {
-                        complete = search1.results.Intersect<string>(search2.results);
-                    }
+                        //User exists and the password is correct
 
-                    if (complete != null)
-                    {
+                        //Search the class by category
+                        var search1 = Class.SearchByGrade(Properties.Settings.Default.studentGrade);
+                        var search2 = Class.SearchByCategory(category);
 
-                        for (int i = 0; i < 3; i++)
+                        IEnumerable<string> complete = null;
+
+                        if (search1.results == null)
                         {
-                            if (complete.Count() > i)
+                            complete = search2.results;
+                        }
+                        else if (search2.results == null)
+                        {
+                            complete = search1.results;
+                        }
+                        else
+                        {
+                            complete = search1.results.Intersect<string>(search2.results);
+                        }
+
+                        if (complete != null)
+                        {
+
+                            for (int i = 0; i < 3; i++)
                             {
-                                var current = complete.ToArray()[i];
-
-                                var searchClass = Class.GetInformation(int.Parse(current));
-                                var searchTeacher = Teacher.GetInformation(searchClass.information.teacher);
-                                var teachername = searchTeacher.information.firstname + " " + searchTeacher.information.lastname;
-
-                                if (searchClass.error == 0)
+                                if (complete.Count() > i)
                                 {
-                                    //No error found on the index of the class
-                                    if (complete.Count() != 1)
+                                    var current = complete.ToArray()[i];
+
+                                    var searchClass = Class.GetInformation(int.Parse(current));
+                                    var searchTeacher = Teacher.GetInformation(searchClass.information.teacher);
+                                    var teachername = searchTeacher.information.firstname + " " + searchTeacher.information.lastname;
+
+                                    if (searchClass.error == 0)
                                     {
-                                        if (complete.Count() > 3)
+                                        //No error found on the index of the class
+                                        if (complete.Count() != 1)
                                         {
-                                            if (i != 2)
+                                            if (complete.Count() > 3)
                                             {
-                                                returner += searchClass.information.name + " by " + teachername + ", ";
+                                                if (i != 2)
+                                                {
+                                                    returner += searchClass.information.name + " by " + teachername + ", ";
+                                                }
+                                                else
+                                                {
+                                                    returner += "and " + searchClass.information.name + " by " + teachername;
+                                                }
                                             }
                                             else
                                             {
-                                                returner += "and " + searchClass.information.name + " by " + teachername;
+                                                if (i != complete.Count() - 1)
+                                                {
+                                                    returner += searchClass.information.name + " by " + teachername + ", ";
+                                                }
+                                                else
+                                                {
+                                                    returner += "and " + searchClass.information.name + " by " + teachername;
+                                                    break;
+                                                }
                                             }
                                         }
                                         else
                                         {
-                                            if (i != complete.Count() - 1)
-                                            {
-                                                returner += searchClass.information.name + " by " + teachername + ", ";
-                                            }
-                                            else
-                                            {
-                                                returner += "and " + searchClass.information.name + " by " + teachername;
-                                                break;
-                                            }
+                                            returner = "SUDO:" + searchClass.information.name + " by " + teachername;
                                         }
                                     }
                                     else
                                     {
-                                        returner = "SUDO:" + searchClass.information.name + " by " + teachername;
+                                        returner = "Found zero classes";
                                     }
-                                }
-                                else
-                                {
-                                    returner = "Found zero classes";
-                                }
 
+                                }
                             }
+
+                        }
+                        else
+                        {
+                            returner = "Found zero classes";
                         }
 
                     }
                     else
                     {
-                        returner = "Found zero classes";
+                        //User does not exist or the password is wrong
+                        returner = random(new string[]
+                        {
+                        "Please make sure your credentials are correct", "Please re-enter your credentials"
+                        });
                     }
 
+                    ViewControllerConnector.AsyncResult(Context.Current, returner);
                 }
-                else
+                catch (Exception)
                 {
-                    //User does not exist or the password is wrong
-                    returner = random(new string[]
-                    {
-                        "Please make sure your credentials are correct", "Please re-enter your credentials"
-                    });
+                    ViewControllerConnector.AsyncResult(Context.Current, random(new string[] {
+                        "The internet is not working, please retry", "Please retry, I can't connect to the internet"
+                    }));
                 }
-
-                ViewControllerConnector.AsyncResult(Context.Current, returner);
             });
 
             var thread = new Thread(threadstart);
@@ -984,15 +1101,26 @@ namespace AISA
             //User is requesting some news
             var threadstart = new ThreadStart(() =>
             {
-                var item = News.GetNews();
-                var output = item.title + ", " + item.description;
-
-                ViewControllerConnector.AsyncResult(Context.Current, output);
-
-                Application.Current.Dispatcher.Invoke(() =>
+                try
                 {
-                    ViewControllerConnector.Connect(ViewControllerConnector.ConnectionMethod.URL, new string[] { item.title, item.url });
-                });
+                    var item = News.GetNews();
+                    var output = item.title + ", " + item.description;
+
+                    ViewControllerConnector.AsyncResult(Context.Current, output);
+
+                    Application.Current.Dispatcher.Invoke(() =>
+                    {
+                        ViewControllerConnector.Connect(ViewControllerConnector.ConnectionMethod.URL, new string[] { item.title, item.url });
+                    });
+
+                }
+                catch (Exception)
+                {
+                    ViewControllerConnector.AsyncResult(Context.Current, random(new string[]
+                    {
+                        "I can't connected to the internet, please try again", "I could'nt connect to the internet", "Sorry, connection failed"
+                    }));
+                }
             });
 
             var thread = new Thread(threadstart);
