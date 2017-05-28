@@ -18,26 +18,7 @@ namespace AISA_API
     {
         public static NewsItem GetNews()
         {
-            //Pull data from the AISA Servers
-            var item = new NewsItem();
-
-            var restclient = new RestClient(Endpoint.EndpointString + "/news");
-            var restrequest = new RestRequest(Method.GET);
-            var response = restclient.Execute(restrequest);
-
-            if (response.Content != "")
-            {
-                try
-                {
-                    item = Newtonsoft.Json.JsonConvert.DeserializeObject<NewsItem>(response.Content);
-                }
-                catch (Exception ex)
-                {
-                    throw new RestResponseException(ex.Message);
-                }
-            }
-            
-            return item;
+            return new RequestHandler<NewsItem>("/news").Send();
         }
     }
 }

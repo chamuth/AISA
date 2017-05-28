@@ -28,25 +28,7 @@ namespace AISA_API
         /// <returns>Returns a single Chance object that contains details about the scholarship or competition</returns>
         public static Chance Find()
         {
-            var chance = new Chance();
-            var restclient = new RestClient(Endpoint.EndpointString + "/chances");
-            var restrequest = new RestRequest(Method.GET);
-
-            var response = restclient.Execute(restrequest);
-
-            if (response.Content != "")
-            {
-                try
-                {
-                   chance = Newtonsoft.Json.JsonConvert.DeserializeObject<Chance>(response.Content);
-                }
-                catch (Exception ex)
-                {
-                    throw new RestResponseException(ex.Message);
-                }
-            }
-
-            return chance;
+            return new RequestHandler<Chance>("/chances").Send();
         }
 
     }

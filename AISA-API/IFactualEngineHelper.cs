@@ -15,7 +15,7 @@ namespace AISA_API
     {
         public string GenerateRoute()
         {
-            return Endpoint.EndpointString + "/science/facts";
+            return "/science/facts";
         }
     }
 
@@ -23,7 +23,7 @@ namespace AISA_API
     {
         public string GenerateRoute()
         {
-            return Endpoint.EndpointString + "/mathematics/facts";
+            return "/mathematics/facts";
         }
     }
 }

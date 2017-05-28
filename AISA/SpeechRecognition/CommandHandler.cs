@@ -1124,7 +1124,7 @@ namespace AISA
                 #endregion
 
                 #region JOKES
-                "Tell me a joke", "Joke",
+                "Tell me a joke", "Joke", "I want a joke",
                 #endregion
 
                 #region BOOK SEARCH

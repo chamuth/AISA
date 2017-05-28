@@ -21,32 +21,14 @@ namespace AISA_API
     /// </summary>
     public static class FactualEngine
     {
+        /// <summary>
+        /// Get a single Fact object selected randomly from the AISA servers.
+        /// </summary>
+        /// <param name="helper"></param>
+        /// <returns></returns>
         public static Fact GetFact(IFactualEngineHelper helper)
         {
-            var fact = new Fact();
-
-            var restclient = new RestClient(helper.GenerateRoute());
-            var restrequest = new RestRequest(Method.GET);
-
-            var restresponse = restclient.Execute(restrequest);
-
-            if (restresponse.Content != "")
-            {
-                try
-                {
-                    fact = JsonConvert.DeserializeObject<Fact>(restresponse.Content);
-                }
-                catch (JsonException ex)
-                {
-                    throw ex;
-                }
-            }
-            else
-            {
-                throw new RestResponseException("Response is invalid");
-            }
-
-            return fact;
+            return new RequestHandler<Fact>(helper.GenerateRoute()).Send();
         }
     }
 
