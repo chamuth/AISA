@@ -112,8 +112,8 @@ namespace AISA
             else if (input.Contains("What's up") || input.Contains("What's going on") || input.Contains("What is going on") || input.Contains("What is up"))
             {
                 //Inform the user with some news about the current situation
-                //TODO: Update this from a news feed
-                return "Well, Sri Lankan Rupee worth " + (1f / 150f).ToString() + " United States Dollars, How does that sound?"; //:V
+                GetNews();
+                return "ASYNC:";
             }
             else if (input.Contains("What's the time") || input.Contains("What time is it") || input.Contains("What is the time") || input.Contains("Time"))
             {
@@ -698,7 +698,7 @@ namespace AISA
 
                     Application.Current.Dispatcher.Invoke(() =>
                     {
-                        ViewControllerConnector.Connect(ViewControllerConnector.ConnectionMethod.URL, new string[] { chance.chance,  chance.website });
+                        ViewControllerConnector.Connect(ViewControllerConnector.ConnectionMethod.URL, new string[] { chance.chance, chance.website });
                     });
                 });
 
@@ -707,8 +707,40 @@ namespace AISA
 
                 return "ASYNC:";
             }
+            else if (input.ToLower().Contains("news"))
+            {
+                GetNews();
+                return "ASYNC:";
+            }else if (input.ToLower().Contains("wow"))
+            {
+                if (Context.Previous.ToLower().Contains("fact"))
+                {
+                    //User is impressed by a fact
+                    return random(new string[]
+                    {
+                        "Pretty cool huh?", "Didn't know that did you?", "Well, I'm also impressed"
+                    });
+                }
+                else if (Context.Previous.ToLower().Contains("paper"))
+                {
+                    //User is amazed by a paper
+                    return random(new string[]
+                    {
+                        "Practice makes you perfect", "Want some more?", "Well, I can't do anything about that"
+                    });
+                }
+            }
 
             #endregion
+
+            #region READING PDF FILES
+            if (input.ToLower().Contains("learn science") || input.ToLower().Contains("science book"))
+            {
+                // User requests to read the science book for him/her
+                // TODO: READ THE CONTENT OF A PDF IN THIS POSITION
+            }
+            #endregion  
+
 
             #endregion
             //Something not recognized
@@ -947,6 +979,26 @@ namespace AISA
             return "ASYNC:";
         }
 
+        private static void GetNews()
+        {
+            //User is requesting some news
+            var threadstart = new ThreadStart(() =>
+            {
+                var item = News.GetNews();
+                var output = item.title + ", " + item.description;
+
+                ViewControllerConnector.AsyncResult(Context.Current, output);
+
+                Application.Current.Dispatcher.Invoke(() =>
+                {
+                    ViewControllerConnector.Connect(ViewControllerConnector.ConnectionMethod.URL, new string[] { item.title, item.url });
+                });
+            });
+
+            var thread = new Thread(threadstart);
+            thread.Start();
+        }
+
         /// <summary>
         /// Retrieve the commands
         /// </summary>
@@ -984,6 +1036,7 @@ namespace AISA
                 "Appreciate it",
                 "Thank you",
                 "Thanks",
+                "Wow",
                 "What can I say",
 
                 //ABOUT AISA
@@ -1024,7 +1077,7 @@ namespace AISA
                 #endregion
 
                 #region STUDENT ORIENTED COMMANDS
-                    #region CLASS SEARCH
+                #region CLASS SEARCH
                     "Find a class", "Find me a class", "Find me a tuition class", "Find a tuition class",
                     "Find me an agriculture class", "Find an agriculture class",
                     "Find me an architecture class", "Find an architecture class",
@@ -1043,6 +1096,7 @@ namespace AISA
                     "Find me a psychology class", "Find a psychology class",
                     "Find me a science class", "Find a science class", "Find me a chemistry class", "Find a chemistry class",
                 #endregion
+            
                 #region PAPERS
                     "Let's write a paper", "Do I have any papers", "Do I have any papers to write",
 
@@ -1055,8 +1109,22 @@ namespace AISA
                     "Tell me a maths fact", "Show me a maths fact", "Maths fact", "A maths fact",
                 #endregion
 
-                #region SCHOLAR SHPS AND COMPETITIONS
-                    "Find me a competition", "Find a competition", "Find me a scholarship", "Find a scholarship", "Competition", "Scholarship",
+                #region NEWS
+                    "Tell me some news", "News",
+                #endregion
+
+                #region SCHOLARSHIPS AND COMPETITIONS
+                "Find me a competition", "Find a competition", "Find me a scholarship", "Find a scholarship", "Competition", "Scholarship",
+                #endregion
+
+                #region LEARNING SUBJECTS
+                "Learn science", "Let's learn science", "Read science book", "Read a science book",
+                "Learn mathematics", "Let's learn mathematics", "Read mathematics book",
+                "Learn maths", "Let's learn maths", "Read maths book",
+                #endregion
+
+                #region JOKES
+                "Tell me a joke", "Joke",
                 #endregion
 
                 #region BOOK SEARCH
