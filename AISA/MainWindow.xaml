@@ -222,7 +222,9 @@
                                 </Grid.Background>
                                 <StackPanel x:Name="WeatherPanel" Margin="5">
                                     <Label Foreground="White" FontSize="11" Background="#2000"  FontWeight="Bold">WEATHER TIPS</Label>
-                                    <TextBlock Margin="5" x:Name="weather_tip" FontSize="11" TextWrapping="Wrap" Foreground="#EEE">Never forget to carry a umbrella with you!</TextBlock>
+                                    <TextBlock Margin="5" x:Name="weather_tip" FontSize="11" TextWrapping="Wrap" Foreground="#EEE">
+                                        Never forget to carry a umbrella with you!
+                                    </TextBlock>
                                 </StackPanel>
                             </Grid>
 
@@ -238,24 +240,12 @@
                                 </StackPanel>
                             </Grid>
 
-                            <Label Foreground="White" FontWeight="Bold" Margin="0 0 0 15" FontSize="10">
+                            <Label Foreground="White" FontWeight="Bold" Margin="0 10 0 5" FontSize="10">
                                 NEWS AND INTERESTS
                             </Label>
 
                             <StackPanel x:Name="NewsContainer">
-                                <!--<Grid Cursor="Hand">
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="50"></ColumnDefinition>
-                                        <ColumnDefinition Width="*"></ColumnDefinition>
-                                    </Grid.ColumnDefinitions>
 
-                                    <Image Margin="0 0 10 0"  Grid.Column="0" Source="Resources/Help/camera.png"></Image>
-
-                                    <StackPanel Grid.Column="2">
-                                        <TextBlock TextTrimming="CharacterEllipsis" Foreground="White">Microsoft has launched it's first VR engine</TextBlock>
-                                        <TextBlock TextWrapping="Wrap" TextTrimming="CharacterEllipsis" Foreground="#AAA">Microsoft corpotion's next new innovation is here</TextBlock>
-                                    </StackPanel>
-                                </Grid>-->
                             </StackPanel>
 
                             <!--PADDER FOR SCROLLING PURPOSES-->

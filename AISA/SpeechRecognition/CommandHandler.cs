@@ -268,6 +268,14 @@ namespace AISA
                     "Sure", "Okay"
                 });
             }
+            else if (input.ToLower().Contains("open calendar"))
+            {
+                System.Diagnostics.Process.Start("microsoft.windows.calendar:");
+                return random(new string[]
+                {
+                    "sure", "okay"
+                });
+            }
             else if (input.ToLower().Contains("my picture") || input.ToLower().Contains("my photo"))
             {
                 System.Diagnostics.Process.Start("microsoft.windows.photos:");
@@ -333,6 +341,12 @@ namespace AISA
             else if (input.Contains("Open App store"))
             {
                 System.Diagnostics.Process.Start("microsoft.windows.store:");
+                return "Sure";
+            }
+
+            else if (input.ToLower().Contains("open camera"))
+            {
+                System.Diagnostics.Process.Start("microsoft.windows.camera:");
                 return "Sure";
             }
 
