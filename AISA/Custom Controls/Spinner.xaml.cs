@@ -30,12 +30,16 @@ namespace AISA.Custom_Controls
             set
             {
                 arc.Fill = value;
+                arc.Stroke = value;
             }
         }
 
         public Spinner()
         {
             InitializeComponent();
+
+            //Color the SpinnerBrush
+            SpinnerBrush = SystemParameters.WindowGlassBrush;
         }
 
         /// <summary>

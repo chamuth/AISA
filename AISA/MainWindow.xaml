@@ -202,7 +202,7 @@
                     <ScrollViewer VerticalScrollBarVisibility="Hidden" x:Name="extraDescriptionContainer" Height="275" Opacity="0" Margin="0 30 0 0">
                         <StackPanel x:Name="extraContentContainer">
 
-                            <Label Foreground="White" FontWeight="Bold" Margin="0 0 0 15" FontSize="10">
+                            <Label x:Name="Topic1"  Foreground="White" FontWeight="Bold" Margin="0 0 0 15" FontSize="10">
                                 HERE'S SOME TIPS FOR YOU
                             </Label>
 
@@ -240,7 +240,7 @@
                                 </StackPanel>
                             </Grid>
 
-                            <Label Foreground="White" FontWeight="Bold" Margin="0 10 0 5" FontSize="10">
+                            <Label x:Name="Topic2" Foreground="White" FontWeight="Bold" Margin="0 10 0 5" FontSize="10">
                                 NEWS AND INTERESTS
                             </Label>
 
@@ -293,7 +293,6 @@
 
 
             <Custom_Controls:RectangularButton Clicked="ExitAISA" ToolTip="Exit AISA" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="25px" Width="25" Height="25" Source="Resources/close.png"/>
-            <Custom_Controls:RectangularButton ToolTip="Toggle Fullscreen" Clicked="Maximize" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="25px 25px 60px 25px" Width="25" Height="25" Source="Resources/expand.png"/>
 
             <Custom_Controls:RectangularButton ToolTip="Get Help" Clicked="Help" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="25px" Width="25" Height="25" Source="Resources/help.png"/>
             <Custom_Controls:RectangularButton ToolTip="Reminders and Alarms" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="60px 25px 25px 25px" Width="25" Height="25" Source="Resources/reminders.png"/>

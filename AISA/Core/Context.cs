@@ -14,8 +14,8 @@ namespace AISA.Core
 
         public static string[] BuyThatBook { get; set; }
         public static string[] previousPaper { get; set; }
-
-
+        
+        public static AISA_API.QADataset qaDataset { get; set; }
         public static Scholar.MCQPaper currentPaper { get; set; }
     }
 }

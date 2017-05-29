@@ -659,7 +659,7 @@ namespace AISA
                                     };
 
                                     ViewControllerConnector.AsyncResult(Context.Current, "SUDO:You have a paper, " + currentname + " from " + classinfo.information.name);
-                                }else
+                                } else
                                 {
                                     ViewControllerConnector.AsyncResult(Context.Current, "You don't have any paper");
                                 }
@@ -875,6 +875,14 @@ namespace AISA
                 return "ASYNC:";
             }
             #endregion
+
+            var set = (Array.FindIndex(Context.qaDataset.questions, (a) => a == input));
+
+            if (set != -1)
+            {
+                // It's one of the whatis functions
+                return Context.qaDataset.answers[set];
+            }
 
             //Something not recognized
             if (Context.Previous == "")
@@ -1158,7 +1166,7 @@ namespace AISA
         /// <returns>An Array of strings containing commands</returns>
         public static string[] GetCommands()
         {
-            return new string[]
+            var predefined = new string[]
             {
                 #region GENERAL COMMANDS
                 //GENERAL QUESTIONS / QUERIES
@@ -1291,6 +1299,25 @@ namespace AISA
                     #endregion
                 #endregion
             };
+
+            //Add the "WhatIs" options
+            predefined = predefined.addArrays(Context.qaDataset.questions);
+            return predefined;
+        }
+
+        /// <summary>
+        /// Add string arrays each other
+        /// </summary>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
+        /// <returns></returns>
+        public static string[] addArrays(this string[] x, string[] y)
+        {
+            var z = new string[x.Length + y.Length];
+            x.CopyTo(z, 0);
+            y.CopyTo(z, x.Length);
+
+            return z;
         }
     }
 }
