@@ -58,5 +58,17 @@ namespace AISA.Properties {
                 this["studentGrade"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool setStartup {
+            get {
+                return ((bool)(this["setStartup"]));
+            }
+            set {
+                this["setStartup"] = value;
+            }
+        }
     }
 }

@@ -11,5 +11,8 @@
     <Setting Name="studentGrade" Type="System.String" Scope="User">
       <Value Profile="(Default)">2018 Advanced Level</Value>
     </Setting>
+    <Setting Name="setStartup" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

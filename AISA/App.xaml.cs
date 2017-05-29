@@ -5,6 +5,8 @@ using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
+using Microsoft.Win32;
+using System.Reflection;
 
 namespace AISA
 {
@@ -15,6 +17,8 @@ namespace AISA
     {
         public App()
         {
+            //if (AISA.Properties.Settings.Default.setStartup == false)
+            //    System.Diagnostics.Process.Start("SetStartup.exe");
 
             //Initialize the endpoints
             InitializeEndpoints();
@@ -25,7 +29,6 @@ namespace AISA
             var Window = new MainWindow();
             Window.Show();
             Window.HideWindow();
-
         }
 
         /// <summary>
@@ -36,5 +39,6 @@ namespace AISA
             Scholar.Connector.APIEndpoint = "http://localhost/Scholar/API/";
             AISA_API.Endpoint.EndpointString = "http://localhost/AISA";
         }
+
     }
 }
