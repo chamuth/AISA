@@ -32,13 +32,17 @@ namespace AISA.Custom_Controls
 
         private void UserControl_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            ellipse.Fill = new SolidColorBrush(Color.FromArgb(200, 0, 150, 255));
+            ellipse.Fill = SystemParameters.WindowGlassBrush;
+            ellipse.Opacity = .5d;
+
             clicked = true;
         }
 
         private void UserControl_MouseUp(object sender, MouseButtonEventArgs e)
         {
-            ellipse.Fill = new SolidColorBrush(Color.FromArgb(255, 0, 150, 255));
+            ellipse.Fill = SystemParameters.WindowGlassBrush;
+            ellipse.Opacity = 1d;
+
             if (clicked)
             {
                 Clicked();

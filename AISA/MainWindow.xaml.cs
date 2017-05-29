@@ -18,6 +18,7 @@ using System.Windows.Media.Animation;
 using AISA.Core;
 using System.Diagnostics;
 using System.Speech.Synthesis;
+using System.Threading;
 
 namespace AISA
 {
@@ -54,6 +55,88 @@ namespace AISA
 
             //Initialize the OpenSpeak Engine
             OpenSpeak.Init();
+
+            //Change the color of the Animating Lines according to Windows Accent Color.
+            grid1.Background = SystemParameters.WindowGlassBrush;
+            grid2.Background = SystemParameters.WindowGlassBrush;
+            grid3.Background = SystemParameters.WindowGlassBrush;
+            grid4.Background = SystemParameters.WindowGlassBrush;
+
+
+            //Get the tips from the server
+            var threadstart = new ThreadStart(() =>
+           {
+               var healthtip = AISA_API.Tips.Get(new AISA_API.HealthTip()).tip;
+               var weathertip = AISA_API.Tips.Get(new AISA_API.WeatherTip()).tip;
+               var studytip = AISA_API.Tips.Get(new AISA_API.StudyTip()).tip;
+
+               Application.Current.Dispatcher.Invoke(() =>
+              {
+                  health_tip.Text = healthtip;
+                  weather_tip.Text = weathertip;
+                  study_tip.Text = studytip;
+              });
+           });
+            var thread = new Thread(threadstart);
+            thread.Start();
+
+            //Add the news items to the list in another thread
+            var newsthreadstart = new ThreadStart(
+                () =>
+                {
+                    var newsItems = AISA_API.News.GetAllNews();
+
+                    Application.Current.Dispatcher.Invoke(() =>
+                    {
+                        foreach (var newsItem in newsItems.news)
+                        {
+                            //Add them to the newsContainer
+                            var maingrid = new Grid();
+                            maingrid.Cursor = Cursors.Hand;
+                            maingrid.MouseUp += (a, b) =>
+                            {
+                                Process.Start(newsItem.url);
+                            };
+
+                            maingrid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(50, GridUnitType.Pixel) });
+                            maingrid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(200, GridUnitType.Star) });
+
+                            var newsImage = new Image();
+                            newsImage.Source = new BitmapImage(new Uri(newsItem.thumbnail));
+                            newsImage.Margin = new Thickness(0, 0, 10, 0);
+
+                        
+                            var stackPanel = new StackPanel();
+
+                            var newstitle = new TextBlock();
+                            newstitle.Text = newsItem.title;
+                            newstitle.TextTrimming = TextTrimming.CharacterEllipsis;
+                            newstitle.Foreground = new SolidColorBrush(Colors.White);
+
+                            var newsdescription = new TextBlock();
+                            newsdescription.Text = newsItem.description;
+                            newsdescription.TextTrimming = TextTrimming.CharacterEllipsis;
+                            newsdescription.Foreground = new SolidColorBrush(Color.FromRgb(170,170,170));
+
+                            stackPanel.Children.Add(newstitle);
+                            stackPanel.Children.Add(newsdescription);
+
+                            stackPanel.VerticalAlignment = VerticalAlignment.Center;
+
+                            maingrid.Children.Add(newsImage);
+                            maingrid.Children.Add(stackPanel);
+
+                            Grid.SetColumn(newsImage, 0);
+                            Grid.SetColumn(stackPanel, 1);
+
+                            maingrid.Margin = new Thickness(0, 0, 0, 15);
+                            NewsContainer.Children.Add(maingrid);
+                        }
+                    });
+                });
+
+            var newsThread = new Thread(newsthreadstart);
+            newsThread.Start();
         }
 
         private bool Maximized = false;
@@ -421,6 +504,13 @@ namespace AISA
             var da = new DoubleAnimation(SystemParameters.WorkArea.Height - Height, TimeSpan.FromSeconds(1));
             da.EasingFunction = new QuinticEase();
             BeginAnimation(TopProperty, da);
+
+            ResultSheet.Visibility = Visibility.Hidden;
+            AskSheet.Visibility = Visibility.Visible;
+
+            //Start that thingy animation
+            var sa = FindResource("AskSheetToUp") as Storyboard;
+            sa.Begin();
         }
 
         private void book1MouseDown(object sender, MouseButtonEventArgs e)

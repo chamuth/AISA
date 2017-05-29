@@ -272,6 +272,12 @@
     <Resource Include="Custom Controls\res\next.png" />
     <Resource Include="Custom Controls\res\previous.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\assistant.jpg" />
+    <Resource Include="Resources\health.png" />
+    <Resource Include="Resources\study.jpg" />
+    <Resource Include="Resources\weather.jpg" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
        Other similar extension points exist, see Microsoft.Common.targets.

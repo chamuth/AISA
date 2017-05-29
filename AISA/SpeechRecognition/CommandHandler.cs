@@ -227,7 +227,7 @@ namespace AISA
                     "I'm AISA, an Artificial Intelligent Smart Assistant developed by Ninponix"
                 });
             }
-            else if (input.Contains("How you were made"))
+            else if (input.Contains("How were you made"))
             {
                 Context.LastURL = "https://github.com/Chamuth/AISA/tree/master";
                 ViewControllerConnector.Connect(ViewControllerConnector.ConnectionMethod.URL, new string[] { "Chamuth/AISA - GitHub", "https://github.com/Chamuth/AISA/tree/master" });
@@ -526,7 +526,8 @@ namespace AISA
                         return "Which book?";
                     }
 
-                }catch (Exception)
+                }
+                catch (Exception)
                 {
                     return "Opening web browser";
                 }
@@ -632,21 +633,28 @@ namespace AISA
                                 var thepaper = Class.GetMCQPaper(int.Parse(_class), indexes[0], Properties.Settings.Default.scholarUsername, Properties.Settings.Default.scholarPassword);
                                 var currentname = thepaper.name;
 
-                                //Get the class information from the server
-                                var classinfo = Class.GetInformation(int.Parse(_class));
-
-                                //Setup the paper that I've been working with
-                                Context.previousPaper = new string[]
+                                if (currentname != null)
                                 {
-                                _class, indexes[0].ToString()
-                                };
+                                    //Get the class information from the server
+                                    var classinfo = Class.GetInformation(int.Parse(_class));
 
-                                ViewControllerConnector.AsyncResult(Context.Current, "SUDO:You have a paper, " + currentname + " from " + classinfo.information.name);
+                                    //Setup the paper that I've been working with
+                                    Context.previousPaper = new string[]
+                                    {
+                                        _class, indexes[0].ToString()
+                                    };
+
+                                    ViewControllerConnector.AsyncResult(Context.Current, "SUDO:You have a paper, " + currentname + " from " + classinfo.information.name);
+                                }else
+                                {
+                                    ViewControllerConnector.AsyncResult(Context.Current, "You don't have any paper");
+                                }
                                 break;
                             }
 
                         }
-                    }catch (Exception)
+                    }
+                    catch (Exception)
                     {
                         // Receiving failed
                         ViewControllerConnector.AsyncResult(Context.Current, random(new string[]
@@ -687,8 +695,11 @@ namespace AISA
                    }
                });
 
+                var thread = new Thread(threadstart);
+                thread.Start();
 
-                
+                return "ASYNC:";
+
             }
 
             #region FACTS
@@ -1168,7 +1179,7 @@ namespace AISA
                 "What can I say",
 
                 //ABOUT AISA
-                "Who are you", "How you were made", "Who made you", "What's your name", "What is your name", "Where are you", "Where do you live", "Who is your father", "What are you", "Tell me about you",
+                "Who are you", "How were you made", "Who made you", "What's your name", "What is your name", "Where are you", "Where do you live", "Who is your father", "What are you", "Tell me about you",
 
                 //GENERAL FUNCTIONS
                 "Follow link",

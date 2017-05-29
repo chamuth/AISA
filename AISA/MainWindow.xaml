@@ -75,6 +75,101 @@
                 </EasingDoubleKeyFrame>
             </DoubleAnimationUsingKeyFrames>
         </Storyboard>
+        <Storyboard x:Key="AskSheetToUp">
+            <ThicknessAnimationUsingKeyFrames Storyboard.TargetProperty="(FrameworkElement.Margin)" Storyboard.TargetName="BasicInternalsAskSheet">
+                <EasingThicknessKeyFrame KeyTime="0" Value="0">
+                    <EasingThicknessKeyFrame.EasingFunction>
+                        <QuinticEase EasingMode="EaseOut"/>
+                    </EasingThicknessKeyFrame.EasingFunction>
+                </EasingThicknessKeyFrame>
+                <EasingThicknessKeyFrame KeyTime="0:0:1" Value="0,0,0,275">
+                    <EasingThicknessKeyFrame.EasingFunction>
+                        <QuinticEase EasingMode="EaseOut"/>
+                    </EasingThicknessKeyFrame.EasingFunction>
+                </EasingThicknessKeyFrame>
+            </ThicknessAnimationUsingKeyFrames>
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(FrameworkElement.Width)" Storyboard.TargetName="grid">
+                <EasingDoubleKeyFrame KeyTime="0" Value="0">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <QuinticEase EasingMode="EaseInOut"/>
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+                <EasingDoubleKeyFrame KeyTime="0:0:1" Value="250">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <QuinticEase EasingMode="EaseInOut"/>
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+            </DoubleAnimationUsingKeyFrames>
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(FrameworkElement.Width)" Storyboard.TargetName="grid1">
+                <EasingDoubleKeyFrame KeyTime="0" Value="0">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <QuinticEase EasingMode="EaseInOut"/>
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+                <EasingDoubleKeyFrame KeyTime="0:0:0.5" Value="100">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <QuinticEase EasingMode="EaseInOut"/>
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+            </DoubleAnimationUsingKeyFrames>
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(FrameworkElement.Width)" Storyboard.TargetName="grid2">
+                <EasingDoubleKeyFrame KeyTime="0" Value="0">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <QuinticEase EasingMode="EaseInOut"/>
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+                <EasingDoubleKeyFrame KeyTime="0:0:0.8" Value="200">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <QuinticEase EasingMode="EaseInOut"/>
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+            </DoubleAnimationUsingKeyFrames>
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(FrameworkElement.Width)" Storyboard.TargetName="grid3">
+                <EasingDoubleKeyFrame KeyTime="0" Value="0">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <QuinticEase EasingMode="EaseInOut"/>
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+                <EasingDoubleKeyFrame KeyTime="0:0:1" Value="225">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <QuinticEase EasingMode="EaseInOut"/>
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+            </DoubleAnimationUsingKeyFrames>
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(FrameworkElement.Width)" Storyboard.TargetName="grid4">
+                <EasingDoubleKeyFrame KeyTime="0" Value="0">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <QuinticEase EasingMode="EaseInOut"/>
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+                <EasingDoubleKeyFrame KeyTime="0:0:1.2" Value="250">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <QuinticEase EasingMode="EaseInOut"/>
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+            </DoubleAnimationUsingKeyFrames>
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="extraDescriptionContainer">
+                <EasingDoubleKeyFrame KeyTime="0" Value="0">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <QuinticEase EasingMode="EaseInOut"/>
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+                <EasingDoubleKeyFrame KeyTime="0:0:1" Value="0">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <QuinticEase EasingMode="EaseInOut"/>
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+                <EasingDoubleKeyFrame KeyTime="0:0:1.6" Value="1">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <QuinticEase EasingMode="EaseInOut"/>
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+            </DoubleAnimationUsingKeyFrames>
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="grid">
+                <EasingDoubleKeyFrame KeyTime="0" Value="0"/>
+                <EasingDoubleKeyFrame KeyTime="0:0:0.5" Value="1"/>
+            </DoubleAnimationUsingKeyFrames>
+        </Storyboard>
     </Window.Resources>
 
     <Window.Triggers>
@@ -95,6 +190,79 @@
                     <TextBlock x:Name="SecondaryGreeting" TextAlignment="Center" TextWrapping="WrapWithOverflow" Margin="0 35 0 0" FontFamily="Roboto Light" HorizontalAlignment="Center" VerticalAlignment="Top" Foreground= "White" FontSize="35">
                     Ask me something!
                     </TextBlock>
+                </Grid>
+                <Grid x:Name="ExtraInternalAskSheet" Margin="0 200 0 0" VerticalAlignment="Top">
+                    <Grid x:Name="grid" Height="2" Opacity="0"  Width="250" VerticalAlignment="Top" Background="Transparent">
+                        <Grid x:Name="grid4" Height="2" Width="250" Background="DodgerBlue" Opacity=".2"></Grid>
+                        <Grid x:Name="grid3" Height="2" Width="225" Background="DodgerBlue" Opacity=".5"></Grid>
+                        <Grid x:Name="grid2" Height="2" Width="200" Background="DodgerBlue" Opacity=".75"></Grid>
+                        <Grid x:Name="grid1" Height="2" Width="100" Background="DodgerBlue"></Grid>
+                    </Grid>
+
+                    <ScrollViewer VerticalScrollBarVisibility="Hidden" x:Name="extraDescriptionContainer" Height="275" Opacity="0" Margin="0 30 0 0">
+                        <StackPanel x:Name="extraContentContainer">
+
+                            <Label Foreground="White" FontWeight="Bold" Margin="0 0 0 15" FontSize="10">
+                                HERE'S SOME TIPS FOR YOU
+                            </Label>
+
+                            <Grid x:Name="grid5" Margin="0 0 0 5">
+                                <Grid.Background>
+                                    <ImageBrush ImageSource="Resources/health.png" Stretch="UniformToFill"></ImageBrush>
+                                </Grid.Background>
+                                <StackPanel x:Name="HealthPanel" Margin="5">
+                                    <Label Foreground="White" FontSize="11" Background="#2000"  FontWeight="Bold">HEALTH AND FITNESS TIPS</Label>
+                                    <TextBlock Margin="5" x:Name="health_tip"  FontSize="11" TextWrapping="Wrap" Foreground="#EEE">Drinking more water will help you avoid Dehydration</TextBlock>
+                                </StackPanel>
+                            </Grid>
+
+                            <Grid x:Name="grid6" Margin="0 0 0 5">
+                                <Grid.Background>
+                                    <ImageBrush ImageSource="Resources/weather.jpg" Stretch="UniformToFill"/>
+                                </Grid.Background>
+                                <StackPanel x:Name="WeatherPanel" Margin="5">
+                                    <Label Foreground="White" FontSize="11" Background="#2000"  FontWeight="Bold">WEATHER TIPS</Label>
+                                    <TextBlock Margin="5" x:Name="weather_tip" FontSize="11" TextWrapping="Wrap" Foreground="#EEE">Never forget to carry a umbrella with you!</TextBlock>
+                                </StackPanel>
+                            </Grid>
+
+                            <Grid x:Name="grid7" Margin="0 0 0 5">
+                                <Grid.Background>
+                                    <ImageBrush ImageSource="Resources/study.jpg" Stretch="UniformToFill"/>
+                                </Grid.Background>
+                                <StackPanel x:Name="Red" Margin="5">
+                                    <Label Foreground="White" FontSize="11" Background="#2000" FontWeight="Bold">STUDY TIPS</Label>
+                                    <TextBlock Margin="5" x:Name="study_tip" FontSize="11" TextWrapping="Wrap" Foreground="#EEE">
+                                        If you feel tired, get some sleep or you'll end up wasting your time
+                                    </TextBlock>
+                                </StackPanel>
+                            </Grid>
+
+                            <Label Foreground="White" FontWeight="Bold" Margin="0 0 0 15" FontSize="10">
+                                NEWS AND INTERESTS
+                            </Label>
+
+                            <StackPanel x:Name="NewsContainer">
+                                <!--<Grid Cursor="Hand">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="50"></ColumnDefinition>
+                                        <ColumnDefinition Width="*"></ColumnDefinition>
+                                    </Grid.ColumnDefinitions>
+
+                                    <Image Margin="0 0 10 0"  Grid.Column="0" Source="Resources/Help/camera.png"></Image>
+
+                                    <StackPanel Grid.Column="2">
+                                        <TextBlock TextTrimming="CharacterEllipsis" Foreground="White">Microsoft has launched it's first VR engine</TextBlock>
+                                        <TextBlock TextWrapping="Wrap" TextTrimming="CharacterEllipsis" Foreground="#AAA">Microsoft corpotion's next new innovation is here</TextBlock>
+                                    </StackPanel>
+                                </Grid>-->
+                            </StackPanel>
+
+                            <!--PADDER FOR SCROLLING PURPOSES-->
+                            <Grid x:Name="Padder" Background="Red"  Margin="0 0 0 30"/>
+
+                        </StackPanel>
+                    </ScrollViewer>
                 </Grid>
             </Grid>
 

@@ -46,6 +46,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ITipType.cs" />
+    <Compile Include="Tips.cs" />
     <Compile Include="Endpoint.cs" />
     <Compile Include="FactualEngine.cs" />
     <Compile Include="IFactualEngineHelper.cs" />

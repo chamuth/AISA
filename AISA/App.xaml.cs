@@ -15,6 +15,10 @@ namespace AISA
     {
         public App()
         {
+
+            //Initialize the endpoints
+            InitializeEndpoints();
+
             var Badge = new Badge();
             Badge.Show();
 
@@ -22,8 +26,6 @@ namespace AISA
             Window.Show();
             Window.HideWindow();
 
-            //Initialize the endpoints
-            InitializeEndpoints();
         }
 
         /// <summary>
