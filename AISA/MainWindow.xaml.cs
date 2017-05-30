@@ -151,11 +151,27 @@ namespace AISA
                         // Error occurred while getting news information
                         Application.Current.Dispatcher.Invoke(() =>
                        {
+                           var errorContainer = new Grid();
+                           //Add the column definitions to this grid
+                           errorContainer.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(2,GridUnitType.Pixel) });
+                           errorContainer.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(248, GridUnitType.Star) });
+
+                           //Create the before of the label
+                           var LabelBefore = new Grid();
+                           LabelBefore.Background = SystemParameters.WindowGlassBrush;
+                        
                            var errorlbl = new Label();
                            errorlbl.Content = "I'm having a trouble connecting to our servers.";
                            errorlbl.Foreground = new SolidColorBrush(Colors.White);
-                           NewsContainer.Children.Add(errorlbl);
+                           errorlbl.Margin = new Thickness(5, 0, 0, 0);
 
+                           errorContainer.Children.Add(errorlbl);
+                           errorContainer.Children.Add(LabelBefore);
+
+                           Grid.SetColumn(errorlbl, 1);
+                           Grid.SetColumn(LabelBefore, 0);
+
+                           NewsContainer.Children.Add(errorContainer);
                        }
                        );
                     }

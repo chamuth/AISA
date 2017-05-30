@@ -15,8 +15,8 @@
 6. <strong>Provide Facts related to General Knowledge</strong>
 7. <strong>Provide news that is related to subject matter</strong>
 8. <strong>Finds opportunities such as Scholarships and Competitions</strong>
-9. <strong>Schedule classes and notify the student
-9. <em>And many more...</em>
+9. <strong>Schedule classes and notify the student</strong>
+<em>And etc.</em>
 
 ### AISA'S ROLE AS A TYPICAL ASSISTANT
 
@@ -26,7 +26,17 @@
 4. Speech Hypothesizing
 5. Having an eye-catching User Interface, User Experience, Sound Effects, and Animations
 
-### USING THIS SOFTWARE AS AN OPEN SOURCE REPOSITORY
+### GETTING STARTED WITH PROJECT AISA
 
-<strong>Prerequisites</strong>
-1. Microsoft .NET Framework 4.5.2 Required
+This section of the README.md file will guide you to contribute to AISA. Follow the steps mentioned and you'll be a contributing Project AISA in no time,
+
+<strong>Downloading and Installation of Components</strong>
+<br>
+1. First of all fork this project to your account on GitHub.
+2. Clone that project to your work computer using Git.
+3. Open AISA/AISA.sln which will require you to open two or three projects including Project AISA itself and the Application Programming Interface for AISA (AISA-API) which is a client for the <a href="http://www.github.com/Chamuth/AISA-API">AISA-API GitHub Repository</a> and Client for the Project Scholar which is available <a href="http://www.github.com/Chamuth/scholar-csharp-sdk">here</a>.
+4. At AISA.sln / AISA.csproj you will be needed some References to some libraries, namely RestSharp, Newtonsoft.Json, Scholar, and AISA-API. Here Scholar and AISA-API dll files can be obtained by the projects that you have downloaded from the step 3. Using NuGet the official package manager for .NET Framework you can download RestSharp and Newtonsoft Json, matter of fact while building the project AISA.csproj for the first time it will download all the dependencies (libraries) the project need.
+
+<strong>Setting up API endpoints</strong>
+<br>
+1. Inside AISA/App.xaml.cs, you'll find a method called <strong>InitializeEndpoints</strong>, it defines all of the API endpoints required by the application excluding the OpenWeather API and the ip-api API.

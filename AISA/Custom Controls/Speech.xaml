@@ -23,13 +23,12 @@
     <UserControl.Triggers>
         <EventTrigger RoutedEvent="FrameworkElement.Loaded"/>
     </UserControl.Triggers>
-    
-    
+
+
     <Grid>
         <Ellipse x:Name="ellipse" Fill="#FF0096FF" Width="50" Height="50"/>
         <Ellipse Opacity="0" x:Name="topDrawer" Fill="#5000"></Ellipse>
         <Image x:Name="image" HorizontalAlignment="Center" VerticalAlignment="Center" Width="25" Height="25" Source="res/microphone.png"/>
     </Grid>
-    
-    
+
 </UserControl>

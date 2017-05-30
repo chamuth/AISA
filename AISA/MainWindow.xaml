@@ -248,6 +248,14 @@
 
                             </StackPanel>
 
+                            <Label x:Name="WhatToAsk" Foreground="White" FontWeight="Bold" Margin="0 10 0 5" FontSize="10">
+                                WHAT TO ASK?
+                            </Label>
+
+                            <StackPanel x:Name="WhatToAskContainer">
+                                
+                            </StackPanel>
+
                             <!--PADDER FOR SCROLLING PURPOSES-->
                             <Grid x:Name="Padder" Background="Red"  Margin="0 0 0 30"/>
 
