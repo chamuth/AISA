@@ -876,6 +876,7 @@ namespace AISA
             }
             #endregion
 
+            #region WHAT IS SECTION AND ADITIONAL QUESTIONS
             var set = (Array.FindIndex(Context.qaDataset.questions, (a) => a == input));
 
             if (set != -1)
@@ -883,6 +884,7 @@ namespace AISA
                 // It's one of the whatis functions
                 return Context.qaDataset.answers[set];
             }
+            #endregion
 
             //Something not recognized
             if (Context.Previous == "")
@@ -901,6 +903,7 @@ namespace AISA
             }
         }
 
+        #region ADDITIONAL FUNCTIONS
         /// <summary>
         /// Finds a class using the Scholar Search Engine
         /// </summary>
@@ -1161,6 +1164,23 @@ namespace AISA
         }
 
         /// <summary>
+        /// Add string arrays each other
+        /// </summary>
+        /// <param name="x">First array</param>
+        /// <param name="y">Send input array</param>
+        /// <returns>Returns a new array by addition of both of the arrays</returns>
+        public static string[] addArrays(this string[] x, string[] y)
+        {
+            var z = new string[x.Length + y.Length];
+            x.CopyTo(z, 0);
+            y.CopyTo(z, x.Length);
+
+            return z;
+        }
+
+        #endregion
+
+        /// <summary>
         /// Retrieve the commands
         /// </summary>
         /// <returns>An Array of strings containing commands</returns>
@@ -1303,21 +1323,6 @@ namespace AISA
             //Add the "WhatIs" options
             predefined = predefined.addArrays(Context.qaDataset.questions);
             return predefined;
-        }
-
-        /// <summary>
-        /// Add string arrays each other
-        /// </summary>
-        /// <param name="x"></param>
-        /// <param name="y"></param>
-        /// <returns></returns>
-        public static string[] addArrays(this string[] x, string[] y)
-        {
-            var z = new string[x.Length + y.Length];
-            x.CopyTo(z, 0);
-            y.CopyTo(z, x.Length);
-
-            return z;
         }
     }
 }
