@@ -638,31 +638,41 @@ namespace AISA
                             }).Select(i => i).ToArray();
 
                             //Get the first paper's information
+                            MessageBox.Show(indexes.Length.ToString());
                             if (indexes == null || indexes.Length == 0)
                             {
                                 ViewControllerConnector.AsyncResult(Context.Current, "You don't have any paper");
                             }
                             else
                             {
-                                var thepaper = Class.GetMCQPaper(int.Parse(_class), indexes[0], Properties.Settings.Default.scholarUsername, Properties.Settings.Default.scholarPassword);
-                                var currentname = thepaper.name;
-
-                                if (currentname != null)
+                                var found = false;
+                                for (int i = 0; i < indexes.Length; i++)
                                 {
-                                    //Get the class information from the server
-                                    var classinfo = Class.GetInformation(int.Parse(_class));
+                                    var thepaper = Class.GetMCQPaper(int.Parse(_class), indexes[i], Properties.Settings.Default.scholarUsername, Properties.Settings.Default.scholarPassword);
+                                    var currentname = thepaper.name;
 
-                                    //Setup the paper that I've been working with
-                                    Context.previousPaper = new string[]
+                                    if (currentname != null)
                                     {
-                                        _class, indexes[0].ToString()
-                                    };
+                                        //Get the class information from the server
+                                        var classinfo = Class.GetInformation(int.Parse(_class));
 
-                                    ViewControllerConnector.AsyncResult(Context.Current, "SUDO:You have a paper, " + currentname + " from " + classinfo.information.name);
-                                } else
-                                {
-                                    ViewControllerConnector.AsyncResult(Context.Current, "You don't have any paper");
+                                        //Setup the paper that I've been working with
+                                        Context.previousPaper = new string[]
+                                        {
+                                        _class, indexes[0].ToString()
+                                        };
+
+                                        ViewControllerConnector.AsyncResult(Context.Current, "SUDO:You have a paper, " + currentname + " from " + classinfo.information.name);
+
+                                        found = true;
+
+                                        break;
+                                    }
                                 }
+
+                                if (!found)
+                                    ViewControllerConnector.AsyncResult(Context.Current, "You don't have any paper");
+                                
                                 break;
                             }
 

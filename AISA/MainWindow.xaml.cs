@@ -65,6 +65,7 @@ namespace AISA
             //Color the extraContent Topics
             Topic1.Foreground = SystemParameters.WindowGlassBrush;
             Topic2.Foreground = SystemParameters.WindowGlassBrush;
+            Topic3.Foreground = SystemParameters.WindowGlassBrush;
 
             //Get the tips from the server
             var threadstart = new ThreadStart(() =>

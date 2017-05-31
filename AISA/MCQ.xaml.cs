@@ -69,7 +69,7 @@ namespace AISA
             if (e.Result.Text == "I don't know" || e.Result.Text == "Skip" || e.Result.Text == "No" || e.Result.Text == "Next" || e.Result.Text == "Continue")
             {
                 //The user does not know the answer for the question
-                _answers[currentIndex] = -1;
+                _answers[currentIndex] = 0;
             }
             else
             {
@@ -115,6 +115,7 @@ namespace AISA
             UploadingPanel.BeginAnimation(OpacityProperty, da);
 
             _recognizer.RecognizeAsyncCancel();
+            _recognizer.Dispose(); // Dispose the recognizer object
 
             //Start the uploading functionality
             var threadstart = new ThreadStart(() =>
@@ -129,9 +130,41 @@ namespace AISA
 
                     da2.Completed += (a, b) =>
                     {
-                       // Save and close this window
-                       AISAHandler.Start();
-                        Close();
+                        //Show the results
+                        ResultSheet.Visibility = Visibility.Visible;
+                        ResultSheet.BeginAnimation(OpacityProperty, da);
+
+                        PaperNameResults.Content = Context.currentPaper.name;
+
+                        var correct = 0;
+                        var incorrect = 0;
+                        var skipped = 0;
+
+                        for (int i = 0; i < _answers.Length; i++)
+                        {
+                            var given_answer = _answers[i];
+                            var correct_answer = Context.currentPaper.questions[i].correct;
+
+                            if (given_answer == 0)
+                                skipped++;
+                            else
+                            {
+                                if (given_answer == correct_answer)
+                                {
+                                    //Answer is correct
+                                    correct++;
+                                }
+                                else
+                                {
+                                    incorrect++;
+                                }
+                            }
+                        }
+
+                        //Set the numbers
+                        correct_count.Content = correct.ToString();
+                        incorrect_count.Content = incorrect.ToString();
+                        unanswered_count.Content = skipped.ToString();
                     };
 
                    //Fade the uploading panel out

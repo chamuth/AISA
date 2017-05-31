@@ -6,6 +6,19 @@
         xmlns:local="clr-namespace:AISA"
         mc:Ignorable="d" WindowStyle="None" ResizeMode="NoResize"
         Title="MCQ" Height="400" Width="700" Background="#EE000000" Topmost="True" WindowStartupLocation="CenterScreen">
+    <Window.Resources>
+        <Style x:Key="tr1" TargetType="{x:Type Grid}">
+            <Style.Setters>
+                <Setter Property="Background" Value="#222"></Setter>
+            </Style.Setters>
+        </Style>
+
+        <Style x:Key="tr2" TargetType="{x:Type Grid}">
+            <Style.Setters>
+                <Setter Property="Background" Value="#111"></Setter>
+            </Style.Setters>
+        </Style>
+    </Window.Resources>
 
     <Grid>
         <Grid>
@@ -68,7 +81,54 @@
             <Grid x:Name="MesageContainer" Background="DodgerBlue" Margin="0 120 0 120">
                 <Custom_Controls:Spinner x:Name="UploadingSpinner" Width="50" Height="50"></Custom_Controls:Spinner>
             </Grid>
-            
+
         </Grid>
+        <Grid Background="Black" x:Name="ResultSheet" Visibility="Hidden">
+
+            <Grid.RowDefinitions>
+                <RowDefinition Height="135"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="125"/>
+            </Grid.RowDefinitions>
+
+            <Label x:Name="PaperNameResults" Grid.Row="0" Foreground="White" MaxWidth="666" FontSize="25" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0 35 0 0">PAPER NAME</Label>
+            <Label Grid.Row="0"  Foreground="Gray" FontSize="20" FontWeight="Regular" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0 75 0 0">RESULTS</Label>
+
+            <StackPanel Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Center">
+                <Grid Style="{DynamicResource tr1}" HorizontalAlignment="Center" Width="350" VerticalAlignment="Top">
+                    <Label Foreground="White" HorizontalAlignment="Left" Margin="10 5">Correct Answers:</Label>
+                    <Label Foreground="White" Margin="10 5" FontWeight="Bold" x:Name="correct_count" HorizontalAlignment="Right">45</Label>
+                </Grid>
+                <Grid Style="{DynamicResource tr2}" HorizontalAlignment="Center" Width="350" VerticalAlignment="Top">
+                    <Label Foreground="White" HorizontalAlignment="Left" Margin="10 5">Incorrect Answers:</Label>
+                    <Label Foreground="White" Margin="10 5" FontWeight="Bold" x:Name="incorrect_count" HorizontalAlignment="Right">1</Label>
+                </Grid>
+                <Grid Style="{DynamicResource tr1}" HorizontalAlignment="Center" Width="350" VerticalAlignment="Top">
+                    <Label Foreground="White" HorizontalAlignment="Left" Margin="10 5">Unanswered Questions:</Label>
+                    <Label x:Name="unanswered_count" Foreground="White" Margin="10 5" FontWeight="Bold"  HorizontalAlignment="Right">2</Label>
+                </Grid>
+            </StackPanel>
+
+            <Grid Grid.Row="2">
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                    <Custom_Controls:RectangularButton x:Name="OkayButton" Margin="5 10 25 10"  Width="50" Height="50" Source="Resources/check.png"></Custom_Controls:RectangularButton>
+                    <Label VerticalAlignment="Center" FontSize="15" Foreground="White">
+                        
+                        <Span>
+                            Say
+                            <Span FontWeight="Bold">
+                                'OK'
+                            </Span> or
+                            <Span FontWeight="Bold">
+                                'Close'
+                            </Span>
+                        </Span>
+                        
+                    </Label>
+                </StackPanel>
+
+            </Grid>
+        </Grid>
+
     </Grid>
 </Window>

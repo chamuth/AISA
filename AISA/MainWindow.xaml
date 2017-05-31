@@ -248,12 +248,12 @@
 
                             </StackPanel>
 
-                            <Label x:Name="WhatToAsk" Foreground="White" FontWeight="Bold" Margin="0 10 0 5" FontSize="10">
+                            <Label x:Name="Topic3" Foreground="White" FontWeight="Bold" Margin="0 10 0 5" FontSize="10">
                                 WHAT TO ASK?
                             </Label>
 
                             <StackPanel x:Name="WhatToAskContainer">
-                                
+                                <Label Foreground="White">Click the help ('?') button for more information on what to ask</Label>
                             </StackPanel>
 
                             <!--PADDER FOR SCROLLING PURPOSES-->
