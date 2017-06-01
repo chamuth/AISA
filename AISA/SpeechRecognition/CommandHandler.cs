@@ -587,7 +587,6 @@ namespace AISA
                                             {
                                                 if (Paper.VerifyWritten(int.Parse(_class), i, Properties.Settings.Default.scholarUsername).written == 1)
                                                 {
-                                                    ViewControllerConnector.AsyncResult(Context.Current, "SUDO:The paper was written by you");
                                                     return false;
                                                 }
                                                 else
@@ -600,7 +599,6 @@ namespace AISA
                                         {
                                             if (Paper.VerifyWritten(int.Parse(_class), i, Properties.Settings.Default.scholarUsername).written == 1)
                                             {
-                                                ViewControllerConnector.AsyncResult(Context.Current, "SUDO:The paper was written by you");
                                                 return false;
                                             }
                                             else
@@ -613,7 +611,6 @@ namespace AISA
                                     {
                                         if (Paper.VerifyWritten(int.Parse(_class), i, Properties.Settings.Default.scholarUsername).written == 1)
                                         {
-                                            ViewControllerConnector.AsyncResult(Context.Current, "SUDO:The paper was written by you");
                                             return false;
                                         }
                                         else
@@ -626,7 +623,6 @@ namespace AISA
                                 {
                                     if (Paper.VerifyWritten(int.Parse(_class), i, Properties.Settings.Default.scholarUsername).written == 1)
                                     {
-                                        ViewControllerConnector.AsyncResult(Context.Current, "SUDO:The paper was written by you");
                                         return false;
                                     }
                                     else
@@ -638,7 +634,6 @@ namespace AISA
                             }).Select(i => i).ToArray();
 
                             //Get the first paper's information
-                            MessageBox.Show(indexes.Length.ToString());
                             if (indexes == null || indexes.Length == 0)
                             {
                                 ViewControllerConnector.AsyncResult(Context.Current, "You don't have any paper");
@@ -659,7 +654,7 @@ namespace AISA
                                         //Setup the paper that I've been working with
                                         Context.previousPaper = new string[]
                                         {
-                                        _class, indexes[0].ToString()
+                                        _class, indexes[i].ToString()
                                         };
 
                                         ViewControllerConnector.AsyncResult(Context.Current, "SUDO:You have a paper, " + currentname + " from " + classinfo.information.name);
@@ -701,10 +696,19 @@ namespace AISA
                    {
                        if (Context.previousPaper != null)
                        {
-                           //Get details about the paper
-                           Context.currentPaper = Class.GetMCQPaper(int.Parse(Context.previousPaper[0]), int.Parse(Context.previousPaper[1]), Properties.Settings.Default.scholarUsername, Properties.Settings.Default.scholarPassword);
+                          
 
-                           ViewControllerConnector.AsyncResult(Context.Current, "SUDO:Started the paper");
+                           Application.Current.Dispatcher.Invoke(() =>
+                          {
+                          //Get details about the paper
+                          MessageBox.Show("Starting Paper " + Context.previousPaper[1].ToString() + " of " + Context.previousPaper[0]);
+                              Context.currentPaper = Class.GetMCQPaper(int.Parse(Context.previousPaper[0]), int.Parse(Context.previousPaper[1]), Properties.Settings.Default.scholarUsername, Properties.Settings.Default.scholarPassword);
+
+                              //Start the paper
+                              ViewControllerConnector.startPaper(Context.previousPaper[0], Context.previousPaper[1]);
+                          });
+
+                           ViewControllerConnector.AsyncResult(Context.Current, "SUDO:");
                        }
                        else
                        {
@@ -779,14 +783,45 @@ namespace AISA
 
                 return "ASYNC:";
             }
-            else if (input.ToLower().Contains("competition") || input.ToLower().Contains("scholarship"))
+            else if (input.ToLower().Contains("competition"))
             {
                 //Get the chances available from the AISA Servers
                 var threadstart = new ThreadStart(() =>
                 {
                     try
                     {
-                        var chance = ScolsAndComps.Find();
+                        var chance = ScolsAndComps.FindCompetition();
+                        var output = chance.chance.ToString() + ", " + chance.description.ToString();
+
+                        ViewControllerConnector.AsyncResult(Context.Current, "SUDO:" + output);
+
+                        Application.Current.Dispatcher.Invoke(() =>
+                        {
+                            ViewControllerConnector.Connect(ViewControllerConnector.ConnectionMethod.URL, new string[] { chance.chance, chance.website });
+                        });
+                    }
+                    catch (Exception)
+                    {
+                        ViewControllerConnector.AsyncResult(Context.Current, random(new string[]
+                        {
+                            "I couldn't connect to the internet", "I can't connect to the internet", "Sorry, I could not receive any data"
+                        }));
+                    }
+                });
+
+                var thread = new Thread(threadstart);
+                thread.Start();
+
+                return "ASYNC:";
+            }
+            else if (input.ToLower().Contains("scholarship"))
+            {
+                //Get the chances available from the AISA Servers
+                var threadstart = new ThreadStart(() =>
+                {
+                    try
+                    {
+                        var chance = ScolsAndComps.FindScholarship();
                         var output = chance.chance.ToString() + ", " + chance.description.ToString();
 
                         ViewControllerConnector.AsyncResult(Context.Current, "SUDO:" + output);

@@ -32,5 +32,7 @@ namespace AISA.Core
 
         public static bool PaperStarted = false;
 
+        public static Action Opaque { get; set; }
+
     }
 }

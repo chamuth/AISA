@@ -6,6 +6,7 @@
         xmlns:local="clr-namespace:AISA"
         mc:Ignorable="d" WindowStyle="None" ResizeMode="NoResize"
         Title="MCQ" Height="400" Width="700" Background="#EE000000" Topmost="True" WindowStartupLocation="CenterScreen">
+    
     <Window.Resources>
         <Style x:Key="tr1" TargetType="{x:Type Grid}">
             <Style.Setters>

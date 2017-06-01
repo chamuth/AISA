@@ -165,6 +165,40 @@ namespace AISA
                         correct_count.Content = correct.ToString();
                         incorrect_count.Content = incorrect.ToString();
                         unanswered_count.Content = skipped.ToString();
+
+
+                        //Set the event handlers
+                        OkayButton.Clicked = () =>
+                        {
+                            _recognizer.RecognizeAsyncCancel();
+                            _recognizer = null;
+
+                            ViewControllerConnector.PaperStarted = false;
+                            AISAHandler.Start();
+                            ViewControllerConnector.Opaque();
+
+                            Close();
+                        };
+
+                        _recognizer = new SpeechRecognitionEngine();
+                        _recognizer.SetInputToDefaultAudioDevice();
+                        _recognizer.LoadGrammar(new Grammar(new GrammarBuilder(new Choices(
+                            new string[] { "Okay", "OK", "Close", "Exit"}
+                            ))));
+
+                        _recognizer.SpeechRecognized += (x, y) =>
+                        {
+                            _recognizer.RecognizeAsyncCancel();
+                            _recognizer = null;
+
+                            ViewControllerConnector.PaperStarted = false;
+                            AISAHandler.Start();
+                            ViewControllerConnector.Opaque();
+
+                            Close();
+                        };
+
+                        _recognizer.RecognizeAsync();
                     };
 
                    //Fade the uploading panel out

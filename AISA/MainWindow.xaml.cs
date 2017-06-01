@@ -263,6 +263,16 @@ namespace AISA
             ViewControllerConnector.AsyncResult += AsyncResultChanged;
             ViewControllerConnector.MainWindowShow += ShowWindow;
             ViewControllerConnector.startPaper += StartPaper;
+            ViewControllerConnector.Opaque += Opaque;
+        }
+
+        public void Opaque()
+        {
+            var da = new DoubleAnimation(1, TimeSpan.FromSeconds(1));
+            da.EasingFunction = new QuinticEase();
+
+            //Set the opacity of the MainWindows to 1 in 1 second
+            BeginAnimation(OpacityProperty, da);
         }
 
         public void StartPaper(string _class, string paper_index)
@@ -271,10 +281,15 @@ namespace AISA
             AISAHandler.Pause();
             ViewControllerConnector.PaperStarted = true;
 
+            var da = new DoubleAnimation(0.5, TimeSpan.FromSeconds(1));
+            da.EasingFunction = new QuinticEase();
+            
+            //Set the opacity of the MainWindows to 0.5 in 1 second
+            BeginAnimation(OpacityProperty, da);            
+            
             //Start a new MCQ
             var mcq = new MCQ(_class, paper_index);
             mcq.Show();
-
         }
 
         /// <summary>

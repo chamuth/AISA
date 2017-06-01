@@ -23,12 +23,21 @@ namespace AISA_API
     public class ScolsAndComps
     {
         /// <summary>
-        /// Finds a Scholarship or Competitions
+        /// Finds a Scholarship
         /// </summary>
-        /// <returns>Returns a single Chance object that contains details about the scholarship or competition</returns>
-        public static Chance Find()
+        /// <returns>Returns a single Chance object that contains details about the competition</returns>
+        public static Chance FindCompetition()
         {
-            return new RequestHandler<Chance>("/chances").Send();
+            return new RequestHandler<Chance>("/competitions").Send();
+        }
+
+        /// <summary>
+        /// Finds a Scholarship
+        /// </summary>
+        /// <returns>Returns a single Chance object that contians details about the scholarship</returns>
+        public static Chance FindScholarship()
+        {
+            return new RequestHandler<Chance>("/scholarhips").Send();
         }
 
     }

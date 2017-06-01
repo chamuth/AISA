@@ -41,7 +41,7 @@ namespace AISA.Custom_Controls
             ellipse.Fill = new SolidColorBrush(Color.FromArgb(255, 0, 150, 255));
             if (clicked)
             {
-                Clicked();
+                Clicked?.Invoke();
             }
         }
         public void Activate()

@@ -86,7 +86,7 @@ namespace AISA
         /// <summary>
         /// Sets all of the Endpoint variables to their endpoint locations
         /// </summary>
-        private void InitializeEndpoints()
+        public static void InitializeEndpoints()
         {
             Scholar.Connector.APIEndpoint = "http://localhost/Scholar/API/";
             Endpoint.EndpointString = "http://localhost/AISA";

@@ -249,7 +249,7 @@
                             </StackPanel>
 
                             <Label x:Name="Topic3" Foreground="White" FontWeight="Bold" Margin="0 10 0 5" FontSize="10">
-                                WHAT TO ASK?
+                                NEED A HAND?
                             </Label>
 
                             <StackPanel x:Name="WhatToAskContainer">
